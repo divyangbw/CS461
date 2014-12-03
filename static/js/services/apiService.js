@@ -10,7 +10,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         var deferred = $q.defer();
         var data = JSON.stringify(user);
 
-        var request = $http.post(BASEURL + "api/users", data, {}).then(function (response) { // Success
+        var request = $http.post(BASEURL + "api/register", data, {}).then(function (response) { // Success
             console.log(response.data);
             User.setUser(response.data);
             deferred.resolve(response.data);
@@ -57,24 +57,22 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
 
 
     this.login = function (user) {
-        var deferred = $q.defer();
 
-        getToken(user).then(function (tokenResponse) { // Success
-            var token = tokenResponse.data;
-            console.log("First Level:");
-            console.log(tokenResponse);
-            getUserDetails(token.token).then(function (response) {
-                console.log("Second Level:");
-                console.log(response);
-                User.setUser(response.data);
-                User.setToken(token.token, token.duration);
-                deferred.resolve("success");
-            }, function (err) {
-                console.log(err);
-            });
-        }, function (err) {
-            console.log(err);
-            deferred.reject(err);
+        var deferred = $q.defer();
+        var data = JSON.stringify(user);
+
+        var request = $http.post(BASEURL + "api/login", data, {}).then(function (response) { // Success
+            console.log(response.data);
+            User.setUser(response.data);
+            deferred.resolve(response.data);
+            //getToken(user).then(function(response) {
+            //    console.log(response);
+                //User.setToken()
+            //});
+
+        }, function (response) {
+            console.log(response);
+            deferred.reject(response);
         });
 
         return deferred.promise;

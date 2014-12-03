@@ -1,11 +1,11 @@
-
-import os, uuid
-from flask import Flask, render_template, abort, request, jsonify, g, url_for
+import os, uuid,random,string
+from flask import Flask, render_template, abort, request, jsonify, url_for
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.httpauth import HTTPBasicAuth
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
+import datetime
+
 
 # initialization
 app = Flask(__name__)
@@ -15,7 +15,6 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
 # extensions
 db = SQLAlchemy(app)
-auth = HTTPBasicAuth()
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -24,6 +23,8 @@ class User(db.Model):
     password_hash = db.Column(db.String(64))
     first = db.Column(db.String(128))
     last = db.Column(db.String(128))
+    token = db.Column(db.String(128))
+    updated = db.Column(db.DATETIME)
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -31,9 +32,7 @@ class User(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
-    def generate_auth_token(self, expiration=600):
-        s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
-        return s.dumps({'id': self.id})
+
 
     @staticmethod
     def verify_auth_token(token):
@@ -48,7 +47,6 @@ class User(db.Model):
         return user
 
 
-@auth.verify_password
 def verify_password(email_or_token, password):
     # first try to authenticate by token
     user = User.verify_auth_token(email_or_token)
@@ -57,11 +55,14 @@ def verify_password(email_or_token, password):
         user = User.query.filter_by(email=email_or_token).first()
         if not user or not user.verify_password(password):
             return False
-    g.user = user
+    #g.user = user
     return True
 
+def generate_auth_token():
+    new_token = ''.join(random.choice(string.lowercase) for x in range(128))
+    return new_token
 
-@app.route('/api/users', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def new_user():
     email = request.json.get('email')
     password = request.json.get('password')
@@ -71,15 +72,15 @@ def new_user():
         abort(400)    # missing arguments
     if User.query.filter_by(email=email).first() is not None:
         abort(400)    # existing user
-    user = User(email=email,first=first,last=last)
+    token = generate_auth_token()
+    updated_n = datetime.datetime.now()
+    user = User(email=email, first=first, last=last, token=token, updated=updated_n)
     user.hash_password(password)
     db.session.add(user)
     db.session.commit()
-    g.user = user
-    token = g.user.generate_auth_token(600)
     return (jsonify(
-        {'id':user.id, 'email': user.email, 'first':first, 'last':last, 'token': token.decode('ascii'), 'duration': 600}
-    ), 201, {'Location': url_for('get_user', id=user.id, _external=True)})
+        {'id':user.id, 'email': user.email, 'first':first, 'last':last, 'token': token, 'updated': updated_n}
+    ), 201)
 
 @app.route('/api/users/<int:id>')
 def get_user(id):
@@ -88,23 +89,44 @@ def get_user(id):
         abort(400)
     return jsonify({'id':user.id, 'email': user.email, 'first':user.first, 'last':user.last})
 
+
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    email = request.json.get('email')
+    password = request.json.get('password')
+    if email is None or password is None:
+        abort(400)    # missing arguments
+    if User.query.filter_by(email=email).first() is not None:
+        token = generate_auth_token()
+        updated_n = datetime.datetime.now()
+        user = User(email=email, token=token, updated=updated_n)
+        user.hash_password(password)
+    return (jsonify(
+        {'id':user.id, 'email': user.email, 'first':'yolo', 'last':'yolo', 'token': token, 'updated': updated_n}
+    ), 201)
+
+
+
 @app.route('/api/user', methods=['GET'])
-@auth.login_required
 def get_user_details():
-    return jsonify({'id':g.user.id, 'email': g.user.email, 'first':g.user.first, 'last':g.user.last})
+    return jsonify({'id':User.id, 'email': User.email, 'first':User.first, 'last':User.last})
 
 @app.route('/api/token')
-@auth.login_required
 def get_auth_token():
-    token = g.user.generate_auth_token(600)
+    token = generate_auth_token(600)
     return jsonify(
-        {'token': token.decode('ascii'), 'duration': 600})
+        {'token': token.decode('ascii'), 'duration': 1})
 
+
+@app.route('/api/logout')
+def logout():
+    print("logout")
+    return 1
 
 @app.route('/api/resource')
-@auth.login_required
 def get_resource():
-    return jsonify({'data': 'Hello, %s!' % g.user.email})
+    return jsonify({'data': 'Hello, %s!' % User.email})
 
 
 @app.route('/', methods=['GET', 'POST'])
