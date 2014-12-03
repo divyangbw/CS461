@@ -1,0 +1,41 @@
+<ion-view title="Segments" ng-class="background">
+    <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                 has-bouncing="false">
+        <div class="table-padding pointer-cursor" ng-show="!loadingTable">
+
+
+
+            <table class="table-padding">
+
+                <thead>
+
+                <tr></tr>
+                    <td > Subject  </td>
+                    <td > Start Time  </td>
+                    <td > End Time  </td>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr ng-repeat="segment in castSegments">
+
+                    <td>{{ segment.subject }}</td>
+                    <td>{{ segment.start }}</td>
+                    <td>{{ segment.end }}</td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+        </div>
+        <!-- END TABLE -->
+
+
+
+    </ion-content>
+</ion-view>

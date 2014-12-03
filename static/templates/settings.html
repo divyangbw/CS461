@@ -1,0 +1,51 @@
+<ion-view title="Settings" ng-class="background">
+    <ion-content class="has-padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                 has-bouncing="false">
+
+        <div class="row responsive-sm">
+            <div class="col col-50">
+
+                <div class="list">
+
+                    <div class="item item-divider">
+                        Edit Questions
+                    </div>
+
+                    <div class="item item-icon-left">
+                        <i class="icon ion-grid"></i>
+                        <button ng-click="goToEditQuestions()" class="button button-outline button-dark button-block">
+                            GO TO QUESTIONS
+                        </button>
+                    </div>
+
+                    <div class="item item-divider">
+                        User Profile
+                    </div>
+
+                    <div class="item item-icon-left">
+                        <i class="icon ion-ios7-paper"></i>
+                        <ion-toggle ng-model="settings.darkMode.checked"
+                                    ng-change="darkModeChange()">
+                            Use Dark Background
+                        </ion-toggle>
+                    </div>
+
+
+                    <div class="item item-icon-left" ng-controller="LoginCtrl">
+                        <i class="icon ion-ios7-drag"></i>
+                        <button ng-click="logout()" class="button button-outline button-assertive button-block">Logout</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="col col-50">
+
+
+
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

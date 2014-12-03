@@ -1,0 +1,124 @@
+<ion-view hide-nav-bar="true" title="Sign-In" ng-show="showView">
+    <ion-content scroll="false" class="padding pat-px">
+
+        <div class="login-wrapper">
+
+            <div class="auth-icon">
+                <img src="img/logo_midLarge.png">
+                <!--<span>PwC</span>-->
+            </div>
+
+
+            <!--<div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-email placeholder-icon"></i>
+                <input class="{{form_user_condition}}" type="text" required placeholder="Email Address">
+            </label>
+        </div>
+        <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-key placeholder-icon"></i>
+                <input class="{{form_pass_condition}}" type="password" ng-model="user.password" required type="text" placeholder="Search">
+            </label>
+        </div>-->
+
+            <div class="list">
+                <label class="item item-input item-floating-label bottom-border-list-item {{ form_user_condition }}">
+                    <span class="input-label"><i class="icon ion-person placeholder-icon"></i> Email</span>
+                    <input class="auth-form" type="text" autocapitalize="off" placeholder="Email"
+                           ng-model="user.email" required>
+                </label>
+                <label class="item item-input item-floating-label bottom-border-list-item {{ form_pass_condition }}">
+                    <span class="input-label"><i class="icon ion-key placeholder-icon"></i> Password</span>
+                    <input class="auth-form" type="password" placeholder="Password" ng-model="user.password" required>
+                </label>
+
+            </div>
+
+            <div class="padding">
+                <button class="button button-positive auth-button auth-register button-outline icon-left ion-ios7-locked"
+                        ng-click="showRegister()">
+                    Register
+                </button>
+                <button class="button button-positive auth-button auth-login button-outline icon-left ion-ios7-locked"
+                        ng-click="login(user)">
+                    Sign-In
+                </button>
+            </div>
+
+        </div>
+
+    </ion-content>
+</ion-view>
+
+<script id="register.html" type="text/ng-template">
+    <ion-modal-view>
+
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">{{isEditing ? 'Edit Question' : 'New Question'}}</h1>
+            <button class="button button-clear button-primary" ng-click="registerModal.hide()">Close</button>
+        </ion-header-bar>
+
+        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                     has-bouncing="false">
+
+            <!-- Everything you want comes under here :) -->
+
+            <div class="row">
+                <div class="info-panel-error" ng-show="regError">
+                    <span class="error">{{ regErrorMsg }}</span>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col col-50">
+                    <div class="list">
+                        <label class="item item-input item-floating-label bottom-border-list-item">
+                            <span class="input-label"><i class="icon ion-person placeholder-icon"></i> Email</span>
+                            <input class="auth-form" type="email" autocapitalize="off" placeholder="Email"
+                                   ng-model="reg.email" required>
+                        </label>
+                        <label class="item item-input item-floating-label bottom-border-list-item">
+                            <span class="input-label"><i class="icon ion-key placeholder-icon"></i> Password</span>
+                            <input class="auth-form" type="password" placeholder="Password" ng-model="reg.password" required>
+                        </label>
+                    </div>
+                </div>
+                <div class="col col-50">
+                    <div class="list">
+                        <label class="item item-input item-floating-label bottom-border-list-item">
+                            <span class="input-label"><i class="icon ion-person placeholder-icon"></i> First Name</span>
+                            <input class="auth-form" type="text" autocapitalize="on" placeholder="First Name"
+                                   ng-model="reg.first" required>
+                        </label>
+                        <label class="item item-input item-floating-label bottom-border-list-item">
+                            <span class="input-label"><i class="icon ion-person placeholder-icon"></i> Last Name</span>
+                            <input class="auth-form" type="text" autocapitalize="on" placeholder="Last Name"
+                                   ng-model="reg.last" required>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col col-20"></div>
+                <div class="col col-60">
+                    <button class="button button-block button-positive auth-button button-outline icon-left ion-ios7-locked"
+                            ng-click="register(reg)">
+                        Register
+                    </button>
+                </div>
+                <div class="col col-20"></div>
+
+            </div>
+
+
+
+            <!-- Everything you want comes above here :) -->
+
+        </ion-content>
+    </ion-modal-view>
+</script>

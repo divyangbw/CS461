@@ -1,0 +1,46 @@
+<ion-view title="News Casts" ng-class="background">
+    <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                 has-bouncing="false">
+
+        <!--&lt;!&ndash; LOADING &ndash;&gt;-->
+        <!--<div class="row" ng-show="loadingData">-->
+            <!--<div class="spinner cssSlideUp">-->
+                <!--<div class="double-bounce1"></div>-->
+                <!--<div class="double-bounce2"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; END LOADING &ndash;&gt;-->
+
+        <div class="table-padding">
+
+            <!-- GRID BASED LAYOUT -->
+            <div class="row gallery responsive-sm">
+
+                <div class="col col-25" ng-repeat="cast in newsCasts">
+
+                    <div class="list card" ng-click= "goToSegments(cast)">
+
+                        <div class="item item-icon-left">
+                            <i class="icon ion-ios7-circle-filled"></i>
+
+                            <h2>{{ cast.company }}</h2>
+
+                            <p>{{ cast.date }}</p>
+                        </div>
+
+                        <div class="item item-icon-left">
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- END GRID BASED LAYOUT -->
+
+        </div>
+
+    </ion-content>
+</ion-view>

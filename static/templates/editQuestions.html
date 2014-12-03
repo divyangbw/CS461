@@ -1,0 +1,103 @@
+<ion-view title="Edit Questions" ng-class="background">
+
+    <ion-nav-buttons side="right">
+        <button class="button button-positive button-clear" ng-click="newQuestion()">
+            ADD
+        </button>
+    </ion-nav-buttons>
+
+    <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                 has-bouncing="false">
+
+        <div class="row responsive-sm">
+            <div class="col">
+
+                <div class="list">
+
+                    <div class="item item-divider">
+                        Questions
+                    </div>
+
+                    <div class=" item animate-repeat" ng-repeat="item in data">
+                        <button class="button icon ion-edit" ng-click="editQuestion(item)"
+                                class="button button-outline button-positive"></button>
+                        {{item.text}}
+                        <button class="button icon ion-trash-b" ng-click="deleteQuestion(item)"
+                                class="button button-outline button-assertive"></button>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </ion-content>
+</ion-view>
+
+
+
+        <!--
+            THIS IS THE MODAL THAT WILL POPUP WHEN ADD IS CLICKED. WHEN EDITING
+            YOU CAN PROBABLY REMOVE IT OUT OF SCRIPT THEN ONCE DONE DESIGNING
+            ADD IT BACK IN THE SCRIPT TAG. EITHER WAY, IT SHOULD HELP YOU GET STARTED
+        -->
+
+<script id="editQuestions.html" type="text/ng-template">
+    <ion-modal-view>
+
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">{{isEditing ? 'Edit Question' : 'New Question'}}</h1>
+            <button class="button button-clear button-primary" ng-click="createEditModal.hide()">Close</button>
+        </ion-header-bar>
+
+        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                     has-bouncing="false">
+
+            <!-- Everything you want comes under here :) -->
+
+            <div ng-show="!isEditing">
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Question</span>
+                        <input type="text" ng-model="question.text">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Answer</span>
+                        <input type="text" ng-model="question.tag">
+                    </label>
+
+                    <div class="item item-input-inset">
+                        <button ng-click="submitQuestion()" class="button button-small">
+                            Save
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div ng-show="isEditing">
+                <h3>{{editItem ? editItem.text : ''}}</h3>
+
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Question</span>
+                        <input type="text" ng-model="editItem.text">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Answer</span>
+                        <input type="text" ng-model="editItem.tag">
+                    </label>
+
+                    <div class="item item-input-inset">
+                        <button ng-click="updateQuestion()" class="button button-small">
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Everything you want comes above here :) -->
+
+        </ion-content>
+    </ion-modal-view>
+</script>
