@@ -1,0 +1,57 @@
+import datetime
+from flask import abort, jsonify
+from finders.models.user import User
+from finders.services import utils
+
+from finders import db
+
+class Auth:
+
+    def new_user(email, password, first, last):
+        if email is None or password is None or first is None or last is None:
+            abort(400)    # missing arguments
+        if User.query.filter_by(email=email).first() is not None:
+            abort(401)    # existing user
+        token = utils.generate_auth_token()
+        updated_n = datetime.datetime.now()
+        user = User(email=email, first=first, last=last, updated=updated_n)
+        user.hash_password(password)
+        user.hash_token(token)
+        db.session.add(user)
+        db.session.commit()
+        return (jsonify(
+            {'id':user.id, 'email': email, 'first':first, 'last':last, 'token': token, 'updated': updated_n}
+        ), 201)
+
+    def check_user_password(email, password):
+        if email is None or password is None:
+            abort(400)    # missing arguments
+        user = User.query.filter_by(email=email).first()
+        if user is None:
+            abort(404)
+        if user.verify_password(password):
+            token = utils.generate_auth_token()
+            user.updated = datetime.datetime.now()
+            user.hash_token(token)
+            db.session.commit()
+            return (jsonify({
+                'id':user.id, 'email': user.email, 'first':user.first, 'last':user.last,
+                'token': token, 'updated': user.updated
+            }), 201)
+        else:
+            abort(401)
+        return (jsonify(
+            {'id':user.id, 'email': user.email, 'first':'yolo', 'last':'yolo', 'token': token, 'updated': updated_n}
+        ), 201)
+
+    def delete_user_session(email):
+        if email is None:
+            abort(400)
+        user = User.query.filter_by(email=email).first()
+        if user is None:
+            abort(404)
+        token = utils.generate_auth_token()
+        user.updated = datetime.datetime.now()
+        user.hash_token(token)
+        db.session.commit()
+        return (jsonify({'message':"logged out"}), 200)

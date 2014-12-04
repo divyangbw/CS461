@@ -1,21 +1,17 @@
-import os, uuid,random,string
-from flask import Flask, render_template, abort, request, jsonify, url_for
-from flask.ext.sqlalchemy import SQLAlchemy
-from passlib.apps import custom_app_context as pwd_context
-from itsdangerous import (TimedJSONWebSignatureSerializer
-                          as Serializer, BadSignature, SignatureExpired)
-import datetime
+import os, uuid,random, string
+#from Fin
+
+#from flask import Flask, render_template, abort, request, jsonify, url_for
+#from flask.ext.sqlalchemy import SQLAlchemy
+#from passlib.apps import custom_app_context as pwd_context
+#from services.auth import Auth
 
 
-# initialization
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
-# extensions
-db = SQLAlchemy(app)
 
+
+
+'''
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -32,55 +28,42 @@ class User(db.Model):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
+    def hash_token(self, token):
+        self.token = pwd_context.encrypt(token)
 
-
-    @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
-        try:
-            data = s.loads(token)
-        except SignatureExpired:
-            return None    # valid token, but expired
-        except BadSignature:
-            return None    # invalid token
-        user = User.query.get(data['id'])
-        return user
-
-
-def verify_password(email_or_token, password):
-    # first try to authenticate by token
-    user = User.verify_auth_token(email_or_token)
-    if not user:
-        # try to authenticate with email/password
-        user = User.query.filter_by(email=email_or_token).first()
-        if not user or not user.verify_password(password):
-            return False
-    #g.user = user
-    return True
+    def verify_token(self, token):
+        return pwd_context.verify(token, self.token)
 
 def generate_auth_token():
-    new_token = ''.join(random.choice(string.lowercase) for x in range(128))
+    new_token = ''.join(random.choice(string.ascii_lowercase) for x in range(128))
     return new_token
+'''
 
+'''
 @app.route('/api/register', methods=['POST'])
 def new_user():
     email = request.json.get('email')
     password = request.json.get('password')
     first = request.json.get('first')
     last = request.json.get('last')
+    return Auth.new_user(email, password, first, last)
+
+
     if email is None or password is None or first is None or last is None:
         abort(400)    # missing arguments
     if User.query.filter_by(email=email).first() is not None:
-        abort(400)    # existing user
+        abort(401)    # existing user
     token = generate_auth_token()
     updated_n = datetime.datetime.now()
-    user = User(email=email, first=first, last=last, token=token, updated=updated_n)
+    user = User(email=email, first=first, last=last, updated=updated_n)
     user.hash_password(password)
+    user.hash_token(token)
     db.session.add(user)
     db.session.commit()
     return (jsonify(
-        {'id':user.id, 'email': user.email, 'first':first, 'last':last, 'token': token, 'updated': updated_n}
+        {'id':user.id, 'email': email, 'first':first, 'last':last, 'token': token, 'updated': updated_n}
     ), 201)
+
 
 @app.route('/api/users/<int:id>')
 def get_user(id):
@@ -112,11 +95,7 @@ def login():
 def get_user_details():
     return jsonify({'id':User.id, 'email': User.email, 'first':User.first, 'last':User.last})
 
-@app.route('/api/token')
-def get_auth_token():
-    token = generate_auth_token(600)
-    return jsonify(
-        {'token': token.decode('ascii'), 'duration': 1})
+
 
 
 @app.route('/api/logout')
@@ -133,7 +112,5 @@ def get_resource():
 def index():
     return render_template('index.html')
 
-if __name__ == '__main__':
-    if not os.path.exists('db.sqlite'):
-        db.create_all()
-    app.run(debug=True)
+'''
+
