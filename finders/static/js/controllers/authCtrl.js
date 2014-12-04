@@ -110,6 +110,7 @@ angular.module('reports.controllers')
         }
 
         function registerUser(user) {
+            console.log(user);
             ApiService.register(user).then(function (response) {
                 $timeout(function () {
                     goHome();
@@ -136,11 +137,11 @@ angular.module('reports.controllers')
         }
 
         function isValidPassword(password) {
-            var islengthOk = password.length > 7;
-            var hasUpperCase = /[A-Z]/.test(password);
-            var hasLowerCase = /[a-z]/.test(password);
-            var hasNumbers = /\d/.test(password);
-            return islengthOk && hasUpperCase && hasLowerCase && hasNumbers;
+            var islengthOk = password.length > 2;
+            //var hasUpperCase = /[A-Z]/.test(password);
+            //var hasLowerCase = /[a-z]/.test(password);
+            //var hasNumbers = /\d/.test(password);
+            return islengthOk;// && hasUpperCase && hasLowerCase && hasNumbers;
         }
 
     }

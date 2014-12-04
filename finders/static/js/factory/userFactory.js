@@ -46,16 +46,12 @@ angular.module('reports.factory')
                 }
             },
 
-            getId: function() {
-                return CURRENT_USER.username;
+            getEmail: function() {
+                return CURRENT_USER.email;
             },
 
             getRandomUuid: function() {
                 return generateUUID();
-            },
-
-            getKey: function() {
-                return CURRENT_USER.key;
             },
 
             destroyUser: function() {

@@ -23,7 +23,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
 
             .state('auth', {
                 url: "/auth",
-                templateUrl: "/finders/static/templates/auth.html",
+                templateUrl: "/static/templates/auth.html",
                 controller: 'AuthCtrl'
             })
 
@@ -32,7 +32,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
             .state('tab', {
                 url: "/tab",
                 abstract: true,
-                templateUrl: "/finders/static/templates/tabs.html"
+                templateUrl: "/static/templates/tabs.html"
             })
 
             // Each tab has its own nav history stack:
@@ -41,7 +41,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                 url: '/home',
                 views: {
                     'tab-home': {
-                        templateUrl: '/finders/static/templates/home.html',
+                        templateUrl: '/static/templates/home.html',
                         controller: 'HomeCtrl'
                     }
                 }
@@ -63,7 +63,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                 url: '/results',
                 views: {
                     'tab-results': {
-                        templateUrl: '/finders/static/templates/results.html',
+                        templateUrl: '/static/templates/results.html',
                         controller: 'ResultsCtrl'
                     }
                 }
@@ -73,7 +73,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                 url: '/newsCasts',
                 views: {
                     'tab-newsCasts': {
-                        templateUrl: '/finders/static/templates/newsCasts.html',
+                        templateUrl: '/static/templates/newsCasts.html',
                         controller: 'NewsCastsCtrl'
                     }
                 }
@@ -83,7 +83,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                 url: '/newsCasts/segments',
                 views: {
                     'tab-newsCasts': {
-                        templateUrl: '/finders/static/templates/segments.html',
+                        templateUrl: '/static/templates/segments.html',
                         controller: 'SegmentsCtrl'
                     }
                 }
@@ -93,7 +93,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                 url: '/settings',
                 views: {
                     'tab-settings': {
-                        templateUrl: '/finders/static/templates/settings.html',
+                        templateUrl: '/static/templates/settings.html',
                         controller: 'SettingsCtrl'
                     }
                 }
@@ -103,7 +103,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                 url: '/settings/editQuestions',
                 views: {
                     'tab-settings': {
-                        templateUrl: '/finders/static/templates/editQuestions.html',
+                        templateUrl: '/static/templates/editQuestions.html',
                         controller: 'EditQuestionsCtrl'
                     }
                 }

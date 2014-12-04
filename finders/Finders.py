@@ -1,6 +1,6 @@
 import os
 from finders import app, db
-from flask import request
+from flask import render_template, request
 from finders.services.auth import Auth
 
 @app.route('/api/register', methods=['POST'])
@@ -20,6 +20,10 @@ def login(email):
         return Auth.check_user_password(emailIn, password)
     else:
         return Auth.delete_user_session(email)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     if not os.path.exists('db.sqlite'):

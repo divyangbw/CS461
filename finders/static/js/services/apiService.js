@@ -5,106 +5,39 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     var BASEURL = 'http://127.0.0.1:5000/';
     $http.defaults.headers.post["Content-Type"] = "application/json";
 
-    this.register = function (user) {
+    this.register = function (user) { return setUserAPI("api/register", user); };
 
+    this.login = function (user) { return setUserAPI("api/auth", user); };
+
+    this.logout = function () {
         var deferred = $q.defer();
-        var data = JSON.stringify(user);
-
-        var request = $http.post(BASEURL + "api/register", data, {}).then(function (response) { // Success
-            console.log(response.data);
-            User.setUser(response.data);
-            deferred.resolve(response.data);
-            //getToken(user).then(function(response) {
-            //    console.log(response);
-                //User.setToken()
-            //});
-
+        var request = $http.delete(BASEURL + "api/auth/" + User.getEmail()).then(function (response) { // Success
+            User.destroyUser();
+            deferred.resolve("success");
         }, function (response) {
             console.log(response);
             deferred.reject(response);
         });
 
         return deferred.promise;
-
     }
 
-    this.getResource = function() {
-        var token = User.getToken();
-        var passData = {token:'x'};
-        var deferred = $q.defer();
-        $http({
-            method: 'GET', url: BASEURL + "api/resource",
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            transformRequest: function (obj) {
-                var str = [];
-                for (var p in obj)
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
-            },
-            data: passData
-        }).then(function (response) {
-            console.log("Resource success");
-            deferred.resolve(response.data);
-        }, function (err) {
-            console.log(err);
-            deferred.reject(err);
-        });
-        return deferred.promise;
-    }
-
-
-
-    this.login = function (user) {
-
+    function setUserAPI(url,user) {
+        console.log(user);
         var deferred = $q.defer();
         var data = JSON.stringify(user);
-
-        var request = $http.post(BASEURL + "api/login", data, {}).then(function (response) { // Success
-            console.log(response.data);
+        var request = $http.post(BASEURL + url, data, {}).then(function (response) { // Success
             User.setUser(response.data);
             deferred.resolve(response.data);
-            //getToken(user).then(function(response) {
-            //    console.log(response);
-                //User.setToken()
-            //});
-
         }, function (response) {
             console.log(response);
             deferred.reject(response);
         });
 
         return deferred.promise;
-    };
-
-    this.checkLogin = function () {
-        var deferred = $q.defer();
-        var data = JSON.stringify({
-            key: User.getKey()
-        });
-
-        /*
-
-         var request = $http.post(BASEURL + "api/loggedIn", data, {}).then(function(response) { // Success
-         if (response.data.code === 200) {
-         deferred.resolve(response.data);
-         } else {
-         deferred.reject(response);
-         }
-         }, function(response) {
-         console.log(response);
-         deferred.reject(response);
-         });
-         */
-        deferred.resolve({username: "djoshi"});
-        return deferred.promise;
     }
 
-    function getToken(user) {
-        var passData = {email: user.email, password: user.password};
-        return httpEncodedGet({email: user.email, password: user.password}, "api/token");
-    }
+    // NOT WORKING ANYTHING BELOW:
 
     function getUserDetails(token) {
         var passData = {token:'x'};
