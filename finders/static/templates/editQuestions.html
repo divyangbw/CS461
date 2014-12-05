@@ -18,10 +18,10 @@
                         Questions
                     </div>
 
-                    <div class=" item animate-repeat" ng-repeat="item in data">
+                    <div class=" item animate-repeat" ng-repeat="item in questions">
                         <button class="button icon ion-edit" ng-click="editQuestion(item)"
                                 class="button button-outline button-positive"></button>
-                        {{item.text}}
+                        {{ item.text }}
                         <button class="button icon ion-trash-b" ng-click="deleteQuestion(item)"
                                 class="button button-outline button-assertive"></button>
                     </div>
@@ -36,18 +36,17 @@
 </ion-view>
 
 
-
-        <!--
-            THIS IS THE MODAL THAT WILL POPUP WHEN ADD IS CLICKED. WHEN EDITING
-            YOU CAN PROBABLY REMOVE IT OUT OF SCRIPT THEN ONCE DONE DESIGNING
-            ADD IT BACK IN THE SCRIPT TAG. EITHER WAY, IT SHOULD HELP YOU GET STARTED
-        -->
+<!--
+    THIS IS THE MODAL THAT WILL POPUP WHEN ADD IS CLICKED. WHEN EDITING
+    YOU CAN PROBABLY REMOVE IT OUT OF SCRIPT THEN ONCE DONE DESIGNING
+    ADD IT BACK IN THE SCRIPT TAG. EITHER WAY, IT SHOULD HELP YOU GET STARTED
+-->
 
 <script id="editQuestions.html" type="text/ng-template">
     <ion-modal-view>
 
         <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">{{isEditing ? 'Edit Question' : 'New Question'}}</h1>
+            <h1 class="title">{{ isEditing ? 'Edit Question' : 'New Question'}}</h1>
             <button class="button button-clear button-primary" ng-click="createEditModal.hide()">Close</button>
         </ion-header-bar>
 
@@ -56,16 +55,58 @@
 
             <!-- Everything you want comes under here :) -->
 
-            <div ng-show="!isEditing">
-                <div class="list">
+            <div>
+                <div class="list" ng-show="types.length > 0">
+
                     <label class="item item-input">
                         <span class="input-label">Question</span>
-                        <input type="text" ng-model="question.text">
+                        <input type="text" ng-model="form.text">
                     </label>
+
                     <label class="item item-input">
-                        <span class="input-label">Answer</span>
-                        <input type="text" ng-model="question.tag">
+                        <span class="input-label">Tag</span>
+                        <input type="text" ng-model="form.tag">
                     </label>
+
+                    <div class="item item-divider">Type</div>
+
+                    <ion-radio ng-repeat="item in types"
+                               ng-value="item"
+                               ng-model="form.type">
+                        {{ item }}
+                    </ion-radio>
+                    
+                    <div class="item item-divider item-button-right"
+                         ng-show="form.type === 'Multiple Choice' || form.type === 'Multi-Choice'">
+                        Options
+                        <button class="button button-positive button-outline" ng-click="newOption()">
+                            +
+                        </button>
+                    </div>
+
+
+
+                    <div class="list" ng-show="form.type === 'Multiple Choice' || form.type === 'Multi-Choice'">
+
+                        <div class="item row" ng-repeat="item in form.options">
+
+                            <div class="col col-90">
+
+                                <label class="item item-input">
+                                    <input type="text" ng-model="item.text" placeholder="Option">
+                                </label>
+
+                            </div>
+                            <div class="col col-10">
+                                <button class="button button-positive button-outline icon ion-ios7-minus-outline"
+                                        ng-click="deleteOption($index)"></button>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
 
                     <div class="item item-input-inset">
                         <button ng-click="submitQuestion()" class="button button-small">
@@ -75,6 +116,39 @@
                 </div>
 
             </div>
+
+
+            <!--
+            <div ng-show="!isEditing">
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Question</span>
+                        <input type="text" ng-model="question.text">
+                    </label>
+
+                    <button class="button button-positive button-clear" ng-click="newOption()">
+                        +
+                    </button>
+
+
+                    <div class=" item animate-repeat" ng-repeat="options in form">
+                        <label class="item item-input">
+                            <span class="input-label">Answer</span>
+                            <input type="text" ng-model="question.tag">
+                        </label>
+                    </div>
+
+
+
+                    <div class="item item-input-inset">
+                        <button ng-click="submitQuestion()" class="button button-small">
+                            Save
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
             <div ng-show="isEditing">
                 <h3>{{editItem ? editItem.text : ''}}</h3>
 
@@ -95,6 +169,8 @@
                     </div>
                 </div>
             </div>
+
+            -->
 
             <!-- Everything you want comes above here :) -->
 
