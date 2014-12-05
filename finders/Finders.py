@@ -21,6 +21,8 @@ def login(email):
         return Auth.check_user_password(emailIn, password)
     return Auth.delete_user_session(email)
 
+#--------- CAST ---------#
+
 @app.route('/api/cast', methods=['POST', 'GET'])
 def cast():
     if request.method == 'GET':
@@ -38,8 +40,34 @@ def cast_single(id):
     else:
         company = request.json.get('company')
         date = request.json.get('date')
-        return CastSeg.update_Cast(id, company, date)
+        return CastSeg.update_cast(id, company, date)
 
+#--------- SEGEMENT ---------#
+
+@app.route('/api/segmentfor/<int:cast_id>', methods=['POST', 'GET'])
+def segment(cast_id):
+
+    if request.method == 'GET':
+        return CastSeg.all_seg(castId)
+    print(cast_id)
+    subject = request.json.get('subject')
+    start = request.json.get('start')
+    end = request.json.get('end')
+    comment = request.json.get('comment')
+    return CastSeg.new_seg(cast_id, subject, start, end, comment)
+
+@app.route('/api/segment/<int:id>', methods=['GET', 'DELETE', 'PUT'])
+def segment_single(id):
+    if request.method == 'GET':
+        return CastSeg.get_seg(id)
+    if request.method == 'DELETE':
+        return CastSeg.delete_seg(id)
+    else:
+        subject = request.json.get('subject')
+        start = request.json.get('start')
+        end = request.json.get('end')
+        comment = request.json.get('comment')
+        return CastSeg.update_seg(id, subject, start, end, comment)
 
 
 @app.route('/', methods=['GET', 'POST'])
