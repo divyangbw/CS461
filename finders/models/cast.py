@@ -42,9 +42,9 @@ class Segment(db.Model):
     def serialize(self):
        return {
            'id': self.id,
-           'cast_id' : self.company,
-           'subject' : self.company,
-           'start' : self.company,
-           'end' : self.company,
-           'comment' : self.company
+           'cast_id' : self.cast_id,
+           'subject' : self.subject,
+           'start' : self.start,
+           'end' : self.end,
+           'comment' : self.comment
        }
