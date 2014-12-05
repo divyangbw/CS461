@@ -2,6 +2,7 @@ angular.module('reports.factory')
 
     .factory('QuestionsFactory', function ($q, ApiService) {
 
+
         var questions = [];
         var questionTypes = ["Single Line", "Multiple Choice", "Multi-Choice"];
         var test = [];

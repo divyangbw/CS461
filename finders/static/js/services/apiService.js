@@ -186,6 +186,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         }
     };
 
+
     this.getAllOptions = function (questionId) {
         var deferred = $q.defer();
         if (useMockData)

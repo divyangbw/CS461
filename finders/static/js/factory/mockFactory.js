@@ -171,8 +171,6 @@ angular.module('reports.factory')
             {}
         ];
 
-
-
         return {
 
 
