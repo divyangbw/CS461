@@ -62,16 +62,15 @@ angular.module('reports.factory')
 
         var questionTypeMock = [
             {
-                id:"d174335f-7e41-45b1-b735-8262dfa90bab",
+                id:"1",
                 val: "Single Line"
             },
             {
-                id:"27b13327-7308-4568-b977-3d13b997c689",
+                id:"2",
                 val: "Multiple Choice"
             },
-            ,
             {
-                id:"d9d43680-23b6-4c5c-ad2e-e91c2abb5964",
+                id:"3",
                 val: "Multi-Choice"
             }
         ];
@@ -79,31 +78,61 @@ angular.module('reports.factory')
         var questionMock = [
             {
                 id: "ed2bd18e-72a7-41bb-92a9-705ee2e40ab3",
-                type: "d174335f-7e41-45b1-b735-8262dfa90bab",
+                type: "Single Line",
                 tag: "TC1",
                 text: "What's your name?",
-                section: 1
+                section: 1,
+                options: null
             },
             {
                 id: "c8f63c92-5037-4c57-cec8-fa7aa6d3089d",
-                type: "d174335f-7e41-45b1-b735-8262dfa90bab",
+                type: "Single Line",
                 tag: "TC2",
                 text: "Where do you live?",
-                section: 1
+                section: 1,
+                options: null
             },
             {
                 id: "113d0b72-6f25-4d43-dc24-d99c434aeac0",
-                type: "27b13327-7308-4568-b977-3d13b997c689", //Multiple Choice
+                type: "Multiple Choice", //Multiple Choice
                 tag: "TC3",
                 text: "What's your gender?",
-                section: 1
+                section: 1,
+                options: [{
+                    id:"27b13327-7308-4568-b977-3d13b997c689",
+                    text:"Male"
+                },
+                {
+                    id:"27b13327-7308-4568-b977-3d13b997c689",
+                    text:"Female"
+                },
+                {
+                    id:"27b13327-7308-4568-b977-3d13b997c689",
+                    text:"Other"
+                }]
             },
             {
                 id: "76e9ce7a-0c7a-4df7-92b9-e7880ad50428",
-                type: "d9d43680-23b6-4c5c-ad2e-e91c2abb5964", //Multichoice
+                type: "Multi-Choice", //Multichoice
                 tag: "TC4",
                 text: "Which of these do you like?",
-                section: 2
+                section: 2,
+                options: [{
+                    id:"76e9ce7a-0c7a-4df7-92b9-e7880ad50428",
+                    text:"Milk"
+                },
+                {
+                    id:"76e9ce7a-0c7a-4df7-92b9-e7880ad50428",
+                    text:"Butter"
+                },
+                {
+                    id:"76e9ce7a-0c7a-4df7-92b9-e7880ad50428",
+                    text:"Waffle"
+                },
+                {
+                    id:"76e9ce7a-0c7a-4df7-92b9-e7880ad50428",
+                    text:"Juice"
+                }]
             }
         ];
 
@@ -159,12 +188,12 @@ angular.module('reports.factory')
                     return id === null || id === undefined ? castMock : search(castMock, id);
                 } else if (source === "segment") {
                     return id === null || id === undefined ? segmentMock : searchMany(segmentMock, id, "castId");
-                } else if (source === "question") {
+                } else if (source === "form") {
                     return id === null || id === undefined ? questionMock : search(questionMock, id);
                 } else if (source === "questionType") {
                     return id === null || id === undefined ? questionTypeMock : search(questionTypeMock, id);
                 } else if (source === "option") {
-                    return optionId === null || optionId === undefined ? searchMany(option, id, "question")
+                    return optionId === null || optionId === undefined ? searchMany(option, id, "form")
                         : search(option, optionId);
                 }
 
@@ -180,7 +209,7 @@ angular.module('reports.factory')
                 item.id = generateUUID();
                 if(source === "cast") castMock.push(item);
                 else if(source === "segment") segmentMock.push(item);
-                else if(source === "question") questionMock.push(item);
+                else if(source === "form") questionMock.push(item);
                 else if(source === "questionType") questionTypeMock.push(item);
                 else if(source === "option") option.push(item);
                 return item;
@@ -194,7 +223,7 @@ angular.module('reports.factory')
                 multiIdCreate(items);
                 if(source === "cast") castMock.push(items);
                 else if(source === "segment") segmentMock.push(items);
-                else if(source === "question") questionMock.push(items);
+                else if(source === "form") questionMock.push(items);
                 else if(source === "questionType") questionTypeMock.push(items);
                 else if(source === "option") option.push(items);
                 return items;
@@ -203,14 +232,14 @@ angular.module('reports.factory')
             update: function(source, item) {
                 if(source === "cast") update(castMock, item);
                 else if(source === "segment") update(segmentMock, item);
-                else if(source === "question") update(questionMock, item);
+                else if(source === "form") update(questionMock, item);
                 else if(source === "questionType") update(questionTypeMock, item);
                 else if(source === "option") update(option, item);
                 return item;
             },
 
             del: function (source, item) {
-                if (source === "question") del(question);
+                if (source === "form") del(question);
             }
 
         };

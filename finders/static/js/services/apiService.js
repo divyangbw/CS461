@@ -67,20 +67,6 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         return str.join("&");
     }
 
-    this.logout = function () {
-        var deferred = $q.defer();
-        /*var request = $http.post(BASEURL + "api/logout", {}, {}).then(function(response) { // Success
-         deferred.resolve("success");
-         }, function(response) {
-         console.log(response);
-         deferred.reject(response);
-         });
-         */
-        deferred.resolve("success");
-        return deferred.promise;
-
-    }
-
     /**************************************************
      *  CASTS
      *************************************************/
@@ -168,35 +154,35 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     this.getAllQuestions = function () {
         var deferred = $q.defer();
         if (useMockData)
-            deferred.resolve(MockFactory.get("question"));
+            deferred.resolve(MockFactory.get("form"));
         return deferred.promise;
     };
 
     this.getQuestion = function (id) {
         var deferred = $q.defer();
         if (useMockData)
-            deferred.resolve(MockFactory.get("question", id));
+            deferred.resolve(MockFactory.get("form", id));
         return deferred.promise;
     };
 
     this.createQuestion = function (question) {
         var deferred = $q.defer();
         if (useMockData)
-            deferred.resolve(MockFactory.add("question", question));
+            deferred.resolve(MockFactory.add("form", question));
         return deferred.promise;
     };
 
     this.updateQuestion = function (question) {
         var deferred = $q.defer();
         if (useMockData)
-            deferred.resolve(MockFactory.update("question", question));
+            deferred.resolve(MockFactory.update("form", question));
         return deferred.promise;
     };
 
     this.deleteQuestion = function (question) {
         var deferred = $q.defer();
         if (useMockData) {
-            MockFactory.del("question", question);
+            MockFactory.del("form", question);
         }
     };
 

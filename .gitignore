@@ -6,3 +6,7 @@
 *.sqlite
 
 db.sqlite
+
+*.pyc
+
+*.pyc

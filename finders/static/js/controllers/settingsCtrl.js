@@ -23,54 +23,114 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
 
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 angular.module('reports.controllers')
     .controller('EditQuestionsCtrl', function ($scope, $ionicPopup, $ionicModal, User, QuestionsFactory) {
 
-        $scope.question = {};
+        $scope.types = QuestionsFactory.getAllQuestionTypes();
+        $scope.form = { };
+        $scope.questions = [];
+
 
         $scope.submitQuestion = function () {
-            // An elaborate, custom popup
-            var temp = $scope.question;
-            QuestionsFactory.createQuestion(temp).then(function (response) {
+            QuestionsFactory.createQuestion($scope.form).then(function (response) {
                 //$scope.createEditModal.close();
                 $scope.createEditModal.hide();
-                $scope.question = {};
+                $scope.form = {};
+                $scope.questions = response;
             }, function (err) {
 
             });
-            console.log($scope.question);
-
         };
+
+        $scope.newOption = function() {
+            if(!$scope.form.options) $scope.form.options = [];
+            $scope.form.options.push({});
+        };
+
+        $scope.deleteOption = function(index) {
+            $scope.form.options.splice(index, 1);
+        };
+
+        $scope.editQuestion = function(item) {
+            // Set the editItem to what we want to edit. That way we can pre-fill the form.
+            $scope.isEditing = true;
+            $scope.form = item;
+            // Show the modal
+            $scope.createEditModal.show();
+        };
+
+        /* This is how you create a popup. editQuestions.html is inside editQuestions.html under script tag.
+         You can even remove it from there, and create a new templates file, but we can come back to that
+         later :) You would only make changes inside then(...).
+         */
+        $ionicModal.fromTemplateUrl('editQuestions.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.createEditModal = modal;
+        });
+
+        // When the new form button is clicked
+        $scope.newQuestion = function () {
+            $scope.form = { };
+            $scope.isEditing = false;
+            // Show the modal
+            $scope.createEditModal.show();
+        }
+
+
+
+
+
+
+
 
         $scope.updateQuestion = function () {
             // An elaborate, custom popup
-            var temp = $scope.question;
+            var temp = $scope.form;
             QuestionsFactory.updateQuestion(temp).then(function (response) {
                 //$scope.createEditModal.close();
                 $scope.createEditModal.hide();
-                $scope.question = {};
+                $scope.form = {};
             }, function (err) {
 
             });
-            console.log($scope.question);
+            console.log($scope.form);
 
         };
         $scope.deleteQuestion = function () {
             // An elaborate, custom popup
-            var temp = $scope.question;
+            var temp = $scope.form;
             QuestionsFactory.deleteQuestion(temp).then(function (response) {
                 //$scope.createEditModal.close();
-                $scope.question = {};
+                $scope.form = {};
             }, function (err) {
 
             });
-            console.log($scope.question);
+            console.log($scope.form);
 
         };
 
 
         QuestionsFactory.getAllQuestions().then(function (result) {
-            $scope.data = result;
+            $scope.questions = result;
         }, function (err) {
             console.log('didnt work' + err);
         });
@@ -111,29 +171,8 @@ angular.module('reports.controllers')
 
          */
 
-        /* This is how you create a popup. editQuestions.html is inside editQuestions.html under script tag.
-         You can even remove it from there, and create a new templates file, but we can come back to that
-         later :) You would only make changes inside then(...).
-         */
-        $ionicModal.fromTemplateUrl('editQuestions.html', {
-            scope: $scope
-        }).then(function (modal) {
-            $scope.createEditModal = modal;
-        });
 
-        // When the new question button is clicked
-        $scope.newQuestion = function () {
-            $scope.isEditing = false;
-            // Show the modal
-            $scope.createEditModal.show();
-        }
 
-        $scope.editQuestion = function(item) {
-            // Set the editItem to what we want to edit. That way we can pre-fill the form.
-            $scope.isEditing = true;
-            $scope.editItem = item;
-            // Show the modal
-            $scope.createEditModal.show();
-        }
+
 
     });
