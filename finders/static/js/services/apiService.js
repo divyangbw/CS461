@@ -67,20 +67,6 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         return str.join("&");
     }
 
-    this.logout = function () {
-        var deferred = $q.defer();
-        /*var request = $http.post(BASEURL + "api/logout", {}, {}).then(function(response) { // Success
-         deferred.resolve("success");
-         }, function(response) {
-         console.log(response);
-         deferred.reject(response);
-         });
-         */
-        deferred.resolve("success");
-        return deferred.promise;
-
-    }
-
     /**************************************************
      *  CASTS
      *************************************************/

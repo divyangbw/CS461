@@ -3,6 +3,10 @@ angular.module('reports.controllers')
 
         init();
 
+        /*======================================================*
+            EVENTS
+         *======================================================*/
+
         $scope.showRegister = function() {
             $scope.registerModal.show();
         }
@@ -40,6 +44,10 @@ angular.module('reports.controllers')
             }
         }
 
+        /*======================================================*
+            CONSTRUCTIONS
+         *======================================================*/
+
         $ionicModal.fromTemplateUrl('register.html', {
             scope: $scope
         }).then(function (modal) {
@@ -50,7 +58,7 @@ angular.module('reports.controllers')
 
 
         /*======================================================*
-         HELPER FUNCTIONS
+            HELPER FUNCTIONS
          *======================================================*/
 
         function init() {
@@ -98,6 +106,8 @@ angular.module('reports.controllers')
                 });
         }
 
+        /* API CALLS */
+
         function loginUser(user) {
             ApiService.login(user).then(function (response) {
                 $timeout(function () {
@@ -130,6 +140,8 @@ angular.module('reports.controllers')
                 });
             }
         }
+
+        /* VALIDATIONS */
 
         function isValidEmail(email) {
             var re = /[^\s@]+@[^\s@]+\.[^\s@]+/;
