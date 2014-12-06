@@ -37,7 +37,7 @@ class Auth:
             db.session.commit()
             return (jsonify({
                 'id':user.id, 'email': user.email, 'first':user.first, 'last':user.last,
-                'token': token, 'updated': user.updated, 'role'user.role:
+                'token': token, 'updated': user.updated, 'role' : user.role
             }), 201)
         else:
             abort(401)
