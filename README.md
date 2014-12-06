@@ -6,10 +6,17 @@ Final Project
 Data Models
 =====
 
-For example inside ng-repeat, for segements, you would have:
+For example inside `ng-repeat`, for `segements`, you would have:
+```
+<div ng-repeat="item in segments">
+    <span class="thisIsHidden">{{ item.cast_id }}</span>
+    <span class="thisIsVisible"> {{ item.subject }} </span>
+</div>
+```
 
- ng-repeat="item in segments"
-    {{ item.cast_id }}
+`About start and end:` I will write a function that converts int (seconds) to a time break. As an example, 0 means time 0, whereas 30 means 0min 30 sec, and finally, 90 means 1min 30sec. You can do it too since the int is representing time in seconds.
+
+`About date:` Simply use Javascripts datetime parser to convert the date into a format you want to show. [Read this if you want a jump start]
 
 Cast = {
     id:int
@@ -44,3 +51,4 @@ Option = {
     updated:date
 }
 
+[Read this if you want a jump start]: http://jacwright.com/projects/javascript/date_format/
