@@ -67,7 +67,7 @@ class Questionnaire:
         db.session.add(item)
         db.session.commit()
         return (jsonify(result= {
-            'id':item.id, 'question_id': item.cast_id, 'text':item.text, 'updated':item.updated
+            'id':item.id, 'question_id': item.question_id, 'text':item.text, 'updated':item.updated
         }), 201)
 
     def all_options(question_id):
