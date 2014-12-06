@@ -18,6 +18,7 @@ For example inside `ng-repeat`, for `segements`, you would have:
 
 `About date:` Simply use Javascripts datetime parser to convert the date into a format you want to show. [Read this if you want a jump start]
 
+```
 Cast = {
     id:int
     company:string,
@@ -50,5 +51,6 @@ Option = {
     text:string,
     updated:date
 }
+```
 
 [Read this if you want a jump start]: http://jacwright.com/projects/javascript/date_format/
