@@ -11,6 +11,7 @@ class User(db.Model):
     first = db.Column(db.String(128))
     last = db.Column(db.String(128))
     token = db.Column(db.String(128))
+    role = db.Column(db.String(30))
     updated = db.Column(db.DATETIME)
 
     def hash_password(self, password):

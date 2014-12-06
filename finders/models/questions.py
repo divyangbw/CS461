@@ -8,6 +8,7 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(64))
     text = db.Column(db.TEXT)
+    section = db.Column(db.Integer)
     options = db.relationship('Option', backref='option',lazy='dynamic') #select, joined, subquery
     updated = db.Column(db.DATETIME)
 
