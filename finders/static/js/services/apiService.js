@@ -11,7 +11,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
 
     this.logout = function () {
         var deferred = $q.defer();
-        var request = $http.delete(BASEURL + "api/auth/" + User.getEmail()).then(function (response) { // Success
+        $http.delete(BASEURL + "api/auth/" + User.getEmail()).then(function (response) { // Success
             User.destroyUser();
             deferred.resolve("success");
         }, function (response) {
@@ -23,10 +23,9 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     }
 
     function setUserAPI(url,user) {
-        console.log(user);
         var deferred = $q.defer();
         var data = JSON.stringify(user);
-        var request = $http.post(BASEURL + url, data, {}).then(function (response) { // Success
+        $http.post(BASEURL + url, data, {}).then(function (response) { // Success
             User.setUser(response.data);
             deferred.resolve(response.data);
         }, function (response) {
@@ -38,11 +37,6 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     }
 
     // NOT WORKING ANYTHING BELOW:
-
-    function getUserDetails(token) {
-        var passData = {token:'x'};
-        return httpEncodedGet(passData, "api/user");
-    }
 
     function httpEncodedGet(passData, apiUrl) {
         return $http({
@@ -68,171 +62,116 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     }
 
     /**************************************************
-     *  CASTS
+     *  CASTS & SEGMENTS
      *************************************************/
 
-    this.getAllCasts = function () {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("cast"));
-        return deferred.promise;
-    };
+    this.getAllCasts = function () { return GET_ALL("api/cast")};
+    this.getCast = function (castId) { return GET("api/cast", castId)};
+    this.createCast = function (cast) { return POST("api/cast", cast)};
+    this.deleteCast = function (cast) { return DELETE ("api/cast", cast)};
+    this.updateCast = function (cast) { return PUT ("api/cast", cast)};
 
-    this.getCast = function (castId) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("cast", castId));
-        return deferred.promise;
-    };
-
-    this.createCast = function (cast) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.add("cast", cast));
-        return deferred.promise;
-    };
-
-    this.deleteCast = function (cast) {
-        alert("Delete not implemented yet.");
-    };
-
-    this.updateCast = function (cast) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.update("cast", cast));
-        return deferred.promise;
-    };
-
-    /**************************************************
-     *  SEGMENTS
-     *************************************************/
-
-    this.getAllSegments = function (castId) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("segment", castId));
-        return deferred.promise;
-    };
-
-    this.getSegment = function (segId) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("segment", segId));
-        return deferred.promise;
-    };
-
-    this.createSeg = function (seg) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.add("segment", seg));
-        return deferred.promise;
-    };
-
-    this.deleteSeg = function (seg) {
-        var deferred = $q.defer();
-        alert("Delete not implemented yet.");
-    };
-
-    this.updateSeg = function (seg) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.update("segment", seg));
-        return deferred.promise;
-    };
+    this.getAllSegments = function (castId) { return GET_ALL_FOR("api/segmentfor", castId)};
+    this.getSegment = function (segId) { return GET("api/segment", segId)};
+    this.createSeg = function (seg) { return POST("api/segmentfor", seg)};
+    this.deleteSeg = function (seg) { return DELETE ("api/segment", seg)};
+    this.updateSeg = function (seg) { return PUT ("api/segment", seg)};
 
     /**************************************************
      *  QUESTIONNAIRE
      *************************************************/
 
-    this.getAllQuestionTypes = function () {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("questionType"));
-        return deferred.promise;
-    };
+    this.getAllQuestions = function () { return GET_ALL("api/question")};
+    this.getQuestion = function (questionId) { return GET("api/question", questionId)};
+    this.createQuestion = function (question) { return POST("api/question", question)};
+    this.updateQuestion = function (question) { return DELETE ("api/question", question)};
+    this.deleteQuestion = function (question) { return PUT ("api/question", question)};
 
-    this.getAllQuestions = function () {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("form"));
-        return deferred.promise;
-    };
+    this.getAllOptions = function (questionId) { return GET_ALL_FOR("api/questionoptionfor", questionId)};
+    this.getOption = function (optionId) { return GET("api/questionoption", optionId)};
+    this.createOption = function (option) { return POST("api/questionoptionfor", option)};
+    this.updateOption = function (option) { return DELETE ("api/questionoption", option)};
+    this.deleteOption = function (option) { return PUT ("api/questionoption", option)};
 
-    this.getQuestion = function (id) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("form", id));
-        return deferred.promise;
-    };
+    /**************************************************
+     *  SHARED CALLS
+     *************************************************/
 
-    this.createQuestion = function (question) {
+    function POST (url, obj) {
         var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.add("form", question));
-        return deferred.promise;
-    };
-
-    this.updateQuestion = function (question) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.update("form", question));
-        return deferred.promise;
-    };
-
-    this.deleteQuestion = function (question) {
-        var deferred = $q.defer();
-        if (useMockData) {
-            MockFactory.del("form", question);
+        if (obj && obj.id > -1) {
+            var data = JSON.stringify(obj);
+            $http.post(BASEURL + url, data, {}).then(function (response) { // Success
+                deferred.resolve(response.data.result);
+            }, function (response) {
+                console.log(response);
+                deferred.reject(response);
+            });
+        } else {
+            deferred.reject({code:1,reason:"Object is null, or does not have an id"});
         }
-    };
-
-
-    this.getAllOptions = function (questionId) {
-        var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("option", questionId));
         return deferred.promise;
-    };
+    }
 
-    this.getOption = function (id) {
+    function GET_ALL (url) {
         var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.get("option", null, id));
+        $http.get(BASEURL + url).then(function (response) {
+            deferred.resolve(response.data.results);
+        }, function (response) {
+            console.log(response);
+            deferred.reject(response);
+        });
         return deferred.promise;
-    };
+    }
 
-    this.createOption = function (option) {
+    function GET_ALL_FOR (url, id) {
+        return GET (url, id);
+    }
+
+    function GET (url, id) {
         var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.add("option", option));
+        if (id && id > -1) {
+            $http.get(BASEURL + url + "/" + id).then(function (response) {
+                deferred.resolve(response.data.results);
+            }, function (response) {
+                console.log(response);
+                deferred.reject(response);
+            });
+        } else {
+            deferred.reject({code:1,reason:"ID is null, or less than 0"});
+        }
         return deferred.promise;
-    };
+    }
 
-    this.createAllOptions = function (options) {
+    function DELETE (url, obj) {
         var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.addMany("option", options));
+        if (obj && obj.id > -1) {
+            $http.delete(BASEURL + url + "/" + obj.id).then(function (response) { // Success
+                deferred.resolve(response.data.result);
+            }, function (response) {
+                console.log(response);
+                deferred.reject(response);
+            });
+        } else {
+            deferred.reject({code:1,reason:"Object is null, or does not have an id"});
+        }
         return deferred.promise;
-    };
+    }
 
-    this.updateOption = function (option) {
+    function PUT (url, obj) {
         var deferred = $q.defer();
-        if (useMockData)
-            deferred.resolve(MockFactory.update("option", option));
+        if (obj && obj.id > -1) {
+            var data = JSON.stringify(obj);
+            $http.put(BASEURL + url + "/" + obj.id, data, {}).then(function (response) { // Success
+                deferred.resolve(response.data.result);
+            }, function (response) {
+                console.log(response);
+                deferred.reject(response);
+            });
+        } else {
+            deferred.reject({code:1,reason:"Object is null, or does not have an id"});
+        }
         return deferred.promise;
-    };
-
-    this.updateAllOptions = function (options) {
-        alert("updateAllOptions not implemented yet.");
-    };
-
-    this.deleteOption = function (id) {
-        alert("Delete not implemented yet.");
-    };
-
-    this.deleteAllOption = function (options) {
-        alert("Delete not implemented yet.");
-    };
-
+    }
 
 });
