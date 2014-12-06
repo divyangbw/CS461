@@ -3,6 +3,9 @@ from finders import app, db
 from flask import render_template, request
 from finders.services.auth import Auth
 from finders.services.castSeg import CastSeg
+from finders.services.questionnaire import Questionnaire
+
+#--------- AUTH ---------#
 
 @app.route('/api/register', methods=['POST'])
 def new_user():
@@ -69,6 +72,47 @@ def segment_single(id):
         comment = request.json.get('comment')
         return CastSeg.update_seg(id, subject, start, end, comment)
 
+#--------- QUESTIONS ---------#
+
+@app.route('/api/question', methods=['POST', 'GET'])
+def question():
+    if request.method == 'GET':
+        return Questionnaire.all_questions()
+    type = request.json.get('type')
+    text = request.json.get('text')
+    return Questionnaire.new_question(type, text)
+
+@app.route('/api/question/<int:id>', methods=['GET', 'DELETE', 'PUT'])
+def question_single(id):
+    if request.method == 'GET':
+        return Questionnaire.get_question(id)
+    if request.method == 'DELETE':
+        return Questionnaire.delete_question(id)
+    else:
+        type = request.json.get('type')
+        text = request.json.get('text')
+        return Questionnaire.update_question(id, type, text)
+
+#--------- OPTIONS ---------#
+
+@app.route('/api/questionoptionfor/<int:question_id>', methods=['POST', 'GET'])
+def questionOption(question_id):
+    if request.method == 'GET':
+        return Questionnaire.all_options(question_id)
+    text = request.json.get('text')
+    return Questionnaire.new_option(question_id, text)
+
+@app.route('/api/questionoption/<int:id>', methods=['GET', 'DELETE', 'PUT'])
+def questionOption_single(id):
+    if request.method == 'GET':
+        return Questionnaire.get_option(id)
+    if request.method == 'DELETE':
+        return Questionnaire.delete_option(id)
+    else:
+        text = request.json.get('text')
+        return Questionnaire.update_option(id, text)
+
+#--------- MAIN ---------#
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
