@@ -1,0 +1,5 @@
+Flask==0.10.1
+SQLAlchemy==0.9.3
+Flask-SQLAlchemy==1.0
+passlib==1.6.1
+python-dateutil==2.3

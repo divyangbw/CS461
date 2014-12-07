@@ -2,10 +2,16 @@ angular.module('reports.factory')
 
     .factory('QuestionsFactory', function ($q, ApiService) {
 
+
         var questions = [];
+        var questionTypes = ["Single Line", "Multiple Choice", "Multi-Choice"];
         var test = [];
 
         return {
+
+            getAllQuestionTypes: function () {
+                return questionTypes;
+            },
 
             getAllQuestions: function () {
 
@@ -24,7 +30,9 @@ angular.module('reports.factory')
 
                 var deferred = $q.defer();
                 ApiService.createQuestion(item).then(function (result) {
-                    questions = result;
+                    questions.push(result);
+
+
                     deferred.resolve(questions);
                 }, function (err) {
                     deferred.reject(err);

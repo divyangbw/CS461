@@ -3,6 +3,10 @@ angular.module('reports.controllers')
 
         init();
 
+        /*======================================================*
+            EVENTS
+         *======================================================*/
+
         $scope.showRegister = function() {
             $scope.registerModal.show();
         }
@@ -40,6 +44,10 @@ angular.module('reports.controllers')
             }
         }
 
+        /*======================================================*
+            CONSTRUCTIONS
+         *======================================================*/
+
         $ionicModal.fromTemplateUrl('register.html', {
             scope: $scope
         }).then(function (modal) {
@@ -50,7 +58,7 @@ angular.module('reports.controllers')
 
 
         /*======================================================*
-         HELPER FUNCTIONS
+            HELPER FUNCTIONS
          *======================================================*/
 
         function init() {
@@ -98,6 +106,8 @@ angular.module('reports.controllers')
                 });
         }
 
+        /* API CALLS */
+
         function loginUser(user) {
             ApiService.login(user).then(function (response) {
                 $timeout(function () {
@@ -110,6 +120,7 @@ angular.module('reports.controllers')
         }
 
         function registerUser(user) {
+            console.log(user);
             ApiService.register(user).then(function (response) {
                 $timeout(function () {
                     goHome();
@@ -130,17 +141,19 @@ angular.module('reports.controllers')
             }
         }
 
+        /* VALIDATIONS */
+
         function isValidEmail(email) {
             var re = /[^\s@]+@[^\s@]+\.[^\s@]+/;
             return re.test(email);
         }
 
         function isValidPassword(password) {
-            var islengthOk = password.length > 7;
-            var hasUpperCase = /[A-Z]/.test(password);
-            var hasLowerCase = /[a-z]/.test(password);
-            var hasNumbers = /\d/.test(password);
-            return islengthOk && hasUpperCase && hasLowerCase && hasNumbers;
+            var islengthOk = password.length > 2;
+            //var hasUpperCase = /[A-Z]/.test(password);
+            //var hasLowerCase = /[a-z]/.test(password);
+            //var hasNumbers = /\d/.test(password);
+            return islengthOk;// && hasUpperCase && hasLowerCase && hasNumbers;
         }
 
     }
