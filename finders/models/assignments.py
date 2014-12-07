@@ -8,8 +8,8 @@ class Assignment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     seg_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
-    answers = db.relationship('Answer', backref='answer',lazy='dynamic') #select, joined, subquery
-    sections = db.relationship('AssignSection', backref='assignsection',lazy='dynamic') #select, joined, subquery
+    answers = db.relationship('Answer', backref='assignment',lazy='dynamic') #select, joined, subquery
+    sections = db.relationship('AssignSection', backref='assignment',lazy='dynamic') #select, joined, subquery
     updated = db.Column(db.DATETIME)
 
     @property
@@ -35,9 +35,9 @@ class Assignment(db.Model):
 class Answer(db.Model):
     __tablename__ = 'answer'
     id = db.Column(db.Integer, primary_key=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
-    answer = db.Column(db.text)
-    assignment_id = db.Column(db.Integer)
+    question_id = db.Column(db.Integer)
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
+    answer = db.Column(db.Text)
     updated = db.Column(db.DATETIME)
 
     @property
@@ -53,7 +53,7 @@ class Answer(db.Model):
 class AssignSection(db.Model):
     __tablename__ = 'assignsection'
     id = db.Column(db.Integer, primary_key=True)
-    assignment_id = db.Column(db.Integer)
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'))
     section = db.Column(db.Integer)
     updated = db.Column(db.DATETIME)
 

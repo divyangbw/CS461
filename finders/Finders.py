@@ -4,7 +4,7 @@ from flask import render_template, request
 from finders.services.auth import Auth
 from finders.services.castSeg import CastSeg
 from finders.services.questionnaire import Questionnaire
-from finders.services.assignments import Assignments
+from finders.services.assignService import AssignService
 
 
 #--------- AUTH ---------#
@@ -122,7 +122,7 @@ def assignments():
         return Assignments.all_assignments()
     seg_id = request.json.get('seg_id')
     user_id = request.json.get('user_id')
-    return Assignments.new_assignment(seg_id, user_id)
+    return AssignService.new_assignment(seg_id, user_id)
 
 
 

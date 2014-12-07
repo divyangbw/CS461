@@ -9,7 +9,7 @@ class Question(db.Model):
     type = db.Column(db.String(64))
     text = db.Column(db.TEXT)
     section = db.Column(db.Integer)
-    options = db.relationship('Option', backref='option',lazy='dynamic') #select, joined, subquery
+    options = db.relationship('Option', backref='question',lazy='dynamic') #select, joined, subquery
     updated = db.Column(db.DATETIME)
 
     @property

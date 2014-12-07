@@ -1,12 +1,12 @@
 from dateutil import parser
 from flask import abort, jsonify
-from finders.models.assignments import Assignments, Answers, Section
+from finders.models.assignments import Assignment, Answer, AssignSection
 from finders.services import utils
 import datetime
 
 from finders import db
 
-class Questionnaire:
+class AssignService:
 
     #--------- ASSIGNMENTS ---------#
 
