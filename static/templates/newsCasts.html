@@ -1,6 +1,11 @@
 <ion-view title="News Casts" ng-class="background">
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
+        <ion-nav-buttons side="right">
+        <button class="button button-positive button-clear" ng-click="newCast()">
+            ADD CAST
+        </button>
+    </ion-nav-buttons>
 
         <!--&lt;!&ndash; LOADING &ndash;&gt;-->
         <!--<div class="row" ng-show="loadingData">-->
@@ -16,11 +21,11 @@
             <!-- GRID BASED LAYOUT -->
             <div class="row gallery responsive-sm">
 
-                <div class="col col-25" ng-repeat="cast in newsCasts">
+                <div class="col col-25" ng-repeat="cast in newsCasts" ng-click="goToSegments(cast)">
 
-                    <div class="list card" ng-click= "goToSegments(cast)">
+                    <div class="list card" >
 
-                        <div class="item item-icon-left">
+                        <div class="item item-icon-left" >
                             <i class="icon ion-ios7-circle-filled"></i>
 
                             <h2>{{ cast.company }}</h2>
@@ -28,9 +33,8 @@
                             <p>{{ cast.date }}</p>
                         </div>
 
-                        <div class="item item-icon-left">
-
-
+                        <div class="item item-icon-right">
+                            <i class="icon ion-ios7-arrow-thin-right" ng-click="goToSegments(cast)"></i>
                         </div>
 
                     </div>
@@ -44,3 +48,41 @@
 
     </ion-content>
 </ion-view>
+
+<script id="newCast.html" type="text/ng-template">
+    <ion-modal-view>
+
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">{{isEditing ? 'Edit Cast' : 'New Cast'}}</h1>
+            <button class="button button-clear button-primary" ng-click="createEditModal.hide()">Close</button>
+        </ion-header-bar>
+
+        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                     has-bouncing="false">
+
+            <!-- Everything you want comes under here :) -->
+
+            <div>
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Company</span>
+                        <input type="text" ng-model="form.company">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Date</span>
+                        <input type="text" ng-model="form.date">
+                    </label>
+
+                    <div class="item item-input-inset">
+                        <button ng-show="!isEditing" ng-click="saveCast(form)" class="button button-small">Save</button>
+                        <button ng-show="isEditing" ng-click="updateCast(form)" class="button button-small">Update</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Everything you want comes above here :) -->
+
+        </ion-content>
+    </ion-modal-view>
+</script>
