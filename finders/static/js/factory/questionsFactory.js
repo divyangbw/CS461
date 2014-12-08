@@ -31,8 +31,6 @@ angular.module('reports.factory')
                 var deferred = $q.defer();
                 ApiService.createQuestion(item).then(function (result) {
                     questions.push(result);
-
-
                     deferred.resolve(questions);
                 }, function (err) {
                     deferred.reject(err);
@@ -53,7 +51,7 @@ angular.module('reports.factory')
 
             },
             deleteQuestion: function (item) {
-
+                console.log("factor remove",item);
                 var deferred = $q.defer();
                 ApiService.deleteQuestion(item).then(function (result) {
                     questions = result;
@@ -61,8 +59,6 @@ angular.module('reports.factory')
                 }, function (err) {
                     deferred.reject(err);
                 });
-                return deferred.promise;
-
                 var index = -1;
                 for (var i = 0; i < questions.length; i++) {
                     if (questions[i].id === item.id) {
@@ -72,6 +68,8 @@ angular.module('reports.factory')
                 }
 
                 questions.splice(index, 1);
+                return deferred.promise;
+
             }
 
 

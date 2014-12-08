@@ -10,15 +10,15 @@ class Questionnaire:
 
     #--------- QUESTIONS ---------#
 
-    def new_question(type, text):
+    def new_question(type, text, section):
         if type is None or text is None:
             abort(400)
         updated = datetime.datetime.now()
-        item = Question(type=type,text=text,updated=updated)
+        item = Question(type=type,section = section,text=text,updated=updated)
         db.session.add(item)
         db.session.commit()
         return (jsonify(result=
-            {'id':item.id, 'type': item.type, 'text':item.text, 'updated':item.updated}
+            {'id':item.id, 'type': item.type,'section':item.section, 'text':item.text, 'updated':item.updated}
         ), 201)
 
     def all_questions():
@@ -33,7 +33,7 @@ class Questionnaire:
             abort(404)
         return (jsonify(result=item.serialize), 200)
 
-    def update_question(id, type, text):
+    def update_question(id, type, text, section):
         if id is None or type is None or text is None:
             abort(400)    # missing arguments
         item = Question.query.get(id)
@@ -41,10 +41,11 @@ class Questionnaire:
             abort(404)
         item.type = type;
         item.text = text;
+        item.section = section;
         item.updated = datetime.datetime.now();
         db.session.commit()
         return (jsonify(result=
-            {'id':item.id, 'type': item.type, 'text':item.text, 'updated':item.updated}
+            {'id':item.id, 'type': item.type,'section':item.section, 'text':item.text, 'updated':item.updated}
         ), 200)
 
     def delete_question(id):

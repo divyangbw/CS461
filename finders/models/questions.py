@@ -18,6 +18,7 @@ class Question(db.Model):
            'id': self.id,
            'type' : self.type,
            'text' : self.text,
+           'section' : self.section,
            'options'  : self.serialize_many2many,
            'updated': ser.dump_datetime(self.updated)
        }

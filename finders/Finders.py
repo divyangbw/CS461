@@ -43,6 +43,13 @@ def edit_user_last():
 def user():
     return Auth.all_users()
 
+@app.route('/api/user/role', methods=['POST'])
+def user_role():
+    print("IN API")
+    email = request.json.get('email')
+    role = request.json.get('role')
+    return Auth.change_role(email, role)
+
 
 #--------- CAST ---------#
 
@@ -100,7 +107,8 @@ def question():
         return Questionnaire.all_questions()
     type = request.json.get('type')
     text = request.json.get('text')
-    return Questionnaire.new_question(type, text)
+    section = request.json.get('section')
+    return Questionnaire.new_question(type, text, section)
 
 @app.route('/api/question/<int:id>', methods=['GET', 'DELETE', 'PUT'])
 def question_single(id):
@@ -111,7 +119,9 @@ def question_single(id):
     else:
         type = request.json.get('type')
         text = request.json.get('text')
-        return Questionnaire.update_question(id, type, text)
+        section = request.json.get('section')
+
+        return Questionnaire.update_question(id, type, text, section)
 
 #--------- OPTIONS ---------#
 

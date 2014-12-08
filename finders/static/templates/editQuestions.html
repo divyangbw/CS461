@@ -19,10 +19,10 @@
                     </div>
 
                     <div class=" item animate-repeat" ng-repeat="item in questions">
-                        <button class="button icon ion-edit" ng-click="editQuestion(item)"
-                                class="button button-outline button-positive"></button>
                         {{ item.text }}
-                        <button class="button icon ion-trash-b" ng-click="deleteQuestion(item)"
+                        <button class="button-small icon ion-edit" ng-click="editQuestion(item)"
+                                class="button button-outline button-positive"></button> |
+                        <button class="button-small icon ion-trash-b" ng-click="deleteQuestion(item)"
                                 class="button button-outline button-assertive"></button>
                     </div>
 
@@ -64,8 +64,8 @@
                     </label>
 
                     <label class="item item-input">
-                        <span class="input-label">Tag</span>
-                        <input type="text" ng-model="form.tag">
+                        <span class="input-label">Section</span>
+                        <input type="number" ng-model="form.section">
                     </label>
 
                     <div class="item item-divider">Type</div>
@@ -108,9 +108,11 @@
 
                     </div>
 
-
                     <div class="item item-input-inset">
-                        <button ng-click="submitQuestion()" class="button button-small">
+                        <button ng-show="isEditing" ng-click="updateQuestion(form)" class="button button-small">
+                            Update
+                        </button>
+                        <button ng-show="!isEditing" ng-click="submitQuestion(form)" class="button button-small">
                             Save
                         </button>
                     </div>
