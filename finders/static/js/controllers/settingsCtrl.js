@@ -1,6 +1,28 @@
-angular.module('reports.controllers').controller('SettingsCtrl', function ($scope, $state, User) {
+angular.module('reports.controllers').controller('SettingsCtrl', function ($scope, $state, User, ApiService) {
 
     $scope.settings = {};
+
+    $scope.user = User.getUser();
+    $scope.$watch('user.first', function(newVal, oldVal) {
+        if (newVal != oldVal) {
+            ApiService.setFirstName(User.getEmail(), newVal).then(function (response) {
+                User.changeFirst(newVal);
+                console.log("Yay!")
+            }, function (err) {
+                console.log(err)
+            });
+        }
+    });
+    $scope.$watch('user.last', function(newVal, oldVal) {
+        if (newVal != oldVal) {
+            ApiService.setLastName(User.getEmail(), newVal).then(function (response) {
+                User.changeLast(newVal);
+                console.log("Yay!")
+            }, function (err) {
+                console.log(err)
+            });
+        }
+    });
 
     $scope.settings.darkMode = {checked: User.getDarkModeSetting()};
     $scope.darkModeChange = function () {

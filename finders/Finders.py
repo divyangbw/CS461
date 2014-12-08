@@ -26,6 +26,19 @@ def login(email):
         return Auth.check_user_password(emailIn, password)
     return Auth.delete_user_session(email)
 
+#--------- AUTH ---------#
+@app.route('/api/user/first', methods=['POST'])
+def edit_user_first():
+    email = request.json.get('email')
+    first = request.json.get('first')
+    return Auth.update_user_firstLast(email=email, first=first, last=None)
+
+@app.route('/api/user/last', methods=['POST'])
+def edit_user_last():
+    email = request.json.get('email')
+    last = request.json.get('last')
+    return Auth.update_user_firstLast(email=email, first=None, last=last)
+
 #--------- CAST ---------#
 
 @app.route('/api/cast', methods=['POST', 'GET'])

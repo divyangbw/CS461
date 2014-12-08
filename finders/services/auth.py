@@ -53,3 +53,17 @@ class Auth:
         user.hash_token(token)
         db.session.commit()
         return (jsonify({'message':"logged out"}), 200)
+
+    def update_user_firstLast(email, first, last):
+        if email is None:
+            abort(400)
+        user = User.query.filter_by(email=email).first()
+        if user is None:
+            abort(404)
+        if first is None:
+            user.last = last
+        else:
+            user.first = first
+        user.updated = datetime.datetime.now()
+        db.session.commit()
+        return (jsonify({'message':"ok"}), 200)

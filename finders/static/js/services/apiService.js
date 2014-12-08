@@ -62,6 +62,19 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     }
 
     /**************************************************
+     *  USER
+     *************************************************/
+
+    this.setFirstName = function (email, name) {
+        data = { email:email, first:name}
+        return POST("api/user/first", data)
+    };
+    this.setLastName = function (email, name) {
+        data = { email:email, last:name}
+        return POST("api/user/last", data)
+    };
+
+    /**************************************************
      *  CASTS & SEGMENTS
      *************************************************/
 
@@ -99,7 +112,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
 
     function POST (url, obj) {
         var deferred = $q.defer();
-        if (obj && obj.id > -1) {
+        if (obj) {
             var data = JSON.stringify(obj);
             $http.post(BASEURL + url, data, {}).then(function (response) { // Success
                 deferred.resolve(response.data.result);
@@ -108,7 +121,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
                 deferred.reject(response);
             });
         } else {
-            deferred.reject({code:1,reason:"Object is null, or does not have an id"});
+            deferred.reject({code:1,reason:"Object is null"});
         }
         return deferred.promise;
     }

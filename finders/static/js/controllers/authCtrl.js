@@ -123,6 +123,7 @@ angular.module('reports.controllers')
             console.log(user);
             ApiService.register(user).then(function (response) {
                 $timeout(function () {
+                    $scope.registerModal.hide();
                     goHome();
                 }, 500);
             }, function (error) {

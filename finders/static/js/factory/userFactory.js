@@ -11,33 +11,46 @@ angular.module('reports.factory')
         $rootScope.background = setBackgroundVal();
 
 
+
         return {
 
             // Sets the current user and save it in localStorage
-            setUser: function(user) {
+            setUser: function (user) {
                 localStorage.setItem("User", JSON.stringify(user));
                 CURRENT_USER = user;
 
             },
 
-            getToken: function() {
+            getToken: function () {
                 return CURRENT_USER.token ? CURRENT_USER.token : -1;
             },
 
-            setToken: function(token, life) {
+            setToken: function (token, life) {
                 CURRENT_USER.token = token;
                 CURRENT_USER.life = life;
                 localStorage.setItem("User", JSON.stringify(CURRENT_USER));
             },
 
             // Returns the current user object
-            User: CURRENT_USER,
+            getUser: function () {
+                return CURRENT_USER
+            },
 
-            isLoggedIn: function() {
+            changeFirst: function (name) {
+                CURRENT_USER.first = name;
+                localStorage.setItem("User", JSON.stringify(CURRENT_USER));
+            },
+
+            changeLast: function (name) {
+                CURRENT_USER.last = name;
+                localStorage.setItem("User", JSON.stringify(CURRENT_USER));
+            },
+
+            isLoggedIn: function () {
                 return CURRENT_USER !== {} && CURRENT_USER["token"] !== undefined;
             },
 
-            authCheck: function() {
+            authCheck: function () {
                 if (CURRENT_USER === {} || CURRENT_USER["token"] === undefined) {
                     $ionicViewService.nextViewOptions({
                         disableBack: true
@@ -46,47 +59,47 @@ angular.module('reports.factory')
                 }
             },
 
-            getEmail: function() {
+            getEmail: function () {
                 return CURRENT_USER.email;
             },
 
-            getRandomUuid: function() {
+            getRandomUuid: function () {
                 return generateUUID();
             },
 
-            destroyUser: function() {
+            destroyUser: function () {
                 localStorage.removeItem("User");
                 CURRENT_USER = {};
             },
 
-            getDarkModeSetting: function() {
+            getDarkModeSetting: function () {
                 return settings_darkMode;
             },
 
-            getCollapsedSetting: function() {
+            getCollapsedSetting: function () {
                 console.log($rootScope.collapsedData);
                 return $rootScope.collapsedData;
             },
 
-            getBackground: function() {
+            getBackground: function () {
                 return $rootScope.background;
             },
 
-            defaultHomeIsGrid: function() {
+            defaultHomeIsGrid: function () {
                 return settings_home_grid;
             },
 
-            toggleDarkMode: function() {
+            toggleDarkMode: function () {
                 if (!settings_darkMode) updateBackground(1, true)
                 else updateBackground(0, false)
             },
 
-            toggleCollapseMode: function() {
+            toggleCollapseMode: function () {
                 if (!$rootScope.collapsedData) updateCollapsedData(1, true)
                 else updateCollapsedData(0, false)
             },
 
-            toggleHomeGrid: function() {
+            toggleHomeGrid: function () {
                 if (!settings_home_grid) updateHomeGrid(1, true)
                 else updateHomeGrid(0, false)
             }
@@ -139,10 +152,10 @@ angular.module('reports.factory')
 
         function generateUUID() {
             var d = Date.now();
-            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = (d + Math.random()*16)%16 | 0;
-                d = Math.floor(d/16);
-                var toReturn = (c=='x' ? r : (r&0x7|0x8)).toString(16);
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                var toReturn = (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
                 return toReturn;
             });
             return uuid;
