@@ -70,9 +70,16 @@
 
                     <div>
 
-                        <div class="item item-divider">
+                        <div class="item item-divider" ng-show="user.role === 'admin'">
                             Edit Users
                         </div>
+
+
+                        <ul class="item" ng-show="user.role === 'admin'">
+                            <li class="item" ng-repeat="item in allUsers">
+                                {{ item }}
+                            </li>
+                        </ul>
 
                     </div>
 

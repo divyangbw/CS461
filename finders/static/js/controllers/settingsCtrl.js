@@ -24,6 +24,15 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
         }
     });
 
+    if ($scope.user.role === "admin") {
+        console.log("ABOUT TO GET USERS");
+        ApiService.getAllUsers().then(function (result) {
+            console.log("GET USERS");
+            console.log(result);
+            $scope.allUsers = result;
+        });
+    }
+
     $scope.settings.darkMode = {checked: User.getDarkModeSetting()};
     $scope.darkModeChange = function () {
         User.toggleDarkMode();

@@ -39,6 +39,11 @@ def edit_user_last():
     last = request.json.get('last')
     return Auth.update_user_firstLast(email=email, first=None, last=last)
 
+@app.route('/api/user', methods=['GET'])
+def user():
+    return Auth.all_users()
+
+
 #--------- CAST ---------#
 
 @app.route('/api/cast', methods=['POST', 'GET'])

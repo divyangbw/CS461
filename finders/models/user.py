@@ -14,6 +14,16 @@ class User(db.Model):
     role = db.Column(db.String(30))
     updated = db.Column(db.DATETIME)
 
+    @property
+    def serialize(self):
+       return {
+           'id': self.id,
+           'email' : self.email,
+           'first' : self.first,
+           'last'  : self.last,
+           'role'  : self.role
+       }
+
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
 

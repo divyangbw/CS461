@@ -69,10 +69,21 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         data = { email:email, first:name}
         return POST("api/user/first", data)
     };
+
     this.setLastName = function (email, name) {
         data = { email:email, last:name}
         return POST("api/user/last", data)
     };
+
+    this.getAllUsers = function() {
+        console.log("IN API - GET");
+        if (User.role() !== "admin") {
+            var deferred = $q.defer();
+            deferred.reject("Can't do that :(");
+            return deferred.promise;
+        }
+        return GET_ALL("api/user");
+    }
 
     /**************************************************
      *  CASTS & SEGMENTS

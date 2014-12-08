@@ -67,3 +67,9 @@ class Auth:
         user.updated = datetime.datetime.now()
         db.session.commit()
         return (jsonify({'message':"ok"}), 200)
+
+    def all_users():
+        users = User.query.filter(User.role != 'admin').all()
+        for item in users:
+            print(item)
+        return (jsonify(result=[i.serialize for i in users]), 200)

@@ -50,6 +50,10 @@ angular.module('reports.factory')
                 return CURRENT_USER !== {} && CURRENT_USER["token"] !== undefined;
             },
 
+            role: function () {
+                return CURRENT_USER.role;
+            },
+
             authCheck: function () {
                 if (CURRENT_USER === {} || CURRENT_USER["token"] === undefined) {
                     $ionicViewService.nextViewOptions({
