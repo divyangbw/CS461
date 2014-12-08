@@ -43,6 +43,13 @@ def edit_user_last():
 def user():
     return Auth.all_users()
 
+@app.route('/api/user/role', methods=['POST'])
+def user_role():
+    print("IN API")
+    email = request.json.get('email')
+    role = request.json.get('role')
+    return Auth.change_role(email, role)
+
 
 #--------- CAST ---------#
 

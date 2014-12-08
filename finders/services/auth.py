@@ -70,6 +70,28 @@ class Auth:
 
     def all_users():
         users = User.query.filter(User.role != 'admin').all()
-        for item in users:
-            print(item)
         return (jsonify(result=[i.serialize for i in users]), 200)
+
+    def change_role(email, role):
+        print("IN CHANGE ROLE")
+        if email is None or role is None:
+            print("email or role is none")
+            abort(400)
+        user = User.query.filter_by(email=email).first()
+        print("USER is")
+        print(user)
+
+        if user is None:
+            print("User is none")
+            abort(404)
+        if role is "admin":
+            print("role is none")
+            abort(400)
+        print("Role is " + str(role))
+        if role == "mod" or role == "user":
+            print("mod or user")
+            user.role = role
+            db.session.commit()
+            return (jsonify({'message':"ok"}), 200)
+        else:
+            abort(400)

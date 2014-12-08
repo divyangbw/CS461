@@ -76,13 +76,23 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     };
 
     this.getAllUsers = function() {
-        console.log("IN API - GET");
+
         if (User.role() !== "admin") {
             var deferred = $q.defer();
             deferred.reject("Can't do that :(");
             return deferred.promise;
         }
         return GET_ALL("api/user");
+    }
+
+    this.changeRole = function(email, role) {
+
+        if (User.role() !== "admin") {
+            var deferred = $q.defer();
+            deferred.reject("Can't do that :(");
+            return deferred.promise;
+        }
+        return POST("api/user/role", {email:email,role:role})
     }
 
     /**************************************************
@@ -128,7 +138,6 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
             $http.post(BASEURL + url, data, {}).then(function (response) { // Success
                 deferred.resolve(response.data.result);
             }, function (response) {
-                console.log(response);
                 deferred.reject(response);
             });
         } else {
@@ -140,7 +149,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     function GET_ALL (url) {
         var deferred = $q.defer();
         $http.get(BASEURL + url).then(function (response) {
-            deferred.resolve(response.data.results);
+            deferred.resolve(response.data.result);
         }, function (response) {
             console.log(response);
             deferred.reject(response);
@@ -156,7 +165,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         var deferred = $q.defer();
         if (id && id > -1) {
             $http.get(BASEURL + url + "/" + id).then(function (response) {
-                deferred.resolve(response.data.results);
+                deferred.resolve(response.data.result);
             }, function (response) {
                 console.log(response);
                 deferred.reject(response);

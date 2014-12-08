@@ -1,9 +1,9 @@
-angular.module('reports.controllers').controller('SettingsCtrl', function ($scope, $state, User, ApiService) {
+angular.module('reports.controllers').controller('SettingsCtrl', function ($scope, $state, $ionicPopup, User, ApiService) {
 
     $scope.settings = {};
 
     $scope.user = User.getUser();
-    $scope.$watch('user.first', function(newVal, oldVal) {
+    $scope.$watch('user.first', function (newVal, oldVal) {
         if (newVal != oldVal) {
             ApiService.setFirstName(User.getEmail(), newVal).then(function (response) {
                 User.changeFirst(newVal);
@@ -13,11 +13,10 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
             });
         }
     });
-    $scope.$watch('user.last', function(newVal, oldVal) {
+    $scope.$watch('user.last', function (newVal, oldVal) {
         if (newVal != oldVal) {
             ApiService.setLastName(User.getEmail(), newVal).then(function (response) {
                 User.changeLast(newVal);
-                console.log("Yay!")
             }, function (err) {
                 console.log(err)
             });
@@ -25,12 +24,19 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
     });
 
     if ($scope.user.role === "admin") {
-        console.log("ABOUT TO GET USERS");
         ApiService.getAllUsers().then(function (result) {
-            console.log("GET USERS");
-            console.log(result);
             $scope.allUsers = result;
         });
+
+        $scope.changeRole = function (item) {
+            createChangeRolePopup().then(function (res) {
+                if (res) {
+                    ApiService.changeRole(item.email, res).then(function (result) {
+                        item.role = res;
+                    });
+                }
+            });
+        }
     }
 
     $scope.settings.darkMode = {checked: User.getDarkModeSetting()};
@@ -52,24 +58,33 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
         $state.go('tab.editQuestions');
     }
 
+    function createChangeRolePopup() {
+        return $ionicPopup.show({
+                template: '',
+                title: 'Select the role',
+                subTitle: 'Admin roles are not selectable',
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Mod</b>',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            return "mod";
+                        }
+                    },
+                    {
+                        text: '<b>User</b>',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            return "user";
+                        }
+                    },
+                ]
+            });
+    }
+
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 angular.module('reports.controllers')
@@ -91,16 +106,16 @@ angular.module('reports.controllers')
             });
         };
 
-        $scope.newOption = function() {
-            if(!$scope.form.options) $scope.form.options = [];
+        $scope.newOption = function () {
+            if (!$scope.form.options) $scope.form.options = [];
             $scope.form.options.push({});
         };
 
-        $scope.deleteOption = function(index) {
+        $scope.deleteOption = function (index) {
             $scope.form.options.splice(index, 1);
         };
 
-        $scope.editQuestion = function(item) {
+        $scope.editQuestion = function (item) {
             // Set the editItem to what we want to edit. That way we can pre-fill the form.
             $scope.isEditing = true;
             $scope.form = item;
@@ -126,13 +141,6 @@ angular.module('reports.controllers')
             $scope.createEditModal.show();
         }
 
-
-
-
-
-
-
-
         $scope.updateQuestion = function () {
             // An elaborate, custom popup
             var temp = $scope.form;
@@ -143,9 +151,8 @@ angular.module('reports.controllers')
             }, function (err) {
 
             });
-            console.log($scope.form);
-
         };
+
         $scope.deleteQuestion = function () {
             // An elaborate, custom popup
             var temp = $scope.form;
@@ -155,10 +162,8 @@ angular.module('reports.controllers')
             }, function (err) {
 
             });
-            console.log($scope.form);
 
         };
-
 
         QuestionsFactory.getAllQuestions().then(function (result) {
             $scope.questions = result;
@@ -201,9 +206,6 @@ angular.module('reports.controllers')
          Meaning, if isEditing is true, show the header as Edit Question, else New Question.
 
          */
-
-
-
 
 
     });
