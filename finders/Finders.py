@@ -83,7 +83,7 @@ def cast_single(id):
 def segment(cast_id):
 
     if request.method == 'GET':
-        return CastSeg.all_seg(castId)
+        return CastSeg.all_seg(cast_id)
     print(cast_id)
     subject = request.json.get('subject')
     start = request.json.get('start')
