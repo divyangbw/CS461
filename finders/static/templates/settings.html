@@ -70,16 +70,23 @@
 
                     <div>
 
-                        <div class="item item-divider" ng-show="user.role === 'admin'">
+                        <div class="item item-divider item-icon-right" ng-show="user.role === 'admin'">
                             Edit Users
+                            <i class="icon {{ collpasedUsers ? 'ion-ios7-arrow-down' : 'ion-ios7-arrow-up' }}"
+                                    ng-init="collpasedUsers = false"
+                                    ng-click="collpasedUsers = !collpasedUsers" ></i>
                         </div>
 
 
-                        <ul class="item" ng-show="user.role === 'admin'">
+                        <ul class="item" ng-show="user.role === 'admin' && !collpasedUsers">
+
                             <li class="item item-avatar" ng-repeat="item in allUsers">
                                 <img src="/static/img/avatar.png">
 
-                                <h2>{{ item.first }} {{ item.last }}</h2>
+                                <h2>{{ item.first }} {{ item.last }}
+                                    <button class="button button-positive icon-right ion-ios7-circle-filled button-clear
+                                        button-small {{ item.isActive ? 'button-balanced' : 'button-assertive' }}"></button>
+                                </h2>
                                 <hr>
                                 <p>Email: {{ item.email }} | Role: {{ item.role | uppercase }}</p>
                                 <button ng-click="changeRole(item)"

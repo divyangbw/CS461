@@ -39,10 +39,22 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
         }
 
         $scope.toggleStatus = function (item) {
-            ApiService.toggleUserStatus(item.email).then(function (result) {
-                if (item.isActive) item.isActive = false;
-                else item.isActive = true;
+            var popTitle = item.isActive ? "Deactivate User" : "Activate User";
+            var popMsg = item.isActive ? "Are you sure you want to deactivate this user? They will not be " +
+                "able to login until they are reactivated again." : "Are you sure you want to activate this user? " +
+                "They will be able to login as the speicifed role.";
+            console.log(item);
+            $ionicPopup.confirm({
+                title: popTitle, template: popMsg
+            }).then(function (res) {
+                if (res) {
+                    ApiService.toggleUserStatus(item.email).then(function (result) {
+                        if (item.isActive) item.isActive = false;
+                        else item.isActive = true;
+                    });
+                }
             });
+
         }
     }
 
@@ -67,28 +79,28 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
 
     function createChangeRolePopup() {
         return $ionicPopup.show({
-                template: '',
-                title: 'Select the role',
-                subTitle: 'Admin roles are not selectable',
-                scope: $scope,
-                buttons: [
-                    { text: 'Cancel' },
-                    {
-                        text: '<b>Mod</b>',
-                        type: 'button-positive',
-                        onTap: function (e) {
-                            return "mod";
-                        }
-                    },
-                    {
-                        text: '<b>User</b>',
-                        type: 'button-positive',
-                        onTap: function (e) {
-                            return "user";
-                        }
-                    },
-                ]
-            });
+            template: '',
+            title: 'Select the role',
+            subTitle: 'Admin roles are not selectable',
+            scope: $scope,
+            buttons: [
+                { text: 'Cancel' },
+                {
+                    text: '<b>Mod</b>',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        return "mod";
+                    }
+                },
+                {
+                    text: '<b>User</b>',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        return "user";
+                    }
+                },
+            ]
+        });
     }
 
 });
