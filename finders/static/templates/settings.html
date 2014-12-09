@@ -76,15 +76,20 @@
 
 
                         <ul class="item" ng-show="user.role === 'admin'">
-                            <li class="item item-avatar item-button-right" ng-repeat="item in allUsers">
+                            <li class="item item-avatar" ng-repeat="item in allUsers">
                                 <img src="/static/img/avatar.png">
 
                                 <h2>{{ item.first }} {{ item.last }}</h2>
-
-                                <p>Email: {{ item.email }} | Role: {{ item.role }}</p>
+                                <hr>
+                                <p>Email: {{ item.email }} | Role: {{ item.role | uppercase }}</p>
                                 <button ng-click="changeRole(item)"
                                         class="button button-positive icon-left ion-ios7-plus-outline button-outline button-small">
                                     Change Role
+                                </button>
+                                <button ng-click="toggleStatus(item)"
+                                        class="button icon-left ion-ios7-plus-outline button-outline button-small
+                                        {{  item.isActive ? 'button-assertive' : 'button-balanced' }}">
+                                   {{  item.isActive ? 'Deactivate User' : 'Activate User' }}
                                 </button>
                             </li>
                         </ul>

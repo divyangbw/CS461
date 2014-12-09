@@ -95,6 +95,17 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         return POST("api/user/role", {email:email,role:role})
     }
 
+    this.toggleUserStatus = function(email) {
+
+        if (User.role() !== "admin") {
+            var deferred = $q.defer();
+            deferred.reject("Can't do that :(");
+            return deferred.promise;
+        }
+        console.log("PUT")
+        return POST("api/user/status", {email:email})
+    }
+
     /**************************************************
      *  CASTS & SEGMENTS
      *************************************************/

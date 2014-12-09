@@ -37,6 +37,13 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
                 }
             });
         }
+
+        $scope.toggleStatus = function (item) {
+            ApiService.toggleUserStatus(item.email).then(function (result) {
+                if (item.isActive) item.isActive = false;
+                else item.isActive = true;
+            });
+        }
     }
 
     $scope.settings.darkMode = {checked: User.getDarkModeSetting()};
