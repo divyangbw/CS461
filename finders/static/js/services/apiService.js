@@ -97,7 +97,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
 
     this.getAllSegments = function (castId) { return GET_ALL_FOR("api/segmentfor", castId)};
     this.getSegment = function (segId) { return GET("api/segment", segId)};
-    this.createSeg = function (seg) { return POST("api/segmentfor", seg)};
+    this.createSeg = function (seg, cast_id) { return POST("api/segmentfor/" + cast_id, seg)};
     this.deleteSeg = function (seg) { return DELETE ("api/segment", seg)};
     this.updateSeg = function (seg) { return PUT ("api/segment", seg)};
 

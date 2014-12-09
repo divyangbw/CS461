@@ -17,6 +17,7 @@ angular.module('reports.factory')
 
                 var deferred = $q.defer();
                 ApiService.getAllCasts().then(function (result) {
+                    console.log("API service was called.")
                     casts = result;
                     deferred.resolve(casts);
                 }, function (err) {
@@ -51,7 +52,7 @@ angular.module('reports.factory')
 
                 var deferred = $q.defer();
                 ApiService.createCast(item).then(function (result) {
-                    casts = result;
+                    casts.push(result);
                     deferred.resolve(casts);
                 }, function (err) {
                     deferred.reject(err);
@@ -95,8 +96,12 @@ angular.module('reports.factory')
             createSegment: function (item) {
 
                 var deferred = $q.defer();
-                ApiService.createSeg(item).then(function (result) {
-                    segments = result;
+                if(!activeCast || activeCast === {}) {
+                    deferred.reject("Null Cast");
+                    return deferred.promise;
+                }
+                ApiService.createSeg(item, activeCast.id).then(function (result) {
+                    segments.push(result);
                     deferred.resolve(segments);
                 }, function (err) {
                     deferred.reject(err);
