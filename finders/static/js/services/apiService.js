@@ -108,14 +108,14 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     this.getAllQuestions = function () { return GET_ALL("api/question")};
     this.getQuestion = function (questionId) { return GET("api/question", questionId)};
     this.createQuestion = function (question) { return POST("api/question", question)};
-    this.updateQuestion = function (question) { return DELETE ("api/question", question)};
-    this.deleteQuestion = function (question) { return PUT ("api/question", question)};
+    this.updateQuestion = function (question) { return PUT ("api/question", question)};
+    this.deleteQuestion = function (question) { return DELETE ("api/question", question)};
 
     this.getAllOptions = function (questionId) { return GET_ALL_FOR("api/questionoptionfor", questionId)};
     this.getOption = function (optionId) { return GET("api/questionoption", optionId)};
     this.createOption = function (option) { return POST("api/questionoptionfor", option)};
-    this.updateOption = function (option) { return DELETE ("api/questionoption", option)};
-    this.deleteOption = function (option) { return PUT ("api/questionoption", option)};
+    this.updateOption = function (option) { return PUT ("api/questionoption", option)};
+    this.deleteOption = function (option) { return DELETE ("api/questionoption", option)};
 
     /**************************************************
      *  SHARED CALLS
@@ -140,7 +140,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     function GET_ALL (url) {
         var deferred = $q.defer();
         $http.get(BASEURL + url).then(function (response) {
-            deferred.resolve(response.data.results);
+            deferred.resolve(response.data.result);
         }, function (response) {
             console.log(response);
             deferred.reject(response);
@@ -156,7 +156,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         var deferred = $q.defer();
         if (id && id > -1) {
             $http.get(BASEURL + url + "/" + id).then(function (response) {
-                deferred.resolve(response.data.results);
+                deferred.resolve(response.data.result);
             }, function (response) {
                 console.log(response);
                 deferred.reject(response);

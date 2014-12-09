@@ -14,10 +14,12 @@ angular.module('reports.factory')
             },
 
             getAllQuestions: function () {
-
+                console.log("before");
                 var deferred = $q.defer();
                 ApiService.getAllQuestions().then(function (result) {
                     questions = result;
+                                    console.log(result);
+
                     deferred.resolve(questions);
                 }, function (err) {
                     deferred.reject(err);

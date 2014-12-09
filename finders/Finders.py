@@ -112,7 +112,9 @@ def question():
         return Questionnaire.all_questions()
     type = request.json.get('type')
     text = request.json.get('text')
-    return Questionnaire.new_question(type, text)
+    section = request.json.get('section')
+
+    return Questionnaire.new_question(type, text, section)
 
 @app.route('/api/question/<int:id>', methods=['GET', 'DELETE', 'PUT'])
 def question_single(id):
@@ -123,7 +125,9 @@ def question_single(id):
     else:
         type = request.json.get('type')
         text = request.json.get('text')
-        return Questionnaire.update_question(id, type, text)
+        section = request.json.get('section')
+
+        return Questionnaire.update_question(id, type, text, section)
 
 #--------- OPTIONS ---------#
 
