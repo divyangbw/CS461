@@ -45,10 +45,15 @@ def user():
 
 @app.route('/api/user/role', methods=['POST'])
 def user_role():
-    print("IN API")
     email = request.json.get('email')
     role = request.json.get('role')
     return Auth.change_role(email, role)
+
+@app.route('/api/user/status', methods=['POST'])
+def user_status():
+    email = request.json.get('email')
+    return Auth.toggle_isActive(email)
+
 
 
 #--------- CAST ---------#
@@ -107,8 +112,7 @@ def question():
         return Questionnaire.all_questions()
     type = request.json.get('type')
     text = request.json.get('text')
-    section = request.json.get('section')
-    return Questionnaire.new_question(type, text, section)
+    return Questionnaire.new_question(type, text)
 
 @app.route('/api/question/<int:id>', methods=['GET', 'DELETE', 'PUT'])
 def question_single(id):
@@ -119,9 +123,7 @@ def question_single(id):
     else:
         type = request.json.get('type')
         text = request.json.get('text')
-        section = request.json.get('section')
-
-        return Questionnaire.update_question(id, type, text, section)
+        return Questionnaire.update_question(id, type, text)
 
 #--------- OPTIONS ---------#
 
@@ -162,5 +164,7 @@ def index():
 
 if __name__ == '__main__':
     if not os.path.exists('db.sqlite'):
+        db.create_all()
+    else:
         db.create_all()
     app.run(debug=True)

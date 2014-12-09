@@ -1,9 +1,9 @@
-angular.module('reports.controllers').controller('SettingsCtrl', function ($scope, $state, $ionicPopup, User, ApiService) {
+angular.module('reports.controllers').controller('SettingsCtrl', function ($scope, $state, User, ApiService) {
 
     $scope.settings = {};
 
     $scope.user = User.getUser();
-    $scope.$watch('user.first', function (newVal, oldVal) {
+    $scope.$watch('user.first', function(newVal, oldVal) {
         if (newVal != oldVal) {
             ApiService.setFirstName(User.getEmail(), newVal).then(function (response) {
                 User.changeFirst(newVal);
@@ -37,6 +37,25 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
                 }
             });
         }
+
+        $scope.toggleStatus = function (item) {
+            var popTitle = item.isActive ? "Deactivate User" : "Activate User";
+            var popMsg = item.isActive ? "Are you sure you want to deactivate this user? They will not be " +
+                "able to login until they are reactivated again." : "Are you sure you want to activate this user? " +
+                "They will be able to login as the speicifed role.";
+            console.log(item);
+            $ionicPopup.confirm({
+                title: popTitle, template: popMsg
+            }).then(function (res) {
+                if (res) {
+                    ApiService.toggleUserStatus(item.email).then(function (result) {
+                        if (item.isActive) item.isActive = false;
+                        else item.isActive = true;
+                    });
+                }
+            });
+
+        }
     }
 
     $scope.settings.darkMode = {checked: User.getDarkModeSetting()};
@@ -60,28 +79,28 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
 
     function createChangeRolePopup() {
         return $ionicPopup.show({
-                template: '',
-                title: 'Select the role',
-                subTitle: 'Admin roles are not selectable',
-                scope: $scope,
-                buttons: [
-                    { text: 'Cancel' },
-                    {
-                        text: '<b>Mod</b>',
-                        type: 'button-positive',
-                        onTap: function (e) {
-                            return "mod";
-                        }
-                    },
-                    {
-                        text: '<b>User</b>',
-                        type: 'button-positive',
-                        onTap: function (e) {
-                            return "user";
-                        }
-                    },
-                ]
-            });
+            template: '',
+            title: 'Select the role',
+            subTitle: 'Admin roles are not selectable',
+            scope: $scope,
+            buttons: [
+                { text: 'Cancel' },
+                {
+                    text: '<b>Mod</b>',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        return "mod";
+                    }
+                },
+                {
+                    text: '<b>User</b>',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        return "user";
+                    }
+                },
+            ]
+        });
     }
 
 });
@@ -104,8 +123,6 @@ angular.module('reports.controllers')
             }, function (err) {
 
             });
-
-
         };
 
         $scope.newOption = function () {
@@ -208,6 +225,9 @@ angular.module('reports.controllers')
          Meaning, if isEditing is true, show the header as Edit Question, else New Question.
 
          */
+
+
+
 
 
     });

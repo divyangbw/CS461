@@ -12,6 +12,7 @@ class User(db.Model):
     last = db.Column(db.String(128))
     token = db.Column(db.String(128))
     role = db.Column(db.String(30))
+    isActive = db.Column(db.Boolean)
     updated = db.Column(db.DATETIME)
 
     @property
@@ -21,7 +22,8 @@ class User(db.Model):
            'email' : self.email,
            'first' : self.first,
            'last'  : self.last,
-           'role'  : self.role
+           'role'  : self.role,
+           'isActive': self.isActive
        }
 
     def hash_password(self, password):
