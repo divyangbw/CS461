@@ -1,13 +1,15 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from finders.models import ser
+from finders.models.cast import Cast, Segment
 
 from finders import db
 
 class Assignment(db.Model):
     __tablename__ = 'assignment'
     id = db.Column(db.Integer, primary_key=True)
-    seg_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer)
+    seg_id = db.Column(db.Integer, db.ForeignKey('segment.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    completed = db.Column(db.Boolean)
     answers = db.relationship('Answer', backref='assignment',lazy='dynamic') #select, joined, subquery
     sections = db.relationship('AssignSection', backref='assignment',lazy='dynamic') #select, joined, subquery
     updated = db.Column(db.DATETIME)
@@ -16,8 +18,10 @@ class Assignment(db.Model):
     def serialize(self):
        return {
            'id': self.id,
-           'seg_id' : self.seg_id,
-           'user_id' : self.user_id,
+           'user_id': self.user_id,
+           'segment' : self.getSegment.serialize,
+           'cast' : self.getCast.serialize_no_join,
+           'completed' : self.completed,
            'answers'  : self.serialize_answers,
            'section'  : self.serialize_sections,
            'updated': ser.dump_datetime(self.updated)
@@ -30,6 +34,17 @@ class Assignment(db.Model):
     @property
     def serialize_sections(self):
        return [ item.serialize for item in self.sections ]
+
+    @property
+    def getSegment(self):
+        return Segment.query.get(self.seg_id)
+
+    @property
+    def getCast(self):
+        print("CALLED")
+        id = Segment.query.get(self.seg_id).cast_id
+        print("Did some ID = " + str(id) )
+        return Cast.query.get(id)
 
 
 class Answer(db.Model):

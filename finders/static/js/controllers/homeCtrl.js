@@ -7,12 +7,12 @@ angular.module('reports.controllers')
             User.authCheck();
         }
 
-        $scope.test = function() {
-            ApiService.getResource().then(function(data) {
-                console.log(data);
-            }, function (err) {
-                console.log("error");
-            });
-        }
+        ApiService.getMyAssignments().then(function(data) {
+            console.log(data)
+            $scope.myAssign = data;
+        }, function (err) {
+            console.log("error");
+            console.log(err);
+        });
 
     });

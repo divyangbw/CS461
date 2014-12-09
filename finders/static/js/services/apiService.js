@@ -118,14 +118,24 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     this.deleteOption = function (option) { return DELETE ("api/questionoption", option)};
 
     /**************************************************
+     *  ASSIGNMENTS
+     *************************************************/
+
+    this.getMyAssignments = function () { return GET_ALL("api/my/assignments") }
+
+    /**************************************************
      *  SHARED CALLS
      *************************************************/
 
+
+
     function POST (url, obj) {
+        var HEADER = { headers: {'email': User.getEmail(), 'token': User.getToken()} }
         var deferred = $q.defer();
         if (obj) {
+            obj.inject = {email:User.getEmail(),token:User.getToken()};
             var data = JSON.stringify(obj);
-            $http.post(BASEURL + url, data, {}).then(function (response) { // Success
+            $http.post(BASEURL + url, data, HEADER).then(function (response) { // Success
                 deferred.resolve(response.data.result);
             }, function (response) {
                 console.log(response);
@@ -138,8 +148,9 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     }
 
     function GET_ALL (url) {
+        var HEADER = { headers: {'email': User.getEmail(), 'token': User.getToken()} }
         var deferred = $q.defer();
-        $http.get(BASEURL + url).then(function (response) {
+        $http.get(BASEURL + url, HEADER).then(function (response) {
             deferred.resolve(response.data.result);
         }, function (response) {
             console.log(response);
@@ -153,9 +164,10 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     }
 
     function GET (url, id) {
+        var HEADER = { headers: {'email': User.getEmail(), 'token': User.getToken()} }
         var deferred = $q.defer();
         if (id && id > -1) {
-            $http.get(BASEURL + url + "/" + id).then(function (response) {
+            $http.get(BASEURL + url + "/" + id, HEADER).then(function (response) {
                 deferred.resolve(response.data.result);
             }, function (response) {
                 console.log(response);
@@ -168,9 +180,10 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     }
 
     function DELETE (url, obj) {
+        var HEADER = { headers: {'email': User.getEmail(), 'token': User.getToken()} }
         var deferred = $q.defer();
         if (obj && obj.id > -1) {
-            $http.delete(BASEURL + url + "/" + obj.id).then(function (response) { // Success
+            $http.delete(BASEURL + url + "/" + obj.id, HEADER).then(function (response) { // Success
                 deferred.resolve(response.data.result);
             }, function (response) {
                 console.log(response);
@@ -183,10 +196,11 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     }
 
     function PUT (url, obj) {
+        var HEADER = { headers: {'email': User.getEmail(), 'token': User.getToken()} }
         var deferred = $q.defer();
         if (obj && obj.id > -1) {
             var data = JSON.stringify(obj);
-            $http.put(BASEURL + url + "/" + obj.id, data, {}).then(function (response) { // Success
+            $http.put(BASEURL + url + "/" + obj.id, data, HEADER).then(function (response) { // Success
                 deferred.resolve(response.data.result);
             }, function (response) {
                 console.log(response);
