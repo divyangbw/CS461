@@ -42,6 +42,29 @@ class Auth:
         else:
             abort(401)
 
+    def check_user_token(email, token):
+        if email is None or token is None:
+            return False
+        user = User.query.filter_by(email=email).first()
+        if user is None or user.isActive is False:
+            return False
+        if user.verify_token(token):
+            return True
+
+    def abort_401():
+        abort(401)
+    def abort_400():
+        abort(400)
+
+    def getId(email):
+        if email is None:
+            abort(400)
+        user = User.query.filter_by(email=email).first()
+        if user is None:
+            abort(400)
+        return user.id
+
+
     def delete_user_session(email):
         if email is None:
             abort(400)

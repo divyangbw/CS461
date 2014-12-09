@@ -25,6 +25,14 @@ class Cast(db.Model):
        }
 
     @property
+    def serialize_no_join(self):
+       return {
+           'id': self.id,
+           'company' : self.company,
+           'date': dump_datetime(self.date)
+       }
+
+    @property
     def serialize_many2many(self):
        return [ item.serialize for item in self.segments]
 
@@ -37,6 +45,7 @@ class Segment(db.Model):
     start = db.Column(db.Integer)
     end = db.Column(db.Integer)
     comment = db.Column(db.Text)
+    assignments = db.relationship('Assignment', backref='segment',lazy='select') #select, joined, subquery
 
     @property
     def serialize(self):

@@ -2,8 +2,31 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
+        <div class="row responsive-sm">
 
-<button ng-click="test()">DO SOMETHING</button>
+            <div class="col col-33">Hi</div>
+            <div class="col col-33">
+                <ul class="list">
+                    <div class="item item-divider">Incomplete</div>
+                    <li class="item item-icon-left" ng-repeat="item in myAssign">
+                        <i class="icon ion-ios7-film"></i>
+                        {{ item.cast.company }}
+                        <span class="item-note">
+                            Subject: {{ item.segment.subject }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col col-33">
+                <ul class="list">
+                    <div class="item item-divider">Need to Start</div>
+                    <li class="item">
+                    </li>
+                </ul>
+            </div>
+
+        </div>
 
     </ion-content>
 </ion-view>

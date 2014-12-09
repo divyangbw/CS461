@@ -15,7 +15,7 @@ class AssignService:
             abort(400)
         updated = datetime.datetime.now()
 
-        item = Assignments(seg_id=seg_id,user_id=user_id,updated=updated)
+        item = Assignment(seg_id=seg_id,user_id=user_id,updated=updated)
         db.session.add(item)
         db.session.commit()
         return (jsonify(result=
@@ -23,13 +23,17 @@ class AssignService:
         ), 201)
 
     def all_assignments():
-        items = Assignments.query.all()
+        items = Assignment.query.all()
+        return (jsonify(result=[i.serialize for i in items]), 200)
+
+    def my_assignments(user_id):
+        items = Assignment.query.filter_by(user_id=user_id).all()
         return (jsonify(result=[i.serialize for i in items]), 200)
 
     def get_assignment(id):
         if id is None:
             abort(400)
-        item = Assignments.query.get(id)
+        item = Assignment.query.get(id)
         if item is None:
             abort(404)
         return (jsonify(result=item.serialize), 200)
@@ -37,7 +41,7 @@ class AssignService:
     def update_assignment(id, question_id, answer, seg_que_id):
         if id is None or question_id is None or answer is None or seg_que_id is None:
             abort(400)    # missing arguments
-        item = Assignments.query.get(id)
+        item = Assignment.query.get(id)
         if item is None:
             abort(404)
         item.question_id = question_id;
@@ -52,7 +56,7 @@ class AssignService:
     def delete_assignment(id):
         if id is None:
             abort(400)    # missing arguments
-        item = Assignments.query.get(id)
+        item = Assignment.query.get(id)
         if item is None:
             abort(404)
         db.session.delete(item)

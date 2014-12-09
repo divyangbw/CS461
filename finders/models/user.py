@@ -14,6 +14,7 @@ class User(db.Model):
     role = db.Column(db.String(30))
     isActive = db.Column(db.Boolean)
     updated = db.Column(db.DATETIME)
+    assignments = db.relationship('Assignment', backref='user',lazy='select') #select, joined, subquery
 
     @property
     def serialize(self):
