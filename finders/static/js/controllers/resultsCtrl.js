@@ -23,12 +23,12 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
     });
 });
 
-angular.module('reports.controllers').controller('SegmentsCtrl', function ($scope, DataFactory, $ionicPopup, $ionicModal, User) {
-
-    $scope.activeCast = DataFactory.getActiveCast();
-    DataFactory.getSegments().then(function (result) {
-        $scope.castSegments = result;
-    }, function (err) {
-        console.log("Error")
-    })
-});
+//angular.module('reports.controllers').controller('SegmentsCtrl', function ($scope, DataFactory, $ionicPopup, $ionicModal, User) {
+//
+//    $scope.activeCast = DataFactory.getActiveCast();
+//    DataFactory.getSegments().then(function (result) {
+//        $scope.castSegments = result;
+//    }, function (err) {
+//        console.log("Error")
+//    })
+//});
