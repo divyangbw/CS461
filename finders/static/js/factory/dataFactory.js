@@ -17,7 +17,6 @@ angular.module('reports.factory')
 
                 var deferred = $q.defer();
                 ApiService.getAllCasts().then(function (result) {
-                    console.log("API service was called.")
                     casts = result;
                     deferred.resolve(casts);
                 }, function (err) {
@@ -27,7 +26,6 @@ angular.module('reports.factory')
             },
 
             getSegments: function () {
-
                 var deferred = $q.defer();
                 ApiService.getAllSegments(activeCast.id).then(function (result) {
                     segments = result;
@@ -38,8 +36,18 @@ angular.module('reports.factory')
                 return deferred.promise;
             },
 
+            getSegmentsForCast: function(cast) {
+                var deferred = $q.defer();
+                ApiService.getAllSegments(cast.id).then(function (result) {
+                    segments = result;
+                    deferred.resolve(segments);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            },
+
             getActiveCast: function () {
-                console.log(activeCast)
                 return activeCast;
             },
 

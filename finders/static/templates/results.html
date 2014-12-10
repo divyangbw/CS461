@@ -2,19 +2,73 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-        <!--
-        <div class="row">
-            <div class="main-header full-width-header">
-                Results
+        <div class="table-padding">
+
+            <!-- GRID BASED LAYOUT -->
+            <div class="row gallery responsive-sm">
+
+                <div class="col col-25" ng-repeat="cast in newsCasts">
+                    <div class="list card">
+
+                        <div class="item item-divider">
+                            {{ cast.company }}
+                        </div>
+
+                        <div class="item item-text-wrap">
+                            <p>{{ cast.date }}</p>
+                        </div>
+                        <!--
+                        <div class="col" ng-repeat="seg in castSegments">
+                            <div class="item item-icon-left">
+                                <i class="icon ion-home"></i>
+                                {{ seg.name }}
+                            </div>
+
+                        </div>
+                        -->
+                    </div>
+
+
+                </div>
+
             </div>
-        </div>
-        -->
+            <!-- END GRID BASED LAYOUT -->
 
-        <div class="row responsive-sm">
-            <div class="col col-20">Hi</div>
-            <div class="col col-80">There!</div>
         </div>
-
 
     </ion-content>
 </ion-view>
+
+<script id="results.html" type="text/ng-template">
+    <ion-modal-view>
+
+        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                     has-bouncing="false">
+
+            <!-- Everything you want comes under here :) -->
+
+            <div>
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Company</span>
+                        <input type="text" ng-model="form.company">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Date</span>
+                        <input type="text" ng-model="form.date">
+                    </label>
+
+                    <div class="item item-input-inset">
+                        <button ng-show="!isEditing" ng-click="saveCast(form)" class="button button-small">Save</button>
+                        <button ng-show="isEditing" ng-click="updateCast(form)" class="button button-small">Update
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Everything you want comes above here :) -->
+
+        </ion-content>
+    </ion-modal-view>
+</script>

@@ -39,7 +39,6 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
         }, function (err) {
 
         });
-        console.log($scope.cast);
     };
 
 
@@ -119,8 +118,6 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
         }, function (err) {
 
         });
-        console.log($scope.cast);
-
     };
     //When the update cast button is clicked
     $scope.updateCast = function (item) {
@@ -131,8 +128,6 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
         }, function (err) {
 
         });
-        console.log($scope.cast);
-
     };
     //TODO: GET UPDATE TO WORK
     $scope.editCast = function (item) {
