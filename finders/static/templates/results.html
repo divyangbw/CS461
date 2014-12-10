@@ -8,17 +8,26 @@
             <div class="row gallery responsive-sm">
 
                 <div class="col col-25" ng-repeat="cast in newsCasts">
-
                     <div class="list card">
 
-                        <div class="col col-25" ng-repeat="seg in castSegments" ng-click="goToSegments(cast)">
-
-                        <div class="item item-icon-left">
-                            <h2>{{ cast.company }}</h2>
-                            <p>{{ cast.date }}</p>
+                        <div class="item item-divider">
+                            {{ cast.company }}
                         </div>
 
+                        <div class="item item-text-wrap">
+                            <p>{{ cast.date }}</p>
+                        </div>
+                        <!--
+                        <div class="col" ng-repeat="seg in castSegments">
+                            <div class="item item-icon-left">
+                                <i class="icon ion-home"></i>
+                                {{ seg.name }}
+                            </div>
+
+                        </div>
+                        -->
                     </div>
+
 
                 </div>
 

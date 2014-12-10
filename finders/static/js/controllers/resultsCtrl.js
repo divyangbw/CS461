@@ -4,27 +4,20 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
     $scope.newsCasts = {};
     $scope.castSegments = {};
 
-    $scope.goToSegments = function (item) {
-        DataFactory.setActiveCast(item);
-
-        DataFactory.getSegments().then(function (res) {
-            $scope.castSegments = res;
-        }, function (err) {
-            console.log("Error");
-        });
-        $state.go('tab.segments');
-    };
-
     DataFactory.getCasts().then(function (result) {
         $scope.newsCasts = result;
-        //$scope.loadingData = true;
+
+        result.forEach(function (cast) {
+            $scope.castSegments += DataFactory.getSegmentsForCast(cast);
+        });
+
+
     }, function (err) {
         console.log("Error");
     });
 
-    DataFactory.getCasts().then(function (result) {
-        $scope.newsCasts = result;
-        //$scope.loadingData = true;
+    DataFactory.getSegments().then(function (result) {
+        $scope.castSegments = result;
     }, function (err) {
         console.log("Error");
     });
