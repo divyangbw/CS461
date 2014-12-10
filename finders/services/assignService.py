@@ -30,7 +30,7 @@ class AssignService:
         if user.role == "admin":
             items = Assignment.query.all()
             return (jsonify(result=[i.serialize_admin for i in items]), 200)
-        items = Assignment.query.filter_by(user_id=user.user_id).all()
+        items = Assignment.query.filter_by(user_id=user.id).all()
         return (jsonify(result=[i.serialize for i in items]), 200)
 
     def get_assignment(id):
