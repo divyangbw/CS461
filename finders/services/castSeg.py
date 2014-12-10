@@ -37,12 +37,10 @@ class CastSeg:
         cast = Cast.query.get(id)
         if cast is None:
             abort(404)
-        cast.company = company;
-        cast.date = date;
+        cast.company = company
+        cast.date = parser.parse(date)
         db.session.commit()
-        return (jsonify(result=
-            {'id':cast.id, 'company': cast.company, 'date':cast.date}
-        ), 200)
+        return (jsonify(result=Cast.query.get(id).serialize), 200)
 
     def delete_cast(id):
         if id is None:

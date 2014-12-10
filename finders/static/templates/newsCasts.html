@@ -49,40 +49,40 @@
     </ion-content>
 </ion-view>
 
-<script id="newCast.html" type="text/ng-template">
-    <ion-modal-view>
-
-        <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">{{isEditing ? 'Edit Cast' : 'New Cast'}}</h1>
-            <button class="button button-clear button-primary" ng-click="createEditModal.hide()">Close</button>
-        </ion-header-bar>
-
-        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
-                     has-bouncing="false">
-
-            <!-- Everything you want comes under here :) -->
-
-            <div>
-                <div class="list">
-                    <label class="item item-input">
-                        <span class="input-label">Company</span>
-                        <input type="text" ng-model="form.company">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Date</span>
-                        <input type="text" ng-model="form.date">
-                    </label>
-
-                    <div class="item item-input-inset">
-                        <button ng-show="!isEditing" ng-click="saveCast(form)" class="button button-small">Save</button>
-                        <button ng-show="isEditing" ng-click="updateCast(form)" class="button button-small">Update</button>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Everything you want comes above here :) -->
-
-        </ion-content>
-    </ion-modal-view>
-</script>
+{#<script id="newCast.html" type="text/ng-template">#}
+{#    <ion-modal-view>#}
+{##}
+{#        <ion-header-bar class="bar bar-header bar-positive">#}
+{#            <h1 class="title">{{isEditing ? 'Edit Cast' : 'New Cast'}}</h1>#}
+{#            <button class="button button-clear button-primary" ng-click="createEditModal.hide()">Close</button>#}
+{#        </ion-header-bar>#}
+{##}
+{#        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"#}
+{#                     has-bouncing="false">#}
+{##}
+{#            <!-- Everything you want comes under here :) -->#}
+{##}
+{#            <div>#}
+{#                <div class="list">#}
+{#                    <label class="item item-input">#}
+{#                        <span class="input-label">Company</span>#}
+{#                        <input type="text" ng-model="castForm.company">#}
+{#                    </label>#}
+{#                    <label class="item item-input">#}
+{#                        <span class="input-label">Date</span>#}
+{#                        <input type="text" ng-model="castForm.date">#}
+{#                    </label>#}
+{##}
+{#                    <div class="item item-input-inset">#}
+{#                        <button ng-show="!isEditing" ng-click="saveCast(castForm)" class="button button-small">Save</button>#}
+{#                        <button ng-show="isEditing" ng-click="updateCast(castForm)" class="button button-small">Update</button>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#            </div>#}
+{##}
+{#            <!-- Everything you want comes above here :) -->#}
+{##}
+{#        </ion-content>#}
+{#    </ion-modal-view>#}
+{#</script>#}

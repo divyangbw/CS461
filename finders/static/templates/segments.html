@@ -16,10 +16,10 @@
                         <div class="card">
                             <div class="item item-text-wrap">
                                 <h2>{{ activeCast.company }}</h2>
-                                <p>{{ activeCast.date }}</p>
+                                <p>{{ activeCast.date[0] }}</p>
                             </div>
                               <div class="item item-icon-right item-icon-left">
-                                   <i class="icon ion-ios7-arrow-thin-right" ng-click="editCast(cast)"></i>
+                                   <i class="icon ion-edit" ng-click="editCast(activeCast)"></i>
                                    <i class="icon ion-trash-b" ng-click="deleteCast()"></i>
                               </div>
                         </div>
@@ -151,16 +151,16 @@
                 <div class="list">
                     <label class="item item-input">
                         <span class="input-label">Company</span>
-                        <input type="text" ng-model-options="" ng-model="form.company">
+                        <input type="text" ng-model-options="" ng-model="castForm.company">
                     </label>
                     <label class="item item-input">
                         <span class="input-label">Date</span>
-                        <input type="text" ng-model="form.date">
+                        <input type="date" placeholder="MM/DD/YYYY" ng-model="castForm.date[0]">
                     </label>
 
                     <div class="item item-input-inset">
-                        <button ng-show="!isEditing" ng-click="saveCast(form)" class="button button-small">Save</button>
-                        <button ng-show="isEditing" ng-click="updateCast(form)" class="button button-small">Update</button>
+                        <button ng-show="!isEditing" ng-click="saveCast(castForm)" class="button button-small">Save</button>
+                        <button ng-show="isEditing" ng-click="updateCast(castForm)" class="button button-small">Update</button>
                     </div>
                 </div>
 

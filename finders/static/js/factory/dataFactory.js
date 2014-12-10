@@ -11,6 +11,11 @@ angular.module('reports.factory')
             return item ? JSON.parse(item) : {};
         }
 
+        function saveActiveCast(result) {
+            localStorage.setItem("activeCast", JSON.stringify(result));
+            activeCast = result;
+        }
+
         return {
 
             getCasts: function () {
@@ -71,9 +76,15 @@ angular.module('reports.factory')
             updateCast: function (item) {
 
                 var deferred = $q.defer();
+
+                if (item.date && item.date.length === 2)
+                    item.date = item.date[0];
+                console.log(item)
+
                 ApiService.updateCast(item).then(function (result) {
-                    casts = result;
-                    deferred.resolve(casts);
+                    saveActiveCast(result);
+                    console.log(activeCast)
+                    deferred.resolve(activeCast);
                 }, function (err) {
                     deferred.reject(err);
                 });

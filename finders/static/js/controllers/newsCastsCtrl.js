@@ -3,7 +3,7 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
     $scope.loadingData = true;
     $scope.newsCasts = {};
     $scope.castSegments = {};
-    $scope.form = {};
+    $scope.castForm = {};
 
     $scope.goToSegments = function (item) {
         //Set the active cast to the cast that is being displated
@@ -29,20 +29,6 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
 
     };
 
-    //Deleting cast after clicking delete button
-    // Does not work as of 12/7/14
-    $scope.deleteCast = function (item) {
-        // An elaborate, custom popup
-        console.log("Ctrl.Del reached");
-        console.log($scope.cast);
-        var temp = $scope.cast;
-        DataFactory.deleteCast(item).then(function (response) {
-            $scope.cast = {};
-        }, function (err) {
-
-        });
-    };
-
 
     DataFactory.getCasts().then(function (result) {
         $scope.newsCasts = result;
@@ -62,7 +48,7 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
     $scope.newCast = function () {
         // Show the modal
         $scope.isEditing = false;
-        $scope.form = {};
+        $scope.castForm = {};
         $scope.createEditCastModal.show();
     };
 
@@ -126,21 +112,21 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
     };
     //When the update cast button is clicked
     $scope.updateCast = function (item) {
-        // An elaborate, custom popup
         DataFactory.updateCast(item).then(function (response) {
+            $scope.activeCast = response;
             $scope.createEditCastModal.hide();
-            $scope.cast = {};
         }, function (err) {
 
         });
     };
 
     $scope.editCast = function (item) {
-        $scope.form = item;
+
         $scope.isEditing = true;
-        // Show the modal
+        $scope.castForm = item;
         $scope.createEditCastModal.show();
     };
+
 
     //When the add segment button is clicked
     $scope.newSegment = function () {
@@ -153,11 +139,8 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
     //When the update cast button is clicked
     $scope.updateSeg = function (item) {
         // An elaborate, custom popup
-        console.log("Controller")
-        console.log(item)
         DataFactory.updateSegment(item).then(function (response) {
             $scope.createEditSegModal.hide();
-            $scope.cast = {};
         }, function (err) {
 
         });
