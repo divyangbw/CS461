@@ -1,6 +1,7 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 from finders.models import ser
 from finders.models.cast import Cast, Segment
+from finders.models.user import User
 
 from finders import db
 
@@ -28,6 +29,19 @@ class Assignment(db.Model):
        }
 
     @property
+    def serialize_admin(self):
+       return {
+           'id': self.id,
+           'user': self.getUser.serialize,
+           'segment' : self.getSegment.serialize,
+           'cast' : self.getCast.serialize_no_join,
+           'completed' : self.completed,
+           'answers'  : self.serialize_answers,
+           'section'  : self.serialize_sections,
+           'updated': ser.dump_datetime(self.updated)
+       }
+
+    @property
     def serialize_answers(self):
        return [ item.serialize for item in self.answers ]
 
@@ -41,10 +55,12 @@ class Assignment(db.Model):
 
     @property
     def getCast(self):
-        print("CALLED")
         id = Segment.query.get(self.seg_id).cast_id
-        print("Did some ID = " + str(id) )
         return Cast.query.get(id)
+
+    @property
+    def getUser(self):
+        return User.query.get(self.user_id)
 
 
 class Answer(db.Model):

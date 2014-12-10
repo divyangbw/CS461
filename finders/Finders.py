@@ -163,13 +163,12 @@ def my_assignments():
     if validate_user_session(request) is False:
         return Auth.abort_401()
     email = request.headers['email'];
-    user_id = Auth.getId(email)
-    return AssignService.my_assignments(user_id)
+    user = Auth.getUser(email)
+    return AssignService.my_assignments(user)
 
 #--------- MAIN ---------#
 
 def validate_user_session(request):
-    print (str(request.headers))
     if request is None:
         return False
     if not request.headers:
@@ -177,10 +176,18 @@ def validate_user_session(request):
     if "email" not in request.headers or "token" not in request.headers:
         return False;
     email = request.headers['email'];
-    print("LEVEL 1" + str(email))
     token = request.headers['token'];
-    print("LEVEL 2" + str(email))
     return Auth.check_user_token(email, token)
+
+def validate_user_is_admin(request):
+    if request is None:
+        return False
+    if not request.headers:
+        return False
+    if "email" not in request.headers:
+        return False;
+    email = request.headers['email'];
+    return Auth.user_is_admin(email)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():

@@ -4,11 +4,10 @@
 
         <div class="row responsive-sm">
 
-            <div class="col col-33">Hi</div>
             <div class="col col-33">
                 <ul class="list">
-                    <div class="item item-divider">Incomplete</div>
-                    <li class="item item-icon-left" ng-repeat="item in myAssign">
+                    <li class="item item-divider">Incomplete</li>
+                    <li class="item item-icon-left" ng-repeat="item in incomplete">
                         <i class="icon ion-ios7-film"></i>
                         {{ item.cast.company }}
                         <span class="item-note">
@@ -20,9 +19,38 @@
 
             <div class="col col-33">
                 <ul class="list">
-                    <div class="item item-divider">Need to Start</div>
-                    <li class="item">
+                    <li class="item item-divider">Need to Start</li>
+                    <li class="item item-icon-left" ng-repeat="item in toStart" ng-show="isAdmin">
+                        <i class="icon clickable {{ hover ? 'ion-ios7-cog' : 'ion-ios7-cog-outline' }}"
+                                ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                        <h3>{{ item.cast.company }}</h3>
+                        <h4>Subject: {{ item.segment.subject }}</h4>
+                        {{ item.user.first }} {{ item.user.last }}
+                        <span class="item-note">
+                            {{ item.user.email }}
+                        </span>
                     </li>
+                    <li class="item item-icon-left" ng-repeat="item in toStart" ng-show="!isAdmin">
+                        <i class="icon ion-ios7-film"></i>
+                        {{ item.cast.company }}
+                        <span class="item-note">
+                            Subject: {{ item.segment.subject }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col col-33">
+                <ul class="list">
+                    <li class="item item-divider">Completed</li>
+                    <li class="item item-icon-left" ng-repeat="item in completed" ng-show="!isAdmin">
+                        <i class="icon ion-ios7-film"></i>
+                        {{ item.cast.company }}
+                        <span class="item-note">
+                            Subject: {{ item.segment.subject }}
+                        </span>
+                    </li>
+
                 </ul>
             </div>
 

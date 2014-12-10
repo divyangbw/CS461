@@ -54,6 +54,10 @@ angular.module('reports.factory')
                 return CURRENT_USER.role;
             },
 
+            isAdmin: function () {
+                return   CURRENT_USER.role === "admin";
+            },
+
             authCheck: function () {
                 if (CURRENT_USER === {} || CURRENT_USER["token"] === undefined) {
                     $ionicViewService.nextViewOptions({
