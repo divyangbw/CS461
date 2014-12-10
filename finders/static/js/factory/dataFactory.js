@@ -11,6 +11,11 @@ angular.module('reports.factory')
             return item ? JSON.parse(item) : {};
         }
 
+        function saveActiveCast(result) {
+            localStorage.setItem("activeCast", JSON.stringify(result));
+            activeCast = result;
+        }
+
         return {
 
             getCasts: function () {
@@ -71,9 +76,15 @@ angular.module('reports.factory')
             updateCast: function (item) {
 
                 var deferred = $q.defer();
+
+                if (item.date && item.date.length === 2)
+                    item.date = item.date[0];
+                console.log(item)
+
                 ApiService.updateCast(item).then(function (result) {
-                    casts = result;
-                    deferred.resolve(casts);
+                    saveActiveCast(result);
+                    console.log(activeCast)
+                    deferred.resolve(activeCast);
                 }, function (err) {
                     deferred.reject(err);
                 });
@@ -117,11 +128,13 @@ angular.module('reports.factory')
 
             },
             updateSegment: function (item) {
-
+                console.log("DataFactory");
+                console.log(item);
                 var deferred = $q.defer();
+                if (!item.comment || item.comment.length < 1)
+                    item.comment = "";
                 ApiService.updateSeg(item).then(function (result) {
-                    segments = result;
-                    deferred.resolve(segments);
+                   deferred.resolve(result);
                 }, function (err) {
                     deferred.reject(err);
                 });

@@ -75,6 +75,7 @@ def cast_single(id):
     else:
         company = request.json.get('company')
         date = request.json.get('date')
+        print(str(date))
         return CastSeg.update_cast(id, company, date)
 
 #--------- SEGEMENT ---------#
