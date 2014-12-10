@@ -3,7 +3,28 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-        NOW NEED TO GET THE OJECT. ASSUME YOU HAVE IT
+<div class="row responsive-sm">
+            <div class="col">
 
-            </ion-content>
+                <div class="list">
+
+                    <div class="item item-divider">
+                        Questions
+                    </div>
+
+
+                    <ul ng-repeat="(key, value) in questions | groupBy: 'section'">
+  Group name: {{ key }}
+  <li ng-repeat="item in value">
+    player: {{ item.text }}
+  </li>
+</ul>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </ion-content>
 </ion-view>
