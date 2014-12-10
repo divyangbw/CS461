@@ -1,4 +1,4 @@
-angular.module('reports.controllers').controller('SettingsCtrl', function ($scope, $state, User, ApiService) {
+angular.module('reports.controllers').controller('SettingsCtrl', function ($scope, $state, $ionicPopup, User, ApiService) {
 
     $scope.settings = {};
 

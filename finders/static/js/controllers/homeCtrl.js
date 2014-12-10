@@ -1,5 +1,5 @@
 angular.module('reports.controllers')
-    .controller('HomeCtrl', function ($scope, $state, $ionicViewService, $filter, $rootScope, $timeout, User, ApiService, TempDataFactory) {
+    .controller('HomeCtrl', function ($scope, $state, $ionicViewService, $ionicPopover, User, TempDataFactory) {
 
         $scope.incomplete = [];
         $scope.toStart = [];
@@ -14,7 +14,7 @@ angular.module('reports.controllers')
         }
 
         function getData() {
-            TempDataFactory.refreshMyAssignments(false).then(function(result){
+            TempDataFactory.refreshMyAssignments(false).then(function (result) {
                 $scope.completed = TempDataFactory.getCompletedAssignments();
                 $scope.incomplete = TempDataFactory.getIncompleteAssignments();
                 $scope.toStart = TempDataFactory.getNotStartedAssignments();
