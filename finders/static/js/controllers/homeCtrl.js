@@ -58,20 +58,23 @@ angular.module('reports.controllers')
 
         function searchItem(item, newVal) {
             //User
-            if (item.user.first.indexOf(newVal) > -1 || item.user.last.indexOf(newVal) > -1
-                || item.user.email.indexOf(newVal) > -1) {
+            if (item.user && (item.user.first.toUpperCase().indexOf(newVal.toUpperCase()) > -1 ||
+                item.user.last.toUpperCase().indexOf(newVal.toUpperCase()) > -1 ||
+                item.user.email.toUpperCase().indexOf(newVal.toUpperCase()) > -1)) {
                 item.isVisible = true;
                 return;
             }
 
             //segment
-            if (item.segment.subject.indexOf(newVal) > -1 || item.segment.comment.indexOf(newVal) > -1) {
+            if (item.segment && (item.segment.subject.toUpperCase().indexOf(newVal.toUpperCase()) > -1 ||
+                item.segment.comment.toUpperCase().indexOf(newVal.toUpperCase()) > -1)) {
                 item.isVisible = true;
                 return;
             }
 
             //cast
-            if (item.cast.company.indexOf(newVal) > -1 || item.cast.date[0].indexOf(newVal) > -1) {
+            if (item.cast && (item.cast.company.toUpperCase().indexOf(newVal.toUpperCase()) > -1 ||
+                item.cast.date[0].indexOf(newVal.toUpperCase()) > -1)) {
                 item.isVisible = true;
                 return;
             }

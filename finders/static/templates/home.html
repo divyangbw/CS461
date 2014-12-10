@@ -58,13 +58,14 @@
                             {{ item.user.email }}
                         </span>
                     </li>
-                    <li class="item item-icon-left" ng-repeat="item in toStart" ng-show="!isAdmin && item.isVisible">
+                    <a href="#/tab/home/answerQuestions/{{ item.id }}" class="item item-icon-left" ng-show="!isAdmin && item.isVisible"
+                             ng-repeat="item in toStart">
                         <i class="icon ion-ios7-film"></i>
                         {{ item.cast.company }}
                         <span class="item-note">
                             Subject: {{ item.segment.subject }}
                         </span>
-                    </li>
+                    </a>
                 </ul>
             </div>
             <!-- END NEED TO START -->

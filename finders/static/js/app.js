@@ -46,6 +46,16 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                     }
                 }
             })
+            .state('tab.answerQuestions', {
+                url: '/home/answerQuestions/:id',
+                views: {
+                    'tab-home': {
+                        templateUrl: '/static/templates/answerQuestions.html',
+                        controller: 'AnswerQuestionsCtrl'
+                    }
+                }
+            })
+
 
             /*
             .state('tab.source', {
