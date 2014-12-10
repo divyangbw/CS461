@@ -4,12 +4,27 @@
 
         <div class="row responsive-sm">
 
+            <div class="col col-25">
+                <div class="list list-inset">
+                    <label class="item item-input">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input type="text" placeholder="Search" ng-model="filter.search">
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row responsive-sm">
+
+            <!-- INCOMPLETE -->
             <div class="col col-33">
                 <ul class="list">
                     <li class="item item-divider">Incomplete</li>
                     <li class="item item-icon-left" ng-repeat="item in incomplete" ng-show="isAdmin">
                         <i class="icon clickable {{ hover ? 'ion-ios7-cog' : 'ion-ios7-cog-outline' }}"
-                                ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                           ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+
                         <h3>{{ item.cast.company }}</h3>
                         <h4>Subject: {{ item.segment.subject }}</h4>
                         {{ item.user.first }} {{ item.user.last }}
@@ -26,13 +41,16 @@
                     </li>
                 </ul>
             </div>
+            <!-- END INCOMPLETE -->
 
+            <!-- NEED TO START -->
             <div class="col col-33">
                 <ul class="list">
                     <li class="item item-divider">Need to Start</li>
-                    <li class="item item-icon-left" ng-repeat="item in toStart" ng-show="isAdmin">
+                    <li class="item item-icon-left" ng-repeat="item in toStart" ng-show="isAdmin && item.isVisible">
                         <i class="icon clickable {{ hover ? 'ion-ios7-cog' : 'ion-ios7-cog-outline' }}"
-                                ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                           ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+
                         <h3>{{ item.cast.company }}</h3>
                         <h4>Subject: {{ item.segment.subject }}</h4>
                         {{ item.user.first }} {{ item.user.last }}
@@ -40,7 +58,7 @@
                             {{ item.user.email }}
                         </span>
                     </li>
-                    <li class="item item-icon-left" ng-repeat="item in toStart" ng-show="!isAdmin">
+                    <li class="item item-icon-left" ng-repeat="item in toStart" ng-show="!isAdmin && item.isVisible">
                         <i class="icon ion-ios7-film"></i>
                         {{ item.cast.company }}
                         <span class="item-note">
@@ -49,13 +67,16 @@
                     </li>
                 </ul>
             </div>
+            <!-- END NEED TO START -->
 
+            <!-- COMPLETED -->
             <div class="col col-33">
                 <ul class="list">
                     <li class="item item-divider">Completed</li>
                     <li class="item item-icon-left" ng-repeat="item in completed" ng-show="isAdmin">
                         <i class="icon clickable {{ hover ? 'ion-ios7-cog' : 'ion-ios7-cog-outline' }}"
-                                ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                           ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+
                         <h3>{{ item.cast.company }}</h3>
                         <h4>Subject: {{ item.segment.subject }}</h4>
                         {{ item.user.first }} {{ item.user.last }}
@@ -73,6 +94,7 @@
 
                 </ul>
             </div>
+            <!-- END COMPLETED -->
 
         </div>
 
