@@ -6,7 +6,6 @@ angular.module('reports.factory')
         var questions = [];
         var questionTypes = ["Single Line", "Multiple Choice", "Multi-Choice"];
         var test = [];
-
         return {
 
             getAllQuestionTypes: function () {
@@ -56,26 +55,22 @@ angular.module('reports.factory')
                 console.log("factor remove",item);
                 var deferred = $q.defer();
                 ApiService.deleteQuestion(item).then(function (result) {
-                    questions = result;
+                    var index = -1;
+                    for (var i = 0; i < questions.length; i++) {
+                        if (questions[i].id === item.id) {
+                            index = i;
+                            break;
+                        }
+                    }
+                questions.splice(index, 1);
+
                     deferred.resolve(questions);
                 }, function (err) {
                     deferred.reject(err);
                 });
-                var index = -1;
-                for (var i = 0; i < questions.length; i++) {
-                    if (questions[i].id === item.id) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                questions.splice(index, 1);
                 return deferred.promise;
-
             }
 
-
         }
-
 
     });
