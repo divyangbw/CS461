@@ -83,14 +83,14 @@ class CastSeg:
         segment = Segment.query.get(id)
         if segment is None:
             abort(404)
-        segment.subject = company;
-        segment.start = date;
-        segment.end = date;
-        segment.comment = date;
+        segment.subject = subject;
+        segment.start = start;
+        segment.end = end;
+        segment.comment = comment;
         db.session.commit()
         return (jsonify(result= {
-            'id':segment.id, 'cast_id': segment.company, 'subject':segment.date,
-            'start':segment.start, 'end':segment.end, 'comment':segment.comment
+            'id':segment.id, 'subject': segment.subject, 'start':segment.start,
+            'end':segment.end, 'comment':segment.comment
         }), 200)
 
     def delete_seg(id):

@@ -117,11 +117,13 @@ angular.module('reports.factory')
 
             },
             updateSegment: function (item) {
-
+                console.log("DataFactory");
+                console.log(item);
                 var deferred = $q.defer();
+                if (!item.comment || item.comment.length < 1)
+                    item.comment = "";
                 ApiService.updateSeg(item).then(function (result) {
-                    segments = result;
-                    deferred.resolve(segments);
+                   deferred.resolve(result);
                 }, function (err) {
                     deferred.reject(err);
                 });

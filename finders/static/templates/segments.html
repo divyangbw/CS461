@@ -18,10 +18,8 @@
                                 <h2>{{ activeCast.company }}</h2>
                                 <p>{{ activeCast.date }}</p>
                             </div>
-                              <div class="item item-icon-right">
+                              <div class="item item-icon-right item-icon-left">
                                    <i class="icon ion-ios7-arrow-thin-right" ng-click="editCast(cast)"></i>
-                              </div>
-                              <div class="item item-icon-left">
                                    <i class="icon ion-trash-b" ng-click="deleteCast()"></i>
                               </div>
                         </div>
@@ -44,11 +42,11 @@
 
                             <tbody>
 
-                            <tr ng-repeat="segment in castSegments">
+                            <tr ng-repeat="item in castSegments" ng-click="editSegment(item)">
 
-                                <td>{{ segment.subject }}</td>
-                                <td>{{ segment.start }}</td>
-                                <td>{{ segment.end }}</td>
+                                <td>{{ item.subject }}</td>
+                                <td>{{ item.start }}</td>
+                                <td>{{ item.end }}</td>
 
                             </tr>
 
@@ -178,7 +176,8 @@
     <ion-modal-view>
 
         <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">{{isEditing ? 'Edit Segment' : 'New Segment'}}</h1>
+            <h1 class="title" ng-show = "isEditing" >Edit Segment</h1>
+            <h1 class="title" ng-show = "!isEditing" >New Segment</h1>
             <button class="button button-clear button-primary" ng-click="createEditSegModal.hide()">Close</button>
         </ion-header-bar>
 
@@ -191,20 +190,20 @@
                 <div class="list">
                     <label class="item item-input">
                         <span class="input-label">Subject</span>
-                        <input type="text" ng-model-options="" ng-model="seg.subject">
+                        <input type="text" ng-model-options="" ng-model="segmentForm.subject">
                     </label>
                     <label class="item item-input">
                         <span class="input-label">Start Time</span>
-                        <input type="text" ng-model="seg.start">
+                        <input type="text" ng-model="segmentForm.start">
                     </label>
                     <label class="item item-input">
                         <span class="input-label">End Time</span>
-                        <input type="text" ng-model="seg.end">
+                        <input type="text" ng-model="segmentForm.end">
                     </label>
 
                     <div class="item item-input-inset">
-                        <button ng-show="!isEditing" ng-click="saveSeg(seg)" class="button button-small">Save</button>
-                        <button ng-show="isEditing" ng-click="updateSeg(seg)" class="button button-small">Update</button>
+                        <button ng-show="!isEditing" ng-click="saveSeg(segmentForm)" class="button button-small">Save</button>
+                        <button ng-show="isEditing" ng-click="updateSeg(segmentForm)" class="button button-small">Update</button>
                     </div>
                 </div>
 

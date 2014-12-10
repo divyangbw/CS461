@@ -64,7 +64,7 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
         $scope.isEditing = false;
         $scope.form = {};
         $scope.createEditCastModal.show();
-    }
+    };
 
 });
 
@@ -72,13 +72,16 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
 angular.module('reports.controllers').controller('SegmentsCtrl', function ($scope, $state, DataFactory, $ionicPopup, $ionicModal, User) {
 
     $scope.activeCast = DataFactory.getActiveCast();
-
+    $scope.segmentForm = {};
+    $scope.test = function(test) {
+        alert("hi")
+    }
 
     DataFactory.getSegments().then(function (result) {
         $scope.castSegments = result;
     }, function (err) {
         console.log("Error")
-    })
+    });
 
     //Creates the edit cast popup
     $ionicModal.fromTemplateUrl('editCast.html', {
@@ -95,12 +98,12 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
 
 
     $scope.editSegment = function (item) {
-        // Set the editItem to what we want to edit. That way we can pre-fill the form.
-        $scope.isEditing = true;
-        $scope.editItem = item;
         // Show the modal
-        $scope.createEditCastModal.show();
-    }
+        console.log(item);
+        $scope.isEditing = true;
+        $scope.segmentForm = item;
+        $scope.createEditSegModal.show();
+    };
     $scope.saveSeg = function (item) {
         DataFactory.createSegment(item).then(function (response) {
             $scope.createEditSegModal.hide();
@@ -131,31 +134,33 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
 
         });
     };
-    //TODO: GET UPDATE TO WORK
+
     $scope.editCast = function (item) {
         $scope.form = item;
         $scope.isEditing = true;
         // Show the modal
         $scope.createEditCastModal.show();
-    }
+    };
 
     //When the add segment button is clicked
     $scope.newSegment = function () {
         // Show the modal
+        console.log("newSegment")
         $scope.isEditing = false;
-        $scope.seg = {};
+        $scope.segmentForm = {};
         $scope.createEditSegModal.show();
-    }
+    };
     //When the update cast button is clicked
     $scope.updateSeg = function (item) {
         // An elaborate, custom popup
+        console.log("Controller")
+        console.log(item)
         DataFactory.updateSegment(item).then(function (response) {
-            $scope.createEditCastModal.hide();
+            $scope.createEditSegModal.hide();
             $scope.cast = {};
         }, function (err) {
 
         });
-        console.log($scope.cast);
 
     };
 
