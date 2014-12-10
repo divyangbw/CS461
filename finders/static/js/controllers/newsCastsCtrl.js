@@ -31,10 +31,12 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
 
     //Deleting cast after clicking delete button
     // Does not work as of 12/7/14
-    $scope.deleteCast = function () {
+    $scope.deleteCast = function (item) {
         // An elaborate, custom popup
+        console.log("Ctrl.Del reached");
+        console.log($scope.cast);
         var temp = $scope.cast;
-        DataFactory.deleteCast(temp).then(function (response) {
+        DataFactory.deleteCast(item).then(function (response) {
             $scope.cast = {};
         }, function (err) {
 
@@ -67,7 +69,7 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
 });
 
 //Segments.html Controller
-angular.module('reports.controllers').controller('SegmentsCtrl', function ($scope, DataFactory, $ionicPopup, $ionicModal, User) {
+angular.module('reports.controllers').controller('SegmentsCtrl', function ($scope, $state, DataFactory, $ionicPopup, $ionicModal, User) {
 
     $scope.activeCast = DataFactory.getActiveCast();
 
@@ -112,7 +114,7 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
     $scope.deleteSegment = function () {
         // An elaborate, custom popup
         var temp = $scope.cast;
-        DataFactory.deleteCast(temp).then(function (response) {
+        DataFactory.deleteSegment(temp).then(function (response) {
             //$scope.createEditCastModal.close();
             $scope.cast = {};
         }, function (err) {
@@ -144,5 +146,31 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
         $scope.seg = {};
         $scope.createEditSegModal.show();
     }
+    //When the update cast button is clicked
+    $scope.updateSeg = function (item) {
+        // An elaborate, custom popup
+        DataFactory.updateSegment(item).then(function (response) {
+            $scope.createEditCastModal.hide();
+            $scope.cast = {};
+        }, function (err) {
 
+        });
+        console.log($scope.cast);
+
+    };
+
+//    TODO:
+//        Add deletion verification
+    $scope.deleteCast = function (item) {
+        // An elaborate, custom popup
+        console.log("Ctrl.Del reached");
+        console.log($scope.cast);
+        var temp = $scope.cast;
+        DataFactory.deleteCast($scope.activeCast).then(function (response) {
+            $scope.cast = {};
+        }, function (err) {
+
+        });
+        $state.go('tab.newsCasts');
+    };
 });

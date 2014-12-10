@@ -80,8 +80,7 @@ angular.module('reports.factory')
                 return deferred.promise;
 
             },
-            deleteCast: function (item) {
-
+               deleteCast: function (item) {
                 var deferred = $q.defer();
                 ApiService.deleteCast(item).then(function (result) {
                     casts = result;
@@ -89,8 +88,6 @@ angular.module('reports.factory')
                 }, function (err) {
                     deferred.reject(err);
                 });
-                return deferred.promise;
-
                 var index = -1;
                 for (var i = 0; i < casts.length; i++) {
                     if (casts[i].id === item.id) {
@@ -100,6 +97,8 @@ angular.module('reports.factory')
                 }
 
                 casts.splice(index, 1);
+                return deferred.promise;
+
             },
             createSegment: function (item) {
 

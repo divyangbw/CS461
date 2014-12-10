@@ -18,10 +18,15 @@
                                 <h2>{{ activeCast.company }}</h2>
                                 <p>{{ activeCast.date }}</p>
                             </div>
+                              <div class="item item-icon-right">
+                                   <i class="icon ion-ios7-arrow-thin-right" ng-click="editCast(cast)"></i>
+                              </div>
+                              <div class="item item-icon-left">
+                                   <i class="icon ion-trash-b" ng-click="deleteCast()"></i>
+                              </div>
                         </div>
-                        <button class="button button-outline button-block button-dark" ng-click="editCast(activeCast)">
-                            Edit
-                        </button>
+
+
                     </div>
                     <div class="col col-80">
 
