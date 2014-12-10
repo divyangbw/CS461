@@ -8,7 +8,6 @@ angular.module('reports.controllers')
         }
 
         ApiService.getMyAssignments().then(function(data) {
-            console.log(data)
             $scope.myAssign = data;
         }, function (err) {
             console.log("error");

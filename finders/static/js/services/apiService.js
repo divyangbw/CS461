@@ -153,7 +153,6 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         $http.get(BASEURL + url, HEADER).then(function (response) {
             deferred.resolve(response.data.result);
         }, function (response) {
-            console.log(response);
             deferred.reject(response);
         });
         return deferred.promise;
