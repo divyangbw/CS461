@@ -79,6 +79,16 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                 }
             })
 
+            .state('tab.answers', {
+                url: '/results/answers',
+                views: {
+                    'tab-results': {
+                        templateUrl: '/static/templates/answers.html',
+                        controller: 'ResultsCtrl'
+                    }
+                }
+            })
+
             .state('tab.newsCasts', {
                 url: '/newsCasts',
                 views: {

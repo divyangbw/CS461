@@ -4,7 +4,9 @@ angular.module('reports.factory')
 
         var casts = [];
         var activeCast = getActiveCastStorage();
+        var activeAnswer = getActiveAnswerStorage();
         var segments = [];
+        var answers = [];
 
         function getActiveCastStorage() {
             var item = localStorage.getItem("activeCast");
@@ -16,10 +18,19 @@ angular.module('reports.factory')
             activeCast = result;
         }
 
+        function getActiveAnswerStorage() {
+            var item = localStorage.getItem("activeAnswer");
+            return item ? JSON.parse(item) : {};
+        }
+
+        function saveActiveAnswer(result) {
+            localStorage.setItem("activeAnswer", JSON.stringify(result));
+            activeCast = result;
+        }
+
         return {
 
             getCasts: function () {
-
                 var deferred = $q.defer();
                 ApiService.getAllCasts().then(function (result) {
                     casts = result;
@@ -41,6 +52,17 @@ angular.module('reports.factory')
                 return deferred.promise;
             },
 
+            getAnswers: function() {
+                //var deferred = $q.defer();
+                //ApiService.getAllAnswers(activeAnswer.segId).then(function (result) {
+                //    answers = result;
+                //    deferred.resolve(answers);
+                //}, function (err) {
+                //    deferred.reject(err);
+                //});
+                //return deferred.promise;
+            },
+
             getActiveCast: function () {
                 return activeCast;
             },
@@ -48,6 +70,15 @@ angular.module('reports.factory')
             setActiveCast: function (cast) {
                 activeCast = cast;
                 localStorage.setItem("activeCast", JSON.stringify(activeCast));
+            },
+
+            getActiveAnswer: function () {
+                return activeAnswer;
+            },
+
+            setActiveAnswer: function (cast) {
+                activeAnswer = cast;
+                localStorage.setItem("activeAnswer", JSON.stringify(activeCast));
             },
 
             createCast: function (item) {
@@ -60,10 +91,9 @@ angular.module('reports.factory')
                     deferred.reject(err);
                 });
                 return deferred.promise;
-
             },
-            updateCast: function (item) {
 
+            updateCast: function (item) {
                 var deferred = $q.defer();
 
                 if (item.date && item.date.length === 2)
@@ -78,9 +108,9 @@ angular.module('reports.factory')
                     deferred.reject(err);
                 });
                 return deferred.promise;
-
             },
-               deleteCast: function (item) {
+
+            deleteCast: function (item) {
                 var deferred = $q.defer();
                 ApiService.deleteCast(item).then(function (result) {
                     casts = result;
@@ -98,12 +128,12 @@ angular.module('reports.factory')
 
                 casts.splice(index, 1);
                 return deferred.promise;
-
             },
+
             createSegment: function (item) {
 
                 var deferred = $q.defer();
-                if(!activeCast || activeCast === {}) {
+                if (!activeCast || activeCast === {}) {
                     deferred.reject("Null Cast");
                     return deferred.promise;
                 }
@@ -114,8 +144,8 @@ angular.module('reports.factory')
                     deferred.reject(err);
                 });
                 return deferred.promise;
-
             },
+
             updateSegment: function (item) {
                 console.log("DataFactory");
                 console.log(item);
@@ -123,13 +153,13 @@ angular.module('reports.factory')
                 if (!item.comment || item.comment.length < 1)
                     item.comment = "";
                 ApiService.updateSeg(item).then(function (result) {
-                   deferred.resolve(result);
+                    deferred.resolve(result);
                 }, function (err) {
                     deferred.reject(err);
                 });
                 return deferred.promise;
-
             },
+
             deleteSegment: function (item) {
 
                 var deferred = $q.defer();
@@ -148,12 +178,7 @@ angular.module('reports.factory')
                         break;
                     }
                 }
-
                 segments.splice(index, 1);
             }
-
-
         }
-
-
     });
