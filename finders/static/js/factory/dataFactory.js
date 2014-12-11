@@ -41,17 +41,6 @@ angular.module('reports.factory')
                 return deferred.promise;
             },
 
-            getSegmentsForCast: function(cast) {
-                var deferred = $q.defer();
-                ApiService.getAllSegments(cast.id).then(function (result) {
-                    segments = result;
-                    deferred.resolve(segments);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
-            },
-
             getActiveCast: function () {
                 return activeCast;
             },
