@@ -86,14 +86,15 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
 
     $scope.editSegment = function (item, index) {
         // Show the modal
+        console.log("When opening the form:");
         console.log(item);
-        tempCast = {index:index, data:item};
+        tempCast = {index:index, data:angular.copy(item)};
         $scope.isEditing = true;
         $scope.segmentForm = item;
         $scope.createEditSegModal.show();
     };
     $scope.closeEditSegment = function () {
-        console.log("Temp:" + tempCast.index, tempCast.data);
+        console.log("What the form should include:" + tempCast.index, tempCast.data);
         $scope.castSegments[tempCast.index] = tempCast.data;
         $scope.createEditSegModal.hide();
     };
@@ -121,13 +122,14 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
     };
 
     $scope.editCast = function (item) {
-        tempCast = item;
+        tempCast = angular.copy(item);
         $scope.isEditing = true;
         $scope.castForm = item;
         $scope.createEditCastModal.show();
     };
     $scope.closeEditCast = function() {
-        $scope.castForm = tempCast;
+        $scope.activeCast = tempCast;
+        $scope.castForm = { };
         $scope.createEditCastModal.hide();
     }
 
@@ -164,13 +166,15 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
         $state.go('tab.newsCasts');
     };
 
-//     $scope.deleteSegment = function () {
-//         var temp = $scope.seg;
-//        DataFactory.deleteSegment().then(function (response) {
-//            $scope.seg = {};
-//        }, function (err) {
-//
-//        });
-//        $state.go('tab.segments');
-//    };
+     $scope.deleteSegment = function (item, index) {
+        console.log("outside of datafactory");
+                console.log(item);
+        DataFactory.deleteSegment(item, index).then(function (response) {
+            console.log("deleteSeg");
+            $scope.castSegments = response;
+        }, function (err) {
+
+        });
+        $scope.createEditSegModal.hide();
+    };
 });

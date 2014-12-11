@@ -30,7 +30,7 @@
 
                             <h2>{{ cast.company }}</h2>
 
-                            <p>{{ cast.date[0] }}</p>
+                            <p>{{ cast.date }}</p>
                         </div>
 
                         <div class="item item-icon-right">
@@ -68,9 +68,9 @@
                         <span class="input-label">Company</span>
                         <input type="text" ng-model="castForm.company">
                     </label>
-                    <label class="item item-input">
+                     <label class="item item-input">
                         <span class="input-label">Date</span>
-                        <input type="text" ng-model="castForm.date">
+                        <input type="date" placeholder="MM/DD/YYYY" ng-model="castForm.date">
                     </label>
 
                     <div class="item item-input-inset">

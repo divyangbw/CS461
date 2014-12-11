@@ -52,7 +52,7 @@ angular.module('reports.factory')
                 return deferred.promise;
             },
 
-            getAnswers: function() {
+            getAnswers: function () {
                 //var deferred = $q.defer();
                 //ApiService.getAllAnswers(activeAnswer.segId).then(function (result) {
                 //    answers = result;
@@ -160,11 +160,13 @@ angular.module('reports.factory')
                 return deferred.promise;
             },
 
-            deleteSegment: function (item) {
-
+            deleteSegment: function (item, index) {
+                console.log("DataFactory");
+                console.log(item);
                 var deferred = $q.defer();
                 ApiService.deleteSeg(item).then(function (result) {
-                    segments = result;
+                    console.log("deleteSeg");
+                    segments.splice(index, 1);
                     deferred.resolve(segments);
                 }, function (err) {
                     deferred.reject(err);
@@ -180,5 +182,6 @@ angular.module('reports.factory')
                 }
                 segments.splice(index, 1);
             }
+
         }
     });
