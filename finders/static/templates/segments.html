@@ -42,11 +42,11 @@
 
                             <tbody>
 
-                            <tr ng-repeat="item in castSegments" ng-click="editSegment(item)">
+                            <tr ng-repeat="seg in castSegments" ng-click="editSegment(seg, $index)">
 
-                                <td>{{ item.subject }}</td>
-                                <td>{{ item.start }}</td>
-                                <td>{{ item.end }}</td>
+                                <td>{{ seg.subject }}</td>
+                                <td>{{ seg.start }}</td>
+                                <td>{{ seg.end }}</td>
 
                             </tr>
 
@@ -65,81 +65,12 @@
             </ion-content>
 </ion-view>
 
-
-<script id="newSegment.html" type="text/ng-template">
-    <ion-modal-view>
-
-        <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">{{isEditing ? 'Edit Segment' : 'New Cast'}}</h1>
-            <button class="button button-clear button-primary" ng-click="createEditCastModal.hide()">Close</button>
-        </ion-header-bar>
-
-        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
-                     has-bouncing="false">
-
-            <!-- Everything you want comes under here :) -->
-
-            <div ng-show="!isEditing">
-                <div class="list">
-                    <label class="item item-input">
-                        <span class="input-label">Subject</span>
-                        <input type="text" ng-model="seg.subject">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Start Time</span>
-                        <input type="text" ng-model="seg.start">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">End Time</span>
-                        <input type="text" ng-model="seg.end">
-                    </label>
-
-
-                    <div class="item item-input-inset">
-                        <button ng-click="submitSegment(seg)" class="button button-small">
-                            Save
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            <div ng-show="isEditing">
-                <h3>{{editItem ? editItem.text : ''}}</h3>
-
-                <div class="list">
-                    <label class="item item-input">
-                        <span class="input-label">Subject</span>
-                        <input type="text" ng-model="editItem.text">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Start Time</span>
-                        <input type="text" ng-model="editItem.tag">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">End Time</span>
-                        <input type="text" ng-model="editItem.tag">
-                    </label>
-
-                    <div class="item item-input-inset">
-                        <button ng-click="updateSegment()" class="button button-small">
-                            Update
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Everything you want comes above here :) -->
-
-        </ion-content>
-    </ion-modal-view>
-</script>
-
 <script id="editCast.html" type="text/ng-template">
     <ion-modal-view>
 
         <ion-header-bar class="bar bar-header bar-positive">
             <h1 class="title">{{isEditing ? 'Edit Cast' : 'New Cast'}}</h1>
-            <button class="button button-clear button-primary" ng-click="createEditCastModal.hide()">Close</button>
+            <button class="button button-clear button-primary" ng-click="closeEditCast()">Close</button>
         </ion-header-bar>
 
         <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
@@ -178,7 +109,7 @@
         <ion-header-bar class="bar bar-header bar-positive">
             <h1 class="title" ng-show = "isEditing" >Edit Segment</h1>
             <h1 class="title" ng-show = "!isEditing" >New Segment</h1>
-            <button class="button button-clear button-primary" ng-click="createEditSegModal.hide()">Close</button>
+            <button class="button button-clear button-primary" ng-click="closeEditSegment()">Close</button>
         </ion-header-bar>
 
         <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"

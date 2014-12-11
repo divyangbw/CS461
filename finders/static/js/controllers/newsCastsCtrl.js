@@ -57,6 +57,7 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
 //Segments.html Controller
 angular.module('reports.controllers').controller('SegmentsCtrl', function ($scope, $state, DataFactory, $ionicPopup, $ionicModal, User) {
 
+    var tempCast = {};
     $scope.activeCast = DataFactory.getActiveCast();
     $scope.segmentForm = {};
     $scope.test = function(test) {
@@ -83,12 +84,18 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
     });
 
 
-    $scope.editSegment = function (item) {
+    $scope.editSegment = function (item, index) {
         // Show the modal
         console.log(item);
+        tempCast = {index:index, data:item};
         $scope.isEditing = true;
         $scope.segmentForm = item;
         $scope.createEditSegModal.show();
+    };
+    $scope.closeEditSegment = function () {
+        console.log("Temp:" + tempCast.index, tempCast.data);
+        $scope.castSegments[tempCast.index] = tempCast.data;
+        $scope.createEditSegModal.hide();
     };
     $scope.saveSeg = function (item) {
         DataFactory.createSegment(item).then(function (response) {
@@ -100,16 +107,9 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
 
     };
 
-    $scope.deleteSegment = function () {
-        // An elaborate, custom popup
-        var temp = $scope.cast;
-        DataFactory.deleteSegment(temp).then(function (response) {
-            //$scope.createEditCastModal.close();
-            $scope.cast = {};
-        }, function (err) {
 
-        });
-    };
+
+
     //When the update cast button is clicked
     $scope.updateCast = function (item) {
         DataFactory.updateCast(item).then(function (response) {
@@ -121,11 +121,15 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
     };
 
     $scope.editCast = function (item) {
-
+        tempCast = item;
         $scope.isEditing = true;
         $scope.castForm = item;
         $scope.createEditCastModal.show();
     };
+    $scope.closeEditCast = function() {
+        $scope.castForm = tempCast;
+        $scope.createEditCastModal.hide();
+    }
 
 
     //When the add segment button is clicked
@@ -150,9 +154,7 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
 //    TODO:
 //        Add deletion verification
     $scope.deleteCast = function (item) {
-        // An elaborate, custom popup
-        console.log("Ctrl.Del reached");
-        console.log($scope.cast);
+
         var temp = $scope.cast;
         DataFactory.deleteCast($scope.activeCast).then(function (response) {
             $scope.cast = {};
@@ -161,4 +163,14 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
         });
         $state.go('tab.newsCasts');
     };
+
+//     $scope.deleteSegment = function () {
+//         var temp = $scope.seg;
+//        DataFactory.deleteSegment().then(function (response) {
+//            $scope.seg = {};
+//        }, function (err) {
+//
+//        });
+//        $state.go('tab.segments');
+//    };
 });
