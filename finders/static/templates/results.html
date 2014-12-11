@@ -4,6 +4,25 @@
 
 
         <div class="row gallery responsive-sm">
+            <div class="col col-20" ng-repeat="item in completed">
+                <div class="list card">
+
+                    <div class="item item-divider">
+                        {{ item.cast.company }}
+                    </div>
+                    <div class="item">
+                        <h3>{{ item.segment.subject }}</h3>
+                        <h4>Start: {{ item.segment.start }} End: {{ item.segment.end }}</h4>
+                    </div>
+                    <span class="item-note">
+                        Submitted by: {{ item.user.first }} {{ item.user.last }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        <div class="row gallery responsive-sm">
             <div class="col col-20" ng-repeat="cast in newsCasts">
                 <div class="list card">
 
@@ -19,6 +38,7 @@
                 </div>
             </div>
         </div>
+        -->
 
         <!--
         <div class="col col-33">

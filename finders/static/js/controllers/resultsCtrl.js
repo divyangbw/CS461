@@ -1,8 +1,8 @@
 angular.module('reports.controllers').controller('ResultsCtrl', function ($scope, $state, DataFactory, $ionicModal, TempDataFactory) {
 
     $scope.loadingData = true;
-    $scope.newsCasts = {};
-    $scope.castSegments = {};
+    $scope.newsCasts = [];
+    $scope.castSegments = [];
     $scope.completed = [];
 
     getData();
@@ -10,12 +10,20 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
     function getData() {
         TempDataFactory.refreshMyAssignments(false).then(function () {
             $scope.completed = TempDataFactory.getCompletedAssignments();
+            console.log($scope.completed);
         });
     }
 
     DataFactory.getCasts().then(function (result) {
-        $scope.newsCasts = result;
-        console.log($scope.newsCasts);
+        //result.forEach(function (cast) {
+        //   cast.segments.forEach(function (segment) {
+        //       $.scope.completed.forEach(function(completedItem) {
+        //          if (completedItem.segment === segment) {
+        //              $scope.castSegments.push(cast);
+        //          }
+        //       });
+        //   }) ;
+        //});
     }, function (err) {
         console.log("Error");
     });
@@ -25,5 +33,6 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
     }, function (err) {
         console.log("Error");
     });
-    
+
+
 });
