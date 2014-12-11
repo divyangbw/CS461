@@ -3,11 +3,12 @@
                  has-bouncing="false">
 
         <div class="row">
+
             <div class="col col-20">
                 <div class="card">
                     <div class="item item-text-wrap">
                         <h2>{{ activeAnswer.cast.company }}</h2>
-                        <p>{{ activeCast.cast.date[0] }}</p>
+                        <p>{{ activeAnswer.cast.date[0] }}</p>
                     </div>
                 </div>
             </div>
@@ -27,9 +28,9 @@
 
                     <tr ng-repeat="item in completed">
 
-                        <td>{{ seg.subject }}</td>
-                        <td>{{ seg.start }}</td>
-                        <td>{{ seg.end }}</td>
+                        <td>{{ item.cast.company }}</td>
+                        <td>{{ item.start }}</td>
+                        <td>{{ item.end }}</td>
 
                     </tr>
 
@@ -40,9 +41,6 @@
             </div>
 
         </div>
-
-        <!-- END TABLE -->
-
 
     </ion-content>
 </ion-view>

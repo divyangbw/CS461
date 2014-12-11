@@ -11,6 +11,7 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
     function getData() {
         TempDataFactory.refreshMyAssignments(false).then(function () {
             $scope.completed = TempDataFactory.getCompletedAssignments();
+            console.log($scope.completed);
         });
     }
 

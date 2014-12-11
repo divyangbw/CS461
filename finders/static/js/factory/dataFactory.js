@@ -25,7 +25,7 @@ angular.module('reports.factory')
 
         function saveActiveAnswer(result) {
             localStorage.setItem("activeAnswer", JSON.stringify(result));
-            activeCast = result;
+            activeAnswer = result;
         }
 
         return {
@@ -42,14 +42,14 @@ angular.module('reports.factory')
             },
 
             getSegments: function () {
-                var deferred = $q.defer();
-                ApiService.getAllSegments(activeCast.id).then(function (result) {
-                    segments = result;
-                    deferred.resolve(segments);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
+                //var deferred = $q.defer();
+                //ApiService.getAllSegments(activeCast.id).then(function (result) {
+                //    segments = result;
+                //    deferred.resolve(segments);
+                //}, function (err) {
+                //    deferred.reject(err);
+                //});
+                //return deferred.promise;
             },
 
             getAnswers: function () {
@@ -76,9 +76,9 @@ angular.module('reports.factory')
                 return activeAnswer;
             },
 
-            setActiveAnswer: function (cast) {
-                activeAnswer = cast;
-                localStorage.setItem("activeAnswer", JSON.stringify(activeCast));
+            setActiveAnswer: function (answer) {
+                activeAnswer = answer;
+                localStorage.setItem("activeAnswer", JSON.stringify(activeAnswer));
             },
 
             createCast: function (item) {
