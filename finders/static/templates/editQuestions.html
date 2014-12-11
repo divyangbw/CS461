@@ -80,7 +80,7 @@
                     <div class="item item-divider item-button-right"
                          ng-show="form.type === 'Multiple Choice' || form.type === 'Multi-Choice'">
                         Options
-                        <button class="button button-positive button-outline" ng-click="newOption()">
+                        <button class="button button-positive button-outline" ng-click="newOption(form)">
                             +
                         </button>
                     </div>
@@ -100,7 +100,7 @@
                             </div>
                             <div class="col col-10">
                                 <button class="button button-positive button-outline icon ion-ios7-minus-outline"
-                                        ng-click="deleteOption($index)"></button>
+                                        ng-click="deleteOption(item, $index)"></button>
                             </div>
 
 

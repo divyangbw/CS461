@@ -12,15 +12,15 @@
                         Questions
                     </div>
 
+                    <div class="list">
+                        <div class=" item-divider animate-repeat" ng-repeat="(key, value) in questions | groupBy: 'section'">
+                              Section:{{ key }}
+                              <div class="item" ng-repeat="item in value">
+                                {{ item.text }} is a {{ item.type }}
+                              </div>
+                        </div>
 
-                    <ul ng-repeat="(key, value) in questions | groupBy: 'section'">
-  Group name: {{ key }}
-  <li ng-repeat="item in value">
-    player: {{ item.text }}
-  </li>
-</ul>
-
-
+                    </div>
                 </div>
 
             </div>

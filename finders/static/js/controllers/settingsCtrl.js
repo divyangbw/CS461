@@ -112,26 +112,65 @@ angular.module('reports.controllers')
         $scope.types = QuestionsFactory.getAllQuestionTypes();
         $scope.form = { };
         $scope.questions = [];
+        $scope.options = [];
 
 
         $scope.submitQuestion = function () {
             QuestionsFactory.createQuestion($scope.form).then(function (response) {
                 //$scope.createEditModal.close();
-                $scope.createEditModal.hide();
-                $scope.form = {};
+                console.log("INSIDE NEW QUESTION")
                 $scope.questions = response;
-            }, function (err) {
+                $scope.createEditModal.hide();
+                console.log("CLOSED NEW QUESTION")
+                $scope.form = {};
 
+            }, function (err) {
+                console.log("FUCK ME")
+                console.log(err)
             });
         };
 
-        $scope.newOption = function () {
-            if (!$scope.form.options) $scope.form.options = [];
-            $scope.form.options.push({});
+        // Updating ALREADY created options
+        function updateAllOptions(current_index, options) {
+            var deferred = $q.defer();
+
+            ApiService.updateOption(options[current_index], options[current_index].question_id).then(function (result) {
+                current_index++;
+                if (options.length <= current_index) {
+                    deferred.resolve("success");
+                    return deferred.promise;
+                } else {
+                    updateAllOptions(current_index, options);
+                }
+            }, function (err) {
+                deferred.reject(err)
+            });
+
+            return deferred.promise;
+        }
+
+        $scope.newOption = function (form) {
+            if (form.id && form.id > -1) {
+                QuestionsFactory.createOption({question_id: form.id,text:""}).then(function (item) {
+                    if (!$scope.form.options) $scope.form.options = [];
+                    $scope.form.options.push({});
+                });
+            } else {
+                if (!$scope.form.options) $scope.form.options = [];
+                    $scope.form.options.push({});
+            }
+
         };
 
-        $scope.deleteOption = function (index) {
-            $scope.form.options.splice(index, 1);
+        $scope.deleteOption = function (item, index) {
+            if (item.id && item.id > -1) {
+                QuestionsFactory.deleteOption(item).then(function (result) {
+                    $scope.form.options.splice(index, 1);
+                });
+            } else {
+                $scope.form.options.splice(index, 1);
+            }
+
         };
 
         $scope.editQuestion = function (item) {
@@ -161,8 +200,6 @@ angular.module('reports.controllers')
         }
 
         $scope.updateQuestion = function (item) {
-            // An elaborate, custom popup
-            var temp = $scope.form;
             QuestionsFactory.updateQuestion(item).then(function (response) {
                 //$scope.createEditModal.close();
                 $scope.createEditModal.hide();
@@ -186,6 +223,8 @@ angular.module('reports.controllers')
 
         QuestionsFactory.getAllQuestions().then(function (result) {
             $scope.questions = result;
+
+            console.log(result)
         }, function (err) {
             console.log('didnt work' + err);
         });

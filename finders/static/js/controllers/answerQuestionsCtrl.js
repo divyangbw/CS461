@@ -9,7 +9,17 @@ angular.module('reports.controllers')
 
 
         QuestionsFactory.getAllQuestions().then(function (result) {
+
+            console.log("IN GET");
+            console.log(result)
+            result.sort(function (a,b) {
+                return a.section - b.section
+            });
+            console.log(result)
+
+
             $scope.questions = result;
+            console.log("IN GET END ")
         }, function (err) {
             console.log('didnt work' + err);
         });

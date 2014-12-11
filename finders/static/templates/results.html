@@ -2,39 +2,38 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-        <div class="table-padding">
 
-            <!-- GRID BASED LAYOUT -->
-            <div class="row gallery responsive-sm">
+        <div class="row gallery responsive-sm">
+            <div class="col col-20" ng-repeat="cast in newsCasts">
+                <div class="list card">
 
-                <div class="col col-25" ng-repeat="cast in newsCasts">
-                    <div class="list card">
-
-                        <div class="item item-divider">
-                            {{ cast.company }}
-                        </div>
-
-                        <div class="item item-text-wrap">
-                            <p>{{ cast.date }}</p>
-                        </div>
-                        <!--
-                        <div class="col" ng-repeat="seg in castSegments">
-                            <div class="item item-icon-left">
-                                <i class="icon ion-home"></i>
-                                {{ seg.name }}
-                            </div>
-
-                        </div>
-                        -->
+                    <div class="item item-divider">
+                        {{ cast.company }}
                     </div>
-
-
+                    <div ng-repeat="seg in cast.segments">
+                        <div class="item">
+                            <h3>{{ seg.subject }}</h3>
+                            <h4>Start: {{ seg.start }} End: {{ seg.end }}</h4>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-            <!-- END GRID BASED LAYOUT -->
-
         </div>
+
+        <!--
+        <div class="col col-33">
+            <ul class="list">
+                <li class="item item-icon-left" ng-repeat="item in completed" ng-show="isAdmin">
+                    <h3>{{ item.cast.company }}</h3>
+                    <h4>Subject: {{ item.segment.subject }}</h4>
+                    {{ item.user.first }} {{ item.user.last }}
+                    <span class="item-note">
+                        {{ item.user.email }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+        -->
 
     </ion-content>
 </ion-view>

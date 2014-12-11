@@ -133,7 +133,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
 
     this.getAllOptions = function (questionId) { return GET_ALL_FOR("api/questionoptionfor", questionId)};
     this.getOption = function (optionId) { return GET("api/questionoption", optionId)};
-    this.createOption = function (option) { return POST("api/questionoptionfor", option)};
+    this.createOption = function (option, question_id) { return POST("api/questionoptionfor/" + question_id , option)};
     this.updateOption = function (option) { return PUT ("api/questionoption", option)};
     this.deleteOption = function (option) { return DELETE ("api/questionoption", option)};
 
