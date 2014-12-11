@@ -93,7 +93,7 @@ class Questionnaire:
         item.updated = datetime.datetime.now();
         db.session.commit()
         return (jsonify(result= {
-            'id':item.id, 'question_id': item.cast_id, 'text':item.text, 'updated':item.updated
+            'id':item.id, 'question_id': item.question_id, 'text':item.text, 'updated':item.updated
         }), 200)
 
     def delete_option(id):

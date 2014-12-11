@@ -32,6 +32,26 @@ angular.module('reports.factory')
 
             return deferred.promise;
         }
+        function updateAllOptions(question, current_index, options) {
+            var deferred = $q.defer();
+            if (!options || options === {}) {
+                deferred.resolve("success");
+                return deferred.promise;
+            }
+            ApiService.updateOption(options[current_index]).then(function (result) {
+                current_index++;
+                if (options.length <= current_index) {
+                    deferred.resolve("success");
+                    return deferred.promise;
+                } else {
+                    deferred.resolve(updateAllOptions(question, current_index, options));
+                }
+            }, function (err) {
+                deferred.reject(err)
+            });
+
+            return deferred.promise;
+        }
 
         return {
 
@@ -70,14 +90,18 @@ angular.module('reports.factory')
             },
             updateQuestion: function (item) {
 
-                // Save Question
-
-                //
-
                 var deferred = $q.defer();
                 ApiService.updateQuestion(item).then(function (result) {
-                    questions = result;
-                    deferred.resolve(questions);
+                    //questions = result;
+                    //deferred.resolve(questions);
+
+                    updateAllOptions(result, 0, item.options).then(function (response) {
+                        questions = result;
+                        deferred.resolve(questions);
+                    }, function (err) {
+                        questions = result;
+                        deferred.resolve(questions);
+                    });
                 }, function (err) {
                     deferred.reject(err);
                 });
@@ -126,7 +150,6 @@ angular.module('reports.factory')
                     deferred.reject(err);
                 });
                 return deferred.promise;
-
             },
             updateOption: function (item) {
                 console.log("Called update option");

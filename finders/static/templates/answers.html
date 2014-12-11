@@ -5,11 +5,17 @@
         <div class="row">
 
             <div class="col col-20">
-                <div class="card">
-                    <div class="item item-text-wrap">
-                        <h2>{{ activeAnswer.cast.company }}</h2>
-                        <p>{{ activeAnswer.cast.date[0] }}</p>
+                <div class="list card">
+                    <div class="item item-divider">
+                        {{ activeAnswer.cast.company }}
                     </div>
+                    <div class="item">
+                        <h3>{{ activeAnswer.segment.subject }}</h3>
+                        <h4>Start: {{ activeAnswer.segment.start }} End: {{ activeAnswer.segment.end }}</h4>
+                    </div>
+                    <span class="item-note">
+                        Submitted by: {{ activeAnswer.user.first }} {{ activeAnswer.user.last }}
+                    </span>
                 </div>
             </div>
 

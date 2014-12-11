@@ -16,7 +16,29 @@
                         <div class=" item-divider animate-repeat" ng-repeat="(key, value) in questions | groupBy: 'section'">
                               Section:{{ key }}
                               <div class="item" ng-repeat="item in value">
-                                {{ item.text }} is a {{ item.type }}
+                                  {{ item.text }}
+
+                                  <div class="single" ng-if="item.type == 'Single Line'">
+                                      <label class="item item-input">
+                                        <input type="text" placeholder="First Name">
+                                      </label>
+                                  </div>
+
+                                  <div class="list multi" ng-if="item.type == 'Multi-Choice'" >
+                                              <ion-checkbox ng-repeat="option in item.options"
+                                                              ng-model="option.checked"
+                                                              ng-checked="option.checked">
+                                                  {{ option.text }}
+                                                </ion-checkbox>
+                                  </div>
+
+                                  <div class="list multiple" ng-if="item.type == 'Multiple Choice'" >
+                                              <ion-radio ng-repeat="option in item.options"
+                                                           ng-value="option.text">
+                                                  {{ option.text }}
+                                                </ion-radio>
+                                  </div>
+
                               </div>
                         </div>
 
