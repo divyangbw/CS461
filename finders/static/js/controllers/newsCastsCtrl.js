@@ -51,6 +51,10 @@ angular.module('reports.controllers').controller('NewsCastsCtrl', function ($sco
         $scope.castForm = {};
         $scope.createEditCastModal.show();
     };
+    $scope.closeEditCast = function() {
+        $scope.castForm = { };
+        $scope.createEditCastModal.hide();
+    }
 
 });
 
@@ -131,7 +135,7 @@ angular.module('reports.controllers').controller('SegmentsCtrl', function ($scop
         $scope.activeCast = tempCast;
         $scope.castForm = { };
         $scope.createEditCastModal.hide();
-    }
+    };
 
 
     //When the add segment button is clicked
