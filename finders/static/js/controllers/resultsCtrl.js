@@ -1,34 +1,29 @@
-angular.module('reports.controllers').controller('ResultsCtrl', function ($scope, $state, DataFactory, $ionicModal) {
+angular.module('reports.controllers').controller('ResultsCtrl', function ($scope, $state, DataFactory, $ionicModal, TempDataFactory) {
 
     $scope.loadingData = true;
-    $scope.newsCasts = {};
-    $scope.castSegments = {};
+    $scope.newsCasts = [];
+    $scope.castSegments = [];
+    $scope.completed = [];
 
-    DataFactory.getCasts().then(function (result) {
-        $scope.newsCasts = result;
+    getData();
 
-        result.forEach(function (cast) {
-            $scope.castSegments += DataFactory.getSegmentsForCast(cast);
+    function getData() {
+        TempDataFactory.refreshMyAssignments(false).then(function () {
+            $scope.completed = TempDataFactory.getCompletedAssignments();
+            console.log($scope.completed);
         });
+    }
 
-
-    }, function (err) {
-        console.log("Error");
-    });
-
-    DataFactory.getSegments().then(function (result) {
-        $scope.castSegments = result;
-    }, function (err) {
-        console.log("Error");
-    });
+    $scope.goToAnswers = function (item) {
+        //Set the active answer to the answer that is being displayed
+        DataFactory.setActiveAnswer(item);
+        //Get the answers of the item
+        //DataFactory.getAnswers().then(function (result) {
+        (function (result) {
+            $scope.answers = result;
+        }, function (err) {
+            console.log(err);
+        });
+        $state.go('tab.answers');
+    };
 });
-
-//angular.module('reports.controllers').controller('SegmentsCtrl', function ($scope, DataFactory, $ionicPopup, $ionicModal, User) {
-//
-//    $scope.activeCast = DataFactory.getActiveCast();
-//    DataFactory.getSegments().then(function (result) {
-//        $scope.castSegments = result;
-//    }, function (err) {
-//        console.log("Error")
-//    })
-//});
