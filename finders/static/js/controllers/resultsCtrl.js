@@ -27,3 +27,9 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
         $state.go('tab.answers');
     };
 });
+
+angular.module('reports.controllers').controller('ResultsAnswerCtrl', function ($scope, $state, DataFactory, $ionicModal, TempDataFactory) {
+
+    $scope.activeAnswer = DataFactory.getActiveAnswer();
+
+});

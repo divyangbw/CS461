@@ -84,7 +84,7 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                 views: {
                     'tab-results': {
                         templateUrl: '/static/templates/answers.html',
-                        controller: 'ResultsCtrl'
+                        controller: 'ResultsAnswerCtrl'
                     }
                 }
             })
