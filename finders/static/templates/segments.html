@@ -16,7 +16,7 @@
                         <div class="card">
                             <div class="item item-text-wrap">
                                 <h2>{{ activeCast.company }}</h2>
-                                <p>{{ activeCast.date[0] }}</p>
+                                <p>{{ activeCast.date }}</p>
                             </div>
                               <div class="item item-icon-right item-icon-left">
                                    <i class="icon ion-edit" ng-click="editCast(activeCast)"></i>
@@ -42,11 +42,11 @@
 
                             <tbody>
 
-                            <tr ng-repeat="seg in castSegments" ng-click="editSegment(seg, $index)">
+                            <tr ng-repeat="item in castSegments" ng-click="editSegment(item, $index)">
 
-                                <td>{{ seg.subject }}</td>
-                                <td>{{ seg.start }}</td>
-                                <td>{{ seg.end }}</td>
+                                <td>{{ item.subject }}</td>
+                                <td>{{ item.start }}</td>
+                                <td>{{ item.end }}</td>
 
                             </tr>
 
@@ -86,7 +86,7 @@
                     </label>
                     <label class="item item-input">
                         <span class="input-label">Date</span>
-                        <input type="date" placeholder="MM/DD/YYYY" ng-model="castForm.date[0]">
+                        <input type="date" placeholder="MM/DD/YYYY" ng-model="castForm.date">
                     </label>
 
                     <div class="item item-input-inset">
@@ -135,6 +135,7 @@
                     <div class="item item-input-inset">
                         <button ng-show="!isEditing" ng-click="saveSeg(segmentForm)" class="button button-small">Save</button>
                         <button ng-show="isEditing" ng-click="updateSeg(segmentForm)" class="button button-small">Update</button>
+                        <button ng-click="deleteSegment(segmentForm, $index)" class="button button-small">Delete</button>
                     </div>
                 </div>
 

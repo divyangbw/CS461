@@ -130,28 +130,20 @@ angular.module('reports.factory')
                 return deferred.promise;
 
             },
-            deleteSegment: function (item) {
 
+            deleteSegment: function (item, index) {
+                console.log("DataFactory");
+                console.log(item);
                 var deferred = $q.defer();
                 ApiService.deleteSeg(item).then(function (result) {
-                    segments = result;
+                    console.log("deleteSeg");
+                    segments.splice(index, 1);
                     deferred.resolve(segments);
                 }, function (err) {
                     deferred.reject(err);
                 });
                 return deferred.promise;
-
-                var index = -1;
-                for (var i = 0; i < segments.length; i++) {
-                    if (segments[i].id === item.id) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                segments.splice(index, 1);
             }
-
 
         }
 
