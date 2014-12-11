@@ -1,21 +1,17 @@
-angular.module('reports.controllers').controller('ResultsCtrl', function ($scope, $state, DataFactory, $ionicModal, TempDataFactory) {
+angular.module('reports.controllers').controller('ResultsCtrl', function ($scope, $state, DataFactory, $ionicModal) {
 
     $scope.loadingData = true;
     $scope.newsCasts = {};
     $scope.castSegments = {};
-    $scope.completed = [];
-
-    getData();
-
-    function getData() {
-        TempDataFactory.refreshMyAssignments(false).then(function () {
-            $scope.completed = TempDataFactory.getCompletedAssignments();
-        });
-    }
 
     DataFactory.getCasts().then(function (result) {
         $scope.newsCasts = result;
-        console.log($scope.newsCasts);
+
+        result.forEach(function (cast) {
+            $scope.castSegments += DataFactory.getSegmentsForCast(cast);
+        });
+
+
     }, function (err) {
         console.log("Error");
     });
@@ -25,5 +21,14 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
     }, function (err) {
         console.log("Error");
     });
-    
 });
+
+//angular.module('reports.controllers').controller('SegmentsCtrl', function ($scope, DataFactory, $ionicPopup, $ionicModal, User) {
+//
+//    $scope.activeCast = DataFactory.getActiveCast();
+//    DataFactory.getSegments().then(function (result) {
+//        $scope.castSegments = result;
+//    }, function (err) {
+//        console.log("Error")
+//    })
+//});

@@ -1,145 +1,73 @@
 <ion-view title="Segments" ng-class="background">
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
-        <div class="table-padding pointer-cursor" ng-show="!loadingTable">
-            <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
-                         has-bouncing="false">
-                <ion-nav-buttons side="right">
-                    <button class="button button-positive button-clear" ng-click="newSegment()">
-                        ADD SEGMENT
-                    </button>
-                </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-positive button-clear" ng-click="newSegment()">
+                ADD SEGMENT
+            </button>
+        </ion-nav-buttons>
 
-                <div class="row">
+        <div class="row">
 
-                    <div class="col col-20">
-                        <div class="card">
-                            <div class="item item-text-wrap">
-                                <h2>{{ activeCast.company }}</h2>
-                                <p>{{ activeCast.date[0] }}</p>
-                            </div>
-                              <div class="item item-icon-right item-icon-left">
-                                   <i class="icon ion-edit" ng-click="editCast(activeCast)"></i>
-                                   <i class="icon ion-trash-b" ng-click="deleteCast()"></i>
-                              </div>
-                        </div>
+            <div class="col col-20">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>{{ activeCast.company }}</h2>
 
-
+                        <p>{{ activeCast.date[0] }}</p>
                     </div>
-                    <div class="col col-80">
-
-                        <table class="table-padding">
-
-                            <thead>
-
-                            <tr></tr>
-                            <td> Subject</td>
-                            <td> Start Time</td>
-                            <td> End Time</td>
-                            </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                            <tr ng-repeat="item in castSegments" ng-click="editSegment(item)">
-
-                                <td>{{ item.subject }}</td>
-                                <td>{{ item.start }}</td>
-                                <td>{{ item.end }}</td>
-
-                            </tr>
-
-                            </tbody>
-
-                        </table>
-
+                    <div class="item item-icon-right item-icon-left">
+                        <i class="icon ion-edit" ng-click="editCast(activeCast)"></i>
+                        <i class="icon ion-trash-b" ng-click="deleteCast()"></i>
                     </div>
-
                 </div>
+            </div>
+
+            <div class="col col-80">
+
+                <table class="table-padding">
+
+                    <thead>
+
+                    <tr></tr>
+                    <td> Subject</td>
+                    <td> Start Time</td>
+                    <td> End Time</td>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr ng-repeat="seg in castSegments" ng-click="editSegment(seg, $index)">
+
+                        <td>{{ seg.subject }}</td>
+                        <td>{{ seg.start }}</td>
+                        <td>{{ seg.end }}</td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
 
-                <!-- END TABLE -->
+        <!-- END TABLE -->
 
 
-            </ion-content>
+    </ion-content>
 </ion-view>
-
-
-<script id="newSegment.html" type="text/ng-template">
-    <ion-modal-view>
-
-        <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">{{isEditing ? 'Edit Segment' : 'New Cast'}}</h1>
-            <button class="button button-clear button-primary" ng-click="createEditCastModal.hide()">Close</button>
-        </ion-header-bar>
-
-        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
-                     has-bouncing="false">
-
-            <!-- Everything you want comes under here :) -->
-
-            <div ng-show="!isEditing">
-                <div class="list">
-                    <label class="item item-input">
-                        <span class="input-label">Subject</span>
-                        <input type="text" ng-model="seg.subject">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Start Time</span>
-                        <input type="text" ng-model="seg.start">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">End Time</span>
-                        <input type="text" ng-model="seg.end">
-                    </label>
-
-
-                    <div class="item item-input-inset">
-                        <button ng-click="submitSegment(seg)" class="button button-small">
-                            Save
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            <div ng-show="isEditing">
-                <h3>{{editItem ? editItem.text : ''}}</h3>
-
-                <div class="list">
-                    <label class="item item-input">
-                        <span class="input-label">Subject</span>
-                        <input type="text" ng-model="editItem.text">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Start Time</span>
-                        <input type="text" ng-model="editItem.tag">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">End Time</span>
-                        <input type="text" ng-model="editItem.tag">
-                    </label>
-
-                    <div class="item item-input-inset">
-                        <button ng-click="updateSegment()" class="button button-small">
-                            Update
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Everything you want comes above here :) -->
-
-        </ion-content>
-    </ion-modal-view>
-</script>
 
 <script id="editCast.html" type="text/ng-template">
     <ion-modal-view>
 
         <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title">{{isEditing ? 'Edit Cast' : 'New Cast'}}</h1>
-            <button class="button button-clear button-primary" ng-click="createEditCastModal.hide()">Close</button>
+            <h1 class="title">{{ isEditing ? 'Edit Cast' : 'New Cast'}}</h1>
+            <button class="button button-clear button-primary" ng-click="closeEditCast()">Close</button>
         </ion-header-bar>
 
         <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
@@ -159,8 +87,10 @@
                     </label>
 
                     <div class="item item-input-inset">
-                        <button ng-show="!isEditing" ng-click="saveCast(castForm)" class="button button-small">Save</button>
-                        <button ng-show="isEditing" ng-click="updateCast(castForm)" class="button button-small">Update</button>
+                        <button ng-show="!isEditing" ng-click="saveCast(castForm)" class="button button-small">Save
+                        </button>
+                        <button ng-show="isEditing" ng-click="updateCast(castForm)" class="button button-small">Update
+                        </button>
                     </div>
                 </div>
 
@@ -176,9 +106,10 @@
     <ion-modal-view>
 
         <ion-header-bar class="bar bar-header bar-positive">
-            <h1 class="title" ng-show = "isEditing" >Edit Segment</h1>
-            <h1 class="title" ng-show = "!isEditing" >New Segment</h1>
-            <button class="button button-clear button-primary" ng-click="createEditSegModal.hide()">Close</button>
+            <h1 class="title" ng-show="isEditing">Edit Segment</h1>
+
+            <h1 class="title" ng-show="!isEditing">New Segment</h1>
+            <button class="button button-clear button-primary" ng-click="closeEditSegment()">Close</button>
         </ion-header-bar>
 
         <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
@@ -202,8 +133,11 @@
                     </label>
 
                     <div class="item item-input-inset">
-                        <button ng-show="!isEditing" ng-click="saveSeg(segmentForm)" class="button button-small">Save</button>
-                        <button ng-show="isEditing" ng-click="updateSeg(segmentForm)" class="button button-small">Update</button>
+                        <button ng-show="!isEditing" ng-click="saveSeg(segmentForm)" class="button button-small">Save
+                        </button>
+                        <button ng-show="isEditing" ng-click="updateSeg(segmentForm)" class="button button-small">
+                            Update
+                        </button>
                     </div>
                 </div>
 

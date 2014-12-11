@@ -1,0 +1,46 @@
+<ion-view title="Answers" ng-class="background">
+    <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                 has-bouncing="false">
+
+        <div class="row">
+
+            <div class="col col-20">
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <h2>{{ activeAnswer.cast.company }}</h2>
+                        <p>{{ activeAnswer.cast.date[0] }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <table class="table-padding">
+                    <thead>
+                    <tr></tr>
+                    <td> Question ID</td>
+                    <td> Question</td>
+                    <td> Answer</td>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr ng-repeat="item in completed">
+
+                        <td>{{ item.cast.company }}</td>
+                        <td>{{ item.start }}</td>
+                        <td>{{ item.end }}</td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </ion-content>
+</ion-view>
