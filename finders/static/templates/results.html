@@ -2,7 +2,6 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-
         <div class="row gallery responsive-sm">
             <div class="col col-20" ng-repeat="item in completed" ng-click="goToAnswers(item)">
                 <div class="list card">
@@ -21,73 +20,5 @@
             </div>
         </div>
 
-        <!--
-        <div class="row gallery responsive-sm">
-            <div class="col col-20" ng-repeat="cast in newsCasts">
-                <div class="list card">
-
-                    <div class="item item-divider">
-                        {{ cast.company }}
-                    </div>
-                    <div ng-repeat="seg in cast.segments">
-                        <div class="item">
-                            <h3>{{ seg.subject }}</h3>
-                            <h4>Start: {{ seg.start }} End: {{ seg.end }}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
-
-        <!--
-        <div class="col col-33">
-            <ul class="list">
-                <li class="item item-icon-left" ng-repeat="item in completed" ng-show="isAdmin">
-                    <h3>{{ item.cast.company }}</h3>
-                    <h4>Subject: {{ item.segment.subject }}</h4>
-                    {{ item.user.first }} {{ item.user.last }}
-                    <span class="item-note">
-                        {{ item.user.email }}
-                    </span>
-                </li>
-            </ul>
-        </div>
-        -->
-
     </ion-content>
 </ion-view>
-
-<script id="results.html" type="text/ng-template">
-    <ion-modal-view>
-
-        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
-                     has-bouncing="false">
-
-            <!-- Everything you want comes under here :) -->
-
-            <div>
-                <div class="list">
-                    <label class="item item-input">
-                        <span class="input-label">Company</span>
-                        <input type="text" ng-model="form.company">
-                    </label>
-                    <label class="item item-input">
-                        <span class="input-label">Date</span>
-                        <input type="text" ng-model="form.date">
-                    </label>
-
-                    <div class="item item-input-inset">
-                        <button ng-show="!isEditing" ng-click="saveCast(form)" class="button button-small">Save</button>
-                        <button ng-show="isEditing" ng-click="updateCast(form)" class="button button-small">Update
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Everything you want comes above here :) -->
-
-        </ion-content>
-    </ion-modal-view>
-</script>

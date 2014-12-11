@@ -42,14 +42,14 @@ angular.module('reports.factory')
             },
 
             getSegments: function () {
-                //var deferred = $q.defer();
-                //ApiService.getAllSegments(activeCast.id).then(function (result) {
-                //    segments = result;
-                //    deferred.resolve(segments);
-                //}, function (err) {
-                //    deferred.reject(err);
-                //});
-                //return deferred.promise;
+                var deferred = $q.defer();
+                ApiService.getAllSegments(activeCast.id).then(function (result) {
+                    segments = result;
+                    deferred.resolve(segments);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
             },
 
             getSegmentsForCast: function(cast) {
