@@ -14,7 +14,7 @@
                     <div class="item item-text-wrap">
                         <h2>{{ activeCast.company }}</h2>
 
-                        <p>{{ activeCast.date[0] }}</p>
+                        <p>{{ activeCast.date }}</p>
                     </div>
                     <div class="item item-icon-right item-icon-left">
                         <i class="icon ion-edit" ng-click="editCast(activeCast)"></i>
@@ -83,7 +83,7 @@
                     </label>
                     <label class="item item-input">
                         <span class="input-label">Date</span>
-                        <input type="date" placeholder="MM/DD/YYYY" ng-model="castForm.date[0]">
+                        <input type="date" placeholder="MM/DD/YYYY" ng-model="castForm.date">
                     </label>
 
                     <div class="item item-input-inset">
