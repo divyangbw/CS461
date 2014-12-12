@@ -142,6 +142,8 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
      *************************************************/
 
     this.getMyAssignments = function () { return GET_ALL("api/my/assignments") }
+    this.getAllAnswerForAssignment = function (assignment_id) { return GET("api/admin/answers/" + assignment_id) };
+
 
     /**************************************************
      *  SHARED CALLS

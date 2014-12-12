@@ -80,7 +80,7 @@ class AssignService:
         }), 201)
 
     def all_answers(assignment_id):
-        items = Answers.query.filter_by(assignment_id=assignment_id)
+        items = Answer.query.filter_by(assignment_id=assignment_id)
         return (jsonify(result=[i.serialize for i in items]), 200)
 
     def get_answer(id):

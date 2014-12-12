@@ -167,6 +167,13 @@ def my_assignments():
     user = Auth.getUser(email)
     return AssignService.my_assignments(user)
 
+#--------- ANSWERS ---------#
+@app.route('/api/admin/answers/<assignment_id>', methods=['GET'])
+def all_answers(assignment_id):
+    if validate_user_session(request) is False and validate_user_is_admin(request) is False:
+        return Auth.abort_401()
+    return AssignService.all_answers(assignment_id)
+
 #--------- MAIN ---------#
 
 def validate_user_session(request):

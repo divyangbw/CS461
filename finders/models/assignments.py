@@ -2,6 +2,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from finders.models import ser
 from finders.models.cast import Cast, Segment
 from finders.models.user import User
+from finders.models.questions import Question, Option
 
 from finders import db
 
@@ -76,10 +77,33 @@ class Answer(db.Model):
         return {
             'id': self.id,
             'question_id' : self.question_id,
+            'question': self.get_question,
             'answer' : self.answer,
+            'parsed_answer' : self.parse_answer,
             'assignment_id' : self.assignment_id,
             'updated' : ser.dump_datetime(self.updated)
         }
+
+    @property
+    def get_question(self):
+        return Question.query.get(self.question_id).serialize
+
+    @property
+    def parse_answer(self):
+        question = Question.query.get(self.question_id)
+        if question.type == "Single Line":
+            return self.answer
+        elif question.type == "Multi-Choice":
+            items = self.answer.split('$$>AS<$$')
+            toReturn = []
+            for item in items:
+                choice = Option.query.get(int(item))
+                toReturn.append(choice.text)
+            return toReturn
+        else:
+            choice = Option.query.get(int(self.answer))
+            return choice.text
+
 
 class AssignSection(db.Model):
     __tablename__ = 'assignsection'
@@ -96,3 +120,5 @@ class AssignSection(db.Model):
            'section': self.section,
            'updated': ser.dump_datetime(self.updated)
        }
+
+
