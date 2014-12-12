@@ -16,7 +16,7 @@
                         <div class=" item-divider animate-repeat" ng-repeat="(key, value) in questions | groupBy: 'section'">
                               Section:{{ key }}
                               <div class="item" ng-repeat="item in value">
-                                  {{ item.text }}
+                                  questions: {{ item.text }}
 
                                   <div class="single" ng-if="item.type == 'Single Line'">
                                       <label class="item item-input">
