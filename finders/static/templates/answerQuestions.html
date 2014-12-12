@@ -16,25 +16,28 @@
                         <div class=" item-divider animate-repeat" ng-repeat="(key, value) in questions | groupBy: 'section'">
                               Section:{{ key }}
                               <div class="item" ng-repeat="item in value">
-                                  questions: {{ item.text }}
+                                  question: {{ item.text }}
 
-                                  <div class="single" ng-if="item.type == 'Single Line'">
+                                  <div class="single" ng-if="item.type === 'Single Line'">
                                       <label class="item item-input">
-                                        <input type="text" placeholder="First Name">
+                                         <input type="text" ng-model="form[item.id]">
                                       </label>
                                   </div>
+                                  <!--does not return correctly  -->
 
-                                  <div class="list multi" ng-if="item.type == 'Multi-Choice'" >
+                                  <div class="list multi" ng-if="item.type === 'Multi-Choice'" >
                                               <ion-checkbox ng-repeat="option in item.options"
-                                                              ng-model="option.checked"
-                                                              ng-checked="option.checked">
+                                                              ng-model="form[item.id]"
+                                                              ng-value="2">
                                                   {{ option.text }}
                                                 </ion-checkbox>
                                   </div>
+                                  <!-- this down works returns optionID  -->
 
-                                  <div class="list multiple" ng-if="item.type == 'Multiple Choice'" >
+                                  <div class="list multiple" ng-if="item.type === 'Multiple Choice'" >
                                               <ion-radio ng-repeat="option in item.options"
-                                                           ng-value="option.text">
+                                                            ng-model="form[item.id]"
+                                                            ng-value="option.id">
                                                   {{ option.text }}
                                                 </ion-radio>
                                   </div>
@@ -43,6 +46,9 @@
                         </div>
 
                     </div>
+                    <button ng-click="submitForm(form)" class="button">
+                            Save
+                        </button>
                 </div>
 
             </div>

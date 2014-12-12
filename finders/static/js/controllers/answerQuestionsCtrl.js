@@ -1,5 +1,5 @@
 angular.module('reports.controllers')
-    .controller('AnswerQuestionsCtrl', function ($scope, $state, $stateParams, $ionicPopover, User, TempDataFactory,QuestionsFactory) {
+    .controller('AnswerQuestionsCtrl', function ($scope, $state, $stateParams, $ionicModal, $ionicPopover, User, TempDataFactory,QuestionsFactory) {
         console.log($stateParams.id)
 
 
@@ -24,6 +24,17 @@ angular.module('reports.controllers')
             console.log('didnt work' + err);
         });
 
+
+        $scope.submitForm = function (item) {
+            console.log("yolo: ",item);
+            //QuestionsFactory.updateQuestion(item).then(function (response) {
+            //    //$scope.createEditModal.close();
+            //    $scope.createEditModal.hide();
+            //    $scope.form = {};
+            //}, function (err) {
+            //
+            //});
+        };
 
         $scope.showQuestion = function (item) {
             // An elaborate, custom popup
