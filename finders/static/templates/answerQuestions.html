@@ -3,54 +3,59 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-<div class="row responsive-sm">
+        <div class="row responsive-sm">
+
             <div class="col">
 
-                <div class="list">
 
-                    <div class="item item-divider">
-                        Questions
-                    </div>
 
-                    <div class="list">
-                        <div class=" item-divider animate-repeat" ng-repeat="(key, value) in questions | groupBy: 'section'">
-                              Section:{{ key }}
-                              <div class="item" ng-repeat="item in value">
-                                  question bro: {{ item.text }}
+                    <div class="question-section" ng-repeat="(key, value) in questions | groupBy: 'section'">
 
-                                  <div class="single" ng-if="item.type === 'Single Line'">
-                                      <label class="item item-input">
-                                         <input type="text" ng-model="form[item.id]">
-                                      </label>
-                                  </div>
-                                  <!--does not return correctly  -->
+                        <h1>Section:{{ key }}</h1>
 
-                                  <div class="list multi" ng-if="item.type === 'Multi-Choice'" >
-                                      <ul ng-repeat="option in item.options" >
-                                          <label class="checkbox" >
-                                                <input type="checkbox" ng-model="form[item.id*100+option.id]">
-                                             </label>
-                                          {{ option.text }}
-                                      </ul>
-                                  </div>
-                                  <!-- this down works returns optionID  -->
+                        <div class="list">
 
-                                  <div class="list multiple" ng-if="item.type === 'Multiple Choice'" >
-                                              <ion-radio ng-repeat="option in item.options"
-                                                            ng-model="form[item.id]"
-                                                            ng-value="option.id">
-                                                  {{ option.text }}
-                                                </ion-radio>
-                                  </div>
+                            <div class="item" ng-repeat="item in value">
+                                <div class="question">Question: {{ item.text }}</div>
 
-                              </div>
+                                <div class="single" ng-show="item.type === 'Single Line'">
+                                    <label class="item item-input">
+                                        <input type="text" ng-model="item.answer">
+                                    </label>
+                                </div>
+                                <!--does not return correctly  -->
+
+                                <div class="list" ng-show="item.type === 'Multi-Choice'">
+
+                                    <ion-checkbox ng-repeat="option in item.options"
+                                                  ng-model="option.checked"
+                                                  ng-checked="option.checked">
+                                        {{ option.text }}
+                                    </ion-checkbox>
+
+                                </div>
+                                <!-- this down works returns optionID  -->
+
+                                <div class="list" ng-show="item.type === 'Multiple Choice'">
+
+                                    <ion-radio ng-repeat="option in item.options"
+                                               ng-value="option"
+                                               ng-model="item.answer">
+                                        {{ option.text }}
+                                    </ion-radio>
+
+                                </div>
+
+                            </div>
+
                         </div>
 
                     </div>
+
                     <button ng-click="submitForm(form)" class="button">
-                            Save
-                        </button>
-                </div>
+                        Save
+                    </button>
+
 
             </div>
 

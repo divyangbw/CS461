@@ -4,22 +4,28 @@ angular.module('reports.controllers')
 
 
         $scope.types = QuestionsFactory.getAllQuestionTypes();
-        $scope.form = { };
+
         $scope.questions = [];
 
 
         QuestionsFactory.getAllQuestions().then(function (result) {
 
-            console.log("IN GET");
-            console.log(result)
             result.sort(function (a,b) {
                 return a.section - b.section
             });
-            console.log(result)
+            $scope.questions = angular.copy(result)
 
+            $scope.form = [];
+            $scope.questions.forEach(function (item) {
+                if (item.type === 'Single Line') {
+                    item.answer = "";
+                } else if (item.type === 'Multiple Choice') {
+                    item.answer = null;
+                } else {
+                    item.answer = null;
+                }
+            });
 
-            $scope.questions = result;
-            console.log("IN GET END ")
         }, function (err) {
             console.log('didnt work' + err);
         });
