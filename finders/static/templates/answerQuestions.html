@@ -26,11 +26,12 @@
                                   <!--does not return correctly  -->
 
                                   <div class="list multi" ng-if="item.type === 'Multi-Choice'" >
-                                              <ion-checkbox ng-repeat="option in item.options"
-                                                              ng-model="form[item.id]"
-                                                              ng-value="2">
-                                                  {{ option.text }}
-                                                </ion-checkbox>
+                                      <ul ng-repeat="option in item.options" >
+                                          <label class="checkbox" >
+                                                <input type="checkbox" ng-model="form[item.id*100+option.id]">
+                                             </label>
+                                          {{ option.text }}
+                                      </ul>
                                   </div>
                                   <!-- this down works returns optionID  -->
 
