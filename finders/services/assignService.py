@@ -68,15 +68,16 @@ class AssignService:
 
     #--------- ANSWERS ---------#
 
-    def new_answer(assignment_id, text):
-        if assignment_id is None or text is None:
+    def new_answer(question_id, assignment_id, answer):
+        if question_id is None or assignment_id is None or answer is None:
             abort(400)    # missing arguments
         updated = datetime.datetime.now()
-        item = Answers(assignmen_id=assignment_id,text=text,updated=updated)
+        item = Answer(question_id=question_id,assignment_id=assignment_id,answer=answer,updated=updated)
         db.session.add(item)
         db.session.commit()
         return (jsonify(result= {
-            'id':item.id, 'assignmnet_id': item.assignment_id, 'text':item.text, 'updated':item.updated
+            'id':item.id, 'question_id': item.question_id, 'assignment_id':item.assignment_id,
+            'answer':item.answer, 'updated':item.updated
         }), 201)
 
     def all_answers(assignment_id):
@@ -86,28 +87,29 @@ class AssignService:
     def get_answer(id):
         if id is None:
             abort(400)    # missing arguments
-        item = Answers.query.get(id)
+        item = Answer.query.get(id)
         if item is None:
             abort(404)
         return (jsonify(result=item.serialize), 200)
 
-    def update_Answer(id, text):
-        if id is None or text is None:
+    def update_Answer(id, answer):
+        if id is None or answer is None:
             abort(400)    # missing arguments
-        item = Answers.query.get(id)
+        item = Answer.query.get(id)
         if item is None:
             abort(404)
-        item.text = text;
+        item.answer = answer;
         item.updated = datetime.datetime.now();
         db.session.commit()
         return (jsonify(result= {
-            'id':item.id, 'assignment_id': item.cast_id, 'text':item.text, 'updated':item.updated
+            'id':item.id, 'question_id': item.question_id, 'assignment_id':item.assignment_id,
+            'answer':item.answer, 'updated':item.updated
         }), 200)
 
     def delete_answer(id):
         if id is None:
             abort(400)    # missing arguments
-        item = Answers.query.get(id)
+        item = Answer.query.get(id)
         if item is None:
             abort(404)
         db.session.delete(item)

@@ -3,48 +3,44 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-        <div class="row responsive-sm">
+        <div class="row">
 
             <div class="col">
 
+                <div class="question-section" ng-repeat="(key, value) in questions | groupBy: 'section'">
 
+                    <h1>Section:{{ key }}</h1>
 
-                    <div class="question-section" ng-repeat="(key, value) in questions | groupBy: 'section'">
+                    <div class="list">
 
-                        <h1>Section:{{ key }}</h1>
+                        <div class="item" ng-repeat="singleQuestion in value">
+                            <div class="question">Question: {{ item.text }}</div>
 
-                        <div class="list">
+                            <div class="single" ng-show="singleQuestion.type === 'Single Line'">
+                                <label class="singleQuestion item item-input">
+                                    <input type="text" ng-model="singleQuestion.answer.answer" ng-change="answerChanged(singleQuestion)">
+                                </label>
+                            </div>
+                            <!--does not return correctly  -->
 
-                            <div class="item" ng-repeat="item in value">
-                                <div class="question">Question: {{ item.text }}</div>
+                            <div class="list" ng-show="singleQuestion.type === 'Multi-Choice'">
 
-                                <div class="single" ng-show="item.type === 'Single Line'">
-                                    <label class="item item-input">
-                                        <input type="text" ng-model="item.answer">
-                                    </label>
-                                </div>
-                                <!--does not return correctly  -->
+                                <ion-checkbox ng-repeat="option in singleQuestion.options"
+                                              ng-model="option.checked"
+                                              ng-checked="option.checked" ng-change="answerChanged(singleQuestion)">
+                                    {{ option.text }}
+                                </ion-checkbox>
 
-                                <div class="list" ng-show="item.type === 'Multi-Choice'">
+                            </div>
+                            <!-- this down works returns optionID  -->
 
-                                    <ion-checkbox ng-repeat="option in item.options"
-                                                  ng-model="option.checked"
-                                                  ng-checked="option.checked">
-                                        {{ option.text }}
-                                    </ion-checkbox>
+                            <div class="list row responsive-md gallery" ng-show="singleQuestion.type === 'Multiple Choice'">
 
-                                </div>
-                                <!-- this down works returns optionID  -->
-
-                                <div class="list" ng-show="item.type === 'Multiple Choice'">
-
-                                    <ion-radio ng-repeat="option in item.options"
-                                               ng-value="option"
-                                               ng-model="item.answer">
-                                        {{ option.text }}
-                                    </ion-radio>
-
-                                </div>
+                                <ion-radio class="item col col-33" ng-repeat="option in singleQuestion.options"
+                                           ng-value="option"
+                                           ng-model="singleQuestion.answer.answer" ng-change="answerChanged(singleQuestion)">
+                                    {{ option.text }}
+                                </ion-radio>
 
                             </div>
 
@@ -52,13 +48,31 @@
 
                     </div>
 
-                    <button ng-click="submitForm(form)" class="button">
-                        Save
-                    </button>
-
-
+                </div>
             </div>
 
         </div>
+
+        <div class="card">
+  <div class="item item-text-wrap row resposinve-md">
+
+      <div class="col col-33">
+
+      </div>
+      <div class="col col-33"></div>
+      <div class="col col-33">
+
+          <button ng-click="submitForm(form)" class="submit button button-outline button-positive button-block">
+                Save
+            </button>
+
+      </div>
+
+
+  </div>
+</div>
+
+
+
     </ion-content>
 </ion-view>

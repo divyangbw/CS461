@@ -1,5 +1,5 @@
 angular.module('reports.controllers')
-    .controller('AnswerQuestionsCtrl', function ($scope, $state, $stateParams, $ionicModal, $ionicPopover, User, TempDataFactory,QuestionsFactory) {
+    .controller('AnswerQuestionsCtrl', function ($scope, $state, $stateParams, $ionicModal, $ionicPopover, User, TempDataFactory, QuestionsFactory) {
         console.log($stateParams.id)
 
 
@@ -17,18 +17,36 @@ angular.module('reports.controllers')
 
             $scope.form = [];
             $scope.questions.forEach(function (item) {
+                item.answer = {}
                 if (item.type === 'Single Line') {
-                    item.answer = "";
+                    item.answer.answer = "";
                 } else if (item.type === 'Multiple Choice') {
-                    item.answer = null;
+                    item.answer.answer = null;
                 } else {
-                    item.answer = null;
+                    item.answer.answer = null;
                 }
             });
 
         }, function (err) {
             console.log('didnt work' + err);
         });
+
+        //$scope.$watch('questions', function (newValue, oldValue) {
+        //    console.log(value);
+        //}, true);
+
+        $scope.answerChanged = function(singleQuestion) {
+            console.log("Changed")
+            if (singleQuestion.type === 'Single Line') {
+                TempDataFactory.neworUpdateAnswerSingleLine(singleQuestion, $stateParams.id).then(function(result){
+                    singleQuestion.answer = result;
+                });
+            }else if (singleQuestion.type === 'Multiple Choice') {
+
+            } else {
+                console.log(singleQuestion)
+            }
+        }
 
 
         $scope.submitForm = function (item) {

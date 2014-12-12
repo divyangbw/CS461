@@ -168,11 +168,33 @@ def my_assignments():
     return AssignService.my_assignments(user)
 
 #--------- ANSWERS ---------#
+
+def all_questions_and_answers(assignment_id):
+    return ""
+
 @app.route('/api/admin/answers/<assignment_id>', methods=['GET'])
 def all_answers(assignment_id):
     if validate_user_session(request) is False and validate_user_is_admin(request) is False:
         return Auth.abort_401()
     return AssignService.all_answers(assignment_id)
+
+@app.route('/api/answer/<question_id>', methods=['POST'])
+def save_answer(question_id):
+    if validate_user_session(request) is False:
+        return Auth.abort_401()
+    assignment_id = request.json.get('assignment_id')
+    answer = request.json.get('answer')
+    id = request.json.get('id')
+    print(str(assignment_id))
+    print(str(answer))
+    print(str(id))
+    if id == -1 or id is None:
+        print("Inside new")
+        return AssignService.new_answer(question_id, assignment_id, answer)
+    else:
+        print("Inside update")
+        return AssignService.update_Answer(int(id), answer)
+
 
 #--------- MAIN ---------#
 

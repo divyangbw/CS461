@@ -36,6 +36,22 @@ angular.module('reports.factory')
                     if (!item.answers || item.answers.length < 1) toReturn.push(item);
                 });
                 return toReturn;
+            },
+
+            neworUpdateAnswerSingleLine: function(question, assignment_id) {
+                var deferred = $q.defer();
+                var tempId = question.answer.id && question.answer.id > -1 ? question.answer.id : -1
+                var data = {
+                    id: tempId,
+                    assignment_id: assignment_id,
+                    answer: question.answer.answer
+                }
+                ApiService.neworUpdateAnswer(question.id, data).then(function (result) {
+                    deferred.resolve(result)
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
             }
 
         };
