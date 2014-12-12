@@ -12,10 +12,12 @@ angular.module('reports.controllers')
 
         function init() {
             User.authCheck();
+
         }
 
         function getData() {
-            TempDataFactory.refreshMyAssignments(false).then(function (result) {
+            $scope.loadingData = true;
+            TempDataFactory.refreshMyAssignments(true).then(function (result) {
                 $scope.completed = TempDataFactory.getCompletedAssignments();
                 $scope.incomplete = TempDataFactory.getIncompleteAssignments();
                 $scope.toStart = TempDataFactory.getNotStartedAssignments();
@@ -28,6 +30,7 @@ angular.module('reports.controllers')
                 $scope.toStart.forEach(function (item) {
                     item.isVisible = true;
                 });
+                $scope.loadingData = false;
             });
         }
 
@@ -67,7 +70,7 @@ angular.module('reports.controllers')
 
             //segment
             if (item.segment && (item.segment.subject.toUpperCase().indexOf(newVal.toUpperCase()) > -1 ||
-                item.segment.comment.toUpperCase().indexOf(newVal.toUpperCase()) > -1)) {
+                (item.segment.comment && item.segment.comment.toUpperCase().indexOf(newVal.toUpperCase()) > -1))) {
                 item.isVisible = true;
                 return;
             }

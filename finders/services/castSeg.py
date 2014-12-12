@@ -1,7 +1,10 @@
 from dateutil import parser
 from flask import abort, jsonify
 from finders.models.cast import Cast, Segment
+from finders.models.user import User
+from finders.models.assignments import Assignment
 from finders.services import utils
+import datetime
 
 from finders import db
 
@@ -56,7 +59,14 @@ class CastSeg:
         if cast_id is None or subject is None or start is None or end is None:
             abort(400)    # missing arguments
         segment = Segment(cast_id=cast_id, subject=subject, start=start, end=end, comment=comment)
+        segment.updated = datetime.datetime.now()
         db.session.add(segment)
+        db.session.commit()
+        users = User.query.filter_by(role="mod")
+        for user in users:
+            assignment = Assignment(seg_id=segment.id,user_id=user.id,completed=False)
+            assignment.updated = datetime.datetime.now()
+            db.session.add(assignment)
         db.session.commit()
         return (jsonify(result= {
             'id':segment.id, 'cast_id': segment.cast_id, 'subject':segment.subject,

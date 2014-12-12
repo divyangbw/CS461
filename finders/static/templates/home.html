@@ -2,7 +2,7 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-        <div class="row responsive-sm">
+        <div class="row responsive-sm" ng-show="!loadingData">
 
             <div class="col col-25">
                 <div class="list list-inset">
@@ -15,7 +15,16 @@
 
         </div>
 
-        <div class="row responsive-sm">
+        <!-- LOADING -->
+        <div class="row" ng-show="loadingData">
+            <div class="spinner cssSlideUp">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+        <!-- END LOADING -->
+
+        <div class="row responsive-sm" ng-show="!loadingData">
 
             <!-- INCOMPLETE -->
             <div class="col col-33">
