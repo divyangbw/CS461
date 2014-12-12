@@ -18,8 +18,7 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
         //Set the active answer to the answer that is being displayed
         DataFactory.setActiveAnswer(item);
         //Get the answers of the item
-        //DataFactory.getAnswers().then(function (result) {
-        (function (result) {
+        DataFactory.getAnswersForSegment(item).then(function (result) {
             $scope.answers = result;
         }, function (err) {
             console.log(err);
@@ -31,5 +30,7 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
 angular.module('reports.controllers').controller('ResultsAnswerCtrl', function ($scope, $state, DataFactory, $ionicModal, TempDataFactory) {
 
     $scope.activeAnswer = DataFactory.getActiveAnswer();
+
+
 
 });

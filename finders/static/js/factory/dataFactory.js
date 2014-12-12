@@ -63,6 +63,18 @@ angular.module('reports.factory')
                 return deferred.promise;
             },
 
+            getAnswersForSegment: function() {
+                var deferred = $q.defer();
+                ApiService.getAllAnswerForAssignment(activeAnswer.id).then(function (result) {
+                    console.log(result)
+                    answers = result;
+                    deferred.resolve(answers);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            },
+
             getActiveCast: function () {
                 return activeCast;
             },

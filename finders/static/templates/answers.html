@@ -32,11 +32,11 @@
 
                     <tbody>
 
-                    <tr ng-repeat="item in completed">
+                    <tr ng-repeat="item in answers">
 
-                        <td>{{ item.cast.company }}</td>
-                        <td>{{ item.start }}</td>
-                        <td>{{ item.end }}</td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.question.text }}</td>
+                        <td>{{ item.answer }}</td>
 
                     </tr>
 
