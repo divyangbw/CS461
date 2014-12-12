@@ -31,11 +31,10 @@
                     </thead>
 
                     <tbody>
-
                     <tr ng-repeat="item in answers">
 
                         <td>{{ item.id }}</td>
-                        <td>{{ item.question.text }}</td>
+                        <td>{{ item.parsed_answer }}</td>
                         <td>{{ item.answer }}</td>
 
                     </tr>

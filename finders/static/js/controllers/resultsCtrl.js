@@ -4,6 +4,7 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
     $scope.newsCasts = [];
     $scope.castSegments = [];
     $scope.completed = [];
+    $scope.answers = [];
 
     getData();
 
@@ -18,7 +19,7 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
         //Set the active answer to the answer that is being displayed
         DataFactory.setActiveAnswer(item);
         //Get the answers of the item
-        DataFactory.getAnswersForSegment(item).then(function (result) {
+        DataFactory.getAnswersForSegment().then(function (result) {
             $scope.answers = result;
         }, function (err) {
             console.log(err);
