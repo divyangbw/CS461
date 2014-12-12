@@ -1,9 +1,9 @@
 angular.module('reports.controllers').controller('ResultsCtrl', function ($scope, $state, DataFactory, $ionicModal, TempDataFactory) {
 
-    $scope.loadingData = true;
-    $scope.newsCasts = [];
-    $scope.castSegments = [];
+    // completed assignments
     $scope.completed = [];
+    // answers to a specific assignment
+    $scope.answers = [];
 
     getData();
 
@@ -18,7 +18,7 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
         //Set the active answer to the answer that is being displayed
         DataFactory.setActiveAnswer(item);
         //Get the answers of the item
-        DataFactory.getAnswersForSegment(item).then(function (result) {
+        DataFactory.getAnswersForSegment().then(function (result) {
             $scope.answers = result;
         }, function (err) {
             console.log(err);
@@ -31,6 +31,10 @@ angular.module('reports.controllers').controller('ResultsAnswerCtrl', function (
 
     $scope.activeAnswer = DataFactory.getActiveAnswer();
 
-
+    DataFactory.getAnswersForSegment().then(function (result) {
+        $scope.answers = result;
+    }, function (err) {
+        console.log(err);
+    });
 
 });
