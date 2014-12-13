@@ -26,6 +26,7 @@ angular.module('reports.controllers')
                     item.answer.answer = null;
                 }
             });
+            console.log($scope.questions);
 
         }, function (err) {
             console.log('didnt work' + err);
@@ -38,13 +39,28 @@ angular.module('reports.controllers')
         $scope.answerChanged = function(singleQuestion) {
             console.log("Changed")
             if (singleQuestion.type === 'Single Line') {
-                TempDataFactory.neworUpdateAnswerSingleLine(singleQuestion, $stateParams.id).then(function(result){
-                    singleQuestion.answer = result;
+                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function(result){
+                    singleQuestion.answer.id = result.id;
                 });
             }else if (singleQuestion.type === 'Multiple Choice') {
-
+                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function(result){
+                    singleQuestion.answer.id = result.id;
+                });
             } else {
-                console.log(singleQuestion)
+
+                singleQuestion.answer.answer = "";
+                var firstDone = false;
+                for (var i = 0; i < singleQuestion.options.length; i++) {
+                    if (singleQuestion.options[i].checked) {
+                        if (firstDone)
+                            singleQuestion.answer.answer += "$$>AS<$$";
+                        singleQuestion.answer.answer += singleQuestion.options[i].id
+                        if (!firstDone) firstDone = true;
+                    }
+                }
+                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function(result){
+                    singleQuestion.answer.id = result.id;
+                });
             }
         }
 

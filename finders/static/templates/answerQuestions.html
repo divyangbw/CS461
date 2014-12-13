@@ -14,7 +14,7 @@
                     <div class="list">
 
                         <div class="item" ng-repeat="singleQuestion in value">
-                            <div class="question">Question: {{ item.text }}</div>
+                            <div class="question">Question: {{ singleQuestion.text }}</div>
 
                             <div class="single" ng-show="singleQuestion.type === 'Single Line'">
                                 <label class="singleQuestion item item-input">
@@ -37,7 +37,7 @@
                             <div class="list row responsive-md gallery" ng-show="singleQuestion.type === 'Multiple Choice'">
 
                                 <ion-radio class="item col col-33" ng-repeat="option in singleQuestion.options"
-                                           ng-value="option"
+                                           ng-value="option.id"
                                            ng-model="singleQuestion.answer.answer" ng-change="answerChanged(singleQuestion)">
                                     {{ option.text }}
                                 </ion-radio>

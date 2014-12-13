@@ -53,8 +53,8 @@ class AssignService:
         item.updated = datetime.datetime.now();
         db.session.commit()
         return (jsonify(result=
-            {'id':item.id, 'question_id': item.question_id, 'answer':item.answer, 'seg_que_id':item.seq_que_id, 'updated':item.updated}
-        ), 200)
+            {'id':item.id, 'question_id': item.question_id, 'answer':item.answer, 'seg_que_id':item.seq_que_id,
+             'updated':item.updated }), 200)
 
     def delete_assignment(id):
         if id is None:

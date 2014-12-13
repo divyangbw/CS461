@@ -3,6 +3,7 @@ angular.module('reports.factory')
     .factory('TempDataFactory', function ($q, ApiService) {
 
         var myAssignments = [];
+        var activeQuestions = []
 
         return {
 
@@ -38,7 +39,7 @@ angular.module('reports.factory')
                 return toReturn;
             },
 
-            neworUpdateAnswerSingleLine: function(question, assignment_id) {
+            neworUpdateAnswer: function(question, assignment_id) {
                 var deferred = $q.defer();
                 var tempId = question.answer.id && question.answer.id > -1 ? question.answer.id : -1
                 var data = {
@@ -51,6 +52,17 @@ angular.module('reports.factory')
                 }, function (err) {
                     deferred.reject(err);
                 });
+                return deferred.promise;
+            },
+
+            //TODO
+            getActive: function() {
+                var deferred = $q.defer();
+                if (!activeQuestions || activeQuestions === {} || activeQuestions.length < 1) {
+                    deferred.resolve([])
+                } else {
+                    deferred.resolve(activeQuestions)
+                }
                 return deferred.promise;
             }
 

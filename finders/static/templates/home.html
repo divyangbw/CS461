@@ -41,7 +41,7 @@
                             {{ item.user.email }}
                         </span>
                     </li>
-                    <li class="item item-icon-left" ng-repeat="item in incomplete">
+                    <li class="item item-icon-left" ng-repeat="item in incomplete" ng-show="!isAdmin">
                         <i class="icon ion-ios7-film"></i>
                         {{ item.cast.company }}
                         <span class="item-note">
