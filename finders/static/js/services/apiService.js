@@ -145,6 +145,8 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     this.getAllAnswerForAssignment = function (assignment_id) { return GET("api/admin/answers", assignment_id) };
 
     this.neworUpdateAnswer = function (question_id, params) { return POST("api/answer/" + question_id, params) };
+    this.getQuestionsToAnswer = function (assignment_id) { return GET("api/question/answers", assignment_id) };
+    this.submitQuestionForm = function (assignment_id) { return PUTBLANK("api/question/submit", assignment_id) };
 
     /**************************************************
      *  SHARED CALLS
@@ -231,6 +233,18 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         } else {
             deferred.reject({code:1,reason:"Object is null, or does not have an id"});
         }
+        return deferred.promise;
+    }
+
+    function PUTBLANK (url, id) {
+        var HEADER = { headers: {'email': User.getEmail(), 'token': User.getToken()} }
+        var deferred = $q.defer();
+        $http.put(BASEURL + url + "/" + id, {}, HEADER).then(function (response) { // Success
+            deferred.resolve(response.data.result);
+        }, function (response) {
+            console.log(response);
+            deferred.reject(response);
+        });
         return deferred.promise;
     }
 

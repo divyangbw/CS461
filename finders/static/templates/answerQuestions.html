@@ -18,7 +18,8 @@
 
                             <div class="single" ng-show="singleQuestion.type === 'Single Line'">
                                 <label class="singleQuestion item item-input">
-                                    <input type="text" ng-model="singleQuestion.answer.answer" ng-change="answerChanged(singleQuestion)">
+                                    <input type="text" ng-model="singleQuestion.answer.answer" ng-change="answerChanged(singleQuestion)"
+                                           ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }">
                                 </label>
                             </div>
                             <!--does not return correctly  -->
@@ -62,7 +63,7 @@
       <div class="col col-33"></div>
       <div class="col col-33">
 
-          <button ng-click="submitForm(form)" class="submit button button-outline button-positive button-block">
+          <button ng-click="submitForm()" class="submit button button-outline button-positive button-block">
                 Save
             </button>
 

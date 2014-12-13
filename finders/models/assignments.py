@@ -3,6 +3,7 @@ from finders.models import ser
 from finders.models.cast import Cast, Segment
 from finders.models.user import User
 from finders.models.questions import Question, Option
+from finders.models.questionsAnswers import QuestionAnswers, QuestionAnswersValue, QuestionAnswersOption
 
 from finders import db
 
@@ -28,6 +29,63 @@ class Assignment(db.Model):
            'section'  : self.serialize_sections,
            'updated': ser.dump_datetime(self.updated)
        }
+
+    @property
+    def serialize_toAnswer(self):
+       return {
+           'id': self.id,
+           'user_id': self.user_id,
+           'segment' : self.getSegment.serialize,
+           'cast' : self.getCast.serialize_no_join,
+           'completed' : self.completed,
+           'questions'  : self.serialize_question_answers,
+           'section'  : self.serialize_sections,
+           'updated': ser.dump_datetime(self.updated)
+       }
+
+    @property
+    def serialize_question_answers(self):
+        questions = Question.query.all()
+        toReturn = []
+        for question in questions:
+            item = QuestionAnswers()
+            item.id = question.id
+            item.type = question.type
+            item.text = question.text
+            item.section = question.section
+            opts = []
+            # Get all the options if any exist
+            for optItem in question.options:
+                singleOpts = QuestionAnswersOption()
+                singleOpts.id = optItem.id
+                singleOpts.question_id = optItem.question_id
+                singleOpts.text = optItem.text
+                singleOpts.updated = optItem.updated
+                singleOpts.checked = False
+                opts.append(singleOpts)
+            item.options = opts
+            item.updated = question.updated
+            # Add all the answers to question
+            for ans in self.answers:
+                if ans.question_id == question.id:
+                    answer = QuestionAnswersValue()
+                    answer.id = ans.id
+                    answer.answer = ans.answer
+                    item.answer = answer
+                    break
+            if item.type == "Multiple Choice":
+                item.answer.answer = int(item.answer.answer)
+            elif item.type == "Multi-Choice":
+                idCollectionParsed = item.answer.answer.split('$$>AS<$$')
+                for splitId in idCollectionParsed:
+                    print("I split " + str(splitId))
+                    for option in item.options:
+                        if option.id == int(splitId):
+                            option.checked = True
+                            print("I checked")
+            toReturn.append(item)
+        #Return
+        return [ item.serialize for item in toReturn ]
 
     @property
     def serialize_admin(self):

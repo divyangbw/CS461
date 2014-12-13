@@ -55,14 +55,24 @@ angular.module('reports.factory')
                 return deferred.promise;
             },
 
-            //TODO
-            getActive: function() {
+
+            getQuestionsToAnswer: function(assignment_id) {
                 var deferred = $q.defer();
-                if (!activeQuestions || activeQuestions === {} || activeQuestions.length < 1) {
-                    deferred.resolve([])
-                } else {
-                    deferred.resolve(activeQuestions)
-                }
+                ApiService.getQuestionsToAnswer(assignment_id).then(function (results) {
+                    deferred.resolve(results);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            },
+
+            submitQuestionsToAnswerForm: function(assignment_id) {
+                var deferred = $q.defer();
+                ApiService.submitQuestionForm(assignment_id).then(function (result) {
+                    deferred.resolve(result);
+                }, function (err) {
+                    deferred.reject(err);
+                });
                 return deferred.promise;
             }
 

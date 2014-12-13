@@ -168,9 +168,17 @@ def my_assignments():
     return AssignService.my_assignments(user)
 
 #--------- ANSWERS ---------#
-
+@app.route('/api/question/answers/<assignment_id>', methods=['GET'])
 def all_questions_and_answers(assignment_id):
-    return ""
+    if validate_user_session(request) is False:
+        return Auth.abort_401()
+    return AssignService.get_questions_to_answer(assignment_id)
+
+@app.route('/api/question/submit/<assignment_id>', methods=['PUT'])
+def submit_question_form(assignment_id):
+    if validate_user_session(request) is False:
+        return Auth.abort_401()
+    return AssignService.submit_question_form(assignment_id)
 
 @app.route('/api/admin/answers/<assignment_id>', methods=['GET'])
 def all_answers(assignment_id):

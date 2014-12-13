@@ -1,6 +1,7 @@
 from dateutil import parser
 from flask import abort, jsonify
-from finders.models.assignments import Assignment, Answer, AssignSection
+from finders.models.assignments import Assignment, Answer, AssignSection, Option, Question
+#from finders.models.questions import Question, Option
 from finders.services import utils
 import datetime
 
@@ -116,5 +117,18 @@ class AssignService:
         db.session.commit()
         return (jsonify(result="ok"), 200)
 
-    #--------- SECTION ---------#
+    #--------- ANSWERING QUESTIONS ---------#
+    def get_questions_to_answer(assignment_id):
+        assignment = Assignment.query.get(assignment_id)
+        return (jsonify(result=assignment.serialize_question_answers), 200)
+
+    def submit_question_form(assignment_id):
+        assignment = Assignment.query.get(assignment_id)
+        assignment.completed = True
+        assignment.updated = datetime.datetime.now();
+        db.session.commit()
+        return (jsonify(result="ok"), 200)
+
+
+
 

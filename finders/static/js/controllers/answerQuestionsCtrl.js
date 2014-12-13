@@ -1,49 +1,43 @@
 angular.module('reports.controllers')
-    .controller('AnswerQuestionsCtrl', function ($scope, $state, $stateParams, $ionicModal, $ionicPopover, User, TempDataFactory, QuestionsFactory) {
-        console.log($stateParams.id)
-
+    .controller('AnswerQuestionsCtrl', function ($scope, $state, $stateParams, $ionicPopup, $ionicViewService, $ionicLoading, User, TempDataFactory, QuestionsFactory) {
 
         $scope.types = QuestionsFactory.getAllQuestionTypes();
 
         $scope.questions = [];
 
 
-        QuestionsFactory.getAllQuestions().then(function (result) {
+        $scope.loadingQuestions = true;
+        TempDataFactory.getQuestionsToAnswer($stateParams.id).then(function (result) {
 
-            result.sort(function (a,b) {
+            result.sort(function (a, b) {
                 return a.section - b.section
             });
-            $scope.questions = angular.copy(result)
 
+            console.log(result)
+
+            $scope.questions = result
             $scope.form = [];
-            $scope.questions.forEach(function (item) {
-                item.answer = {}
-                if (item.type === 'Single Line') {
-                    item.answer.answer = "";
-                } else if (item.type === 'Multiple Choice') {
-                    item.answer.answer = null;
-                } else {
-                    item.answer.answer = null;
-                }
-            });
-            console.log($scope.questions);
+
+
+            $scope.loadingQuestions = false;
 
         }, function (err) {
-            console.log('didnt work' + err);
+            console.log(err);
+            $scope.loadingQuestions = true;
         });
+
 
         //$scope.$watch('questions', function (newValue, oldValue) {
         //    console.log(value);
         //}, true);
 
-        $scope.answerChanged = function(singleQuestion) {
-            console.log("Changed")
+        $scope.answerChanged = function (singleQuestion) {
             if (singleQuestion.type === 'Single Line') {
-                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function(result){
+                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function (result) {
                     singleQuestion.answer.id = result.id;
                 });
-            }else if (singleQuestion.type === 'Multiple Choice') {
-                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function(result){
+            } else if (singleQuestion.type === 'Multiple Choice') {
+                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function (result) {
                     singleQuestion.answer.id = result.id;
                 });
             } else {
@@ -58,42 +52,39 @@ angular.module('reports.controllers')
                         if (!firstDone) firstDone = true;
                     }
                 }
-                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function(result){
+                TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function (result) {
                     singleQuestion.answer.id = result.id;
+                    console.log($scope.questions);
                 });
             }
         }
 
 
-        $scope.submitForm = function (item) {
-            console.log("yolo: ",item);
-            //QuestionsFactory.updateQuestion(item).then(function (response) {
-            //    //$scope.createEditModal.close();
-            //    $scope.createEditModal.hide();
-            //    $scope.form = {};
-            //}, function (err) {
-            //
-            //});
-        };
+        $scope.submitForm = function () {
 
-        $scope.showQuestion = function (item) {
-            // An elaborate, custom popup
-            var myPopup = $ionicPopup.show({
-                title: 'Question',
-                subTitle: item.text,
-                scope: $scope,
-                buttons: [
-                    {text: 'Cancel'},
-                    {
-                        text: '<b>Delete</b>',
-                        type: 'button-positive',
-                        onTap: function (e) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Submit Questions',
+                template: 'All your answers are already saved. If you say yes, ' +
+                    'this will submit the questionnaire and you will not be able to edit any answers. ' +
+                    'Are you sure?'
+            }).then(function (res) {
+                if (res) {
+                    $ionicLoading.show();
 
-                        }
-                    }
-                ]
+                    TempDataFactory.submitQuestionsToAnswerForm($stateParams.id).then(function (result) {
+                        console.log(result);
+                        $ionicViewService.nextViewOptions({
+                            disableAnimate: false,
+                            disableBack: true
+                        });
+                        $ionicLoading.hide();
+                        $state.go('tab.home');
+                    }, function (err) {
+
+                    });
+
+                }
             });
-
 
         };
 
