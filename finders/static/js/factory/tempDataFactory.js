@@ -26,7 +26,7 @@ angular.module('reports.factory')
             getIncompleteAssignments: function() {
                 var toReturn = [];
                 myAssignments.forEach(function(item) {
-                    if (item.answers.length > 0) toReturn.push(item);
+                    if (item.answers.length > 0 && !item.completed) toReturn.push(item);
                 });
                 return toReturn;
             },

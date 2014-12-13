@@ -158,8 +158,7 @@ angular.module('reports.controllers')
         }
 
     }
-)
-;
+);
 
 angular.module('reports.controllers')
     .controller('LoginCtrl', function ($scope, $ionicViewService, $state, $ionicLoading, $timeout, ApiService, User) {

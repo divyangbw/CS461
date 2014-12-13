@@ -13,6 +13,7 @@ angular.module('reports.controllers').controller('SettingsCtrl', function ($scop
             });
         }
     });
+
     $scope.$watch('user.last', function (newVal, oldVal) {
         if (newVal != oldVal) {
             ApiService.setLastName(User.getEmail(), newVal).then(function (response) {

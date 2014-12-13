@@ -10,6 +10,10 @@ angular.module('reports.factory')
         $rootScope.collapsedData = getCollapseSettings();
         $rootScope.background = setBackgroundVal();
 
+        $rootScope.GLOBAL_IS_ADMIN = CURRENT_USER.role === "admin";
+        $rootScope.GLOBAL_IS_MOD = CURRENT_USER.role === "mod";
+        $rootScope.GLOBAL_IS_USER = CURRENT_USER.role === "user";
+
 
 
         return {
@@ -18,7 +22,9 @@ angular.module('reports.factory')
             setUser: function (user) {
                 localStorage.setItem("User", JSON.stringify(user));
                 CURRENT_USER = user;
-
+                $rootScope.GLOBAL_IS_ADMIN = CURRENT_USER.role === "admin";
+                $rootScope.GLOBAL_IS_MOD = CURRENT_USER.role === "mod";
+                $rootScope.GLOBAL_IS_USER = CURRENT_USER.role === "user";
             },
 
             getToken: function () {
@@ -55,7 +61,11 @@ angular.module('reports.factory')
             },
 
             isAdmin: function () {
-                return   CURRENT_USER.role === "admin";
+                return CURRENT_USER.role === "admin";
+            },
+
+            isMod: function () {
+                return CURRENT_USER.role === "mod";
             },
 
             authCheck: function () {
@@ -78,6 +88,9 @@ angular.module('reports.factory')
             destroyUser: function () {
                 localStorage.removeItem("User");
                 CURRENT_USER = {};
+                $rootScope.GLOBAL_IS_ADMIN = false;
+                $rootScope.GLOBAL_IS_MOD = false;
+                $rootScope.GLOBAL_IS_USER = false;
             },
 
             getDarkModeSetting: function () {

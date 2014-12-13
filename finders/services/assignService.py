@@ -97,8 +97,11 @@ class AssignService:
         if id is None or answer is None:
             abort(400)    # missing arguments
         item = Answer.query.get(id)
-        if item is None:
+        assignment = Assignment.query.get(item.assignment_id)
+        if item is None or assignment is None:
             abort(404)
+        if assignment.completed is True:
+            abort(403)
         item.answer = answer;
         item.updated = datetime.datetime.now();
         db.session.commit()
@@ -120,10 +123,14 @@ class AssignService:
     #--------- ANSWERING QUESTIONS ---------#
     def get_questions_to_answer(assignment_id):
         assignment = Assignment.query.get(assignment_id)
+        if assignment.completed is True:
+            abort(403)
         return (jsonify(result=assignment.serialize_question_answers), 200)
 
     def submit_question_form(assignment_id):
         assignment = Assignment.query.get(assignment_id)
+        if assignment.completed is True:
+            abort(403)
         assignment.completed = True
         assignment.updated = datetime.datetime.now();
         db.session.commit()

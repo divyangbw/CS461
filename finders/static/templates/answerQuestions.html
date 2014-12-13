@@ -3,7 +3,16 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-        <div class="row">
+        <!-- LOADING -->
+        <div class="row" ng-show="loadingQuestions">
+            <div class="spinner cssSlideUp">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+        <!-- END LOADING -->
+
+        <div class="row" ng-show="!loadingQuestions">
 
             <div class="col">
 
@@ -18,7 +27,8 @@
 
                             <div class="single" ng-show="singleQuestion.type === 'Single Line'">
                                 <label class="singleQuestion item item-input">
-                                    <input type="text" ng-model="singleQuestion.answer.answer" ng-change="answerChanged(singleQuestion)"
+                                    <input type="text" ng-model="singleQuestion.answer.answer"
+                                           ng-change="answerChanged(singleQuestion)"
                                            ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }">
                                 </label>
                             </div>
@@ -35,11 +45,13 @@
                             </div>
                             <!-- this down works returns optionID  -->
 
-                            <div class="list row responsive-md gallery" ng-show="singleQuestion.type === 'Multiple Choice'">
+                            <div class="list row responsive-md gallery"
+                                 ng-show="singleQuestion.type === 'Multiple Choice'">
 
                                 <ion-radio class="item col col-33" ng-repeat="option in singleQuestion.options"
                                            ng-value="option.id"
-                                           ng-model="singleQuestion.answer.answer" ng-change="answerChanged(singleQuestion)">
+                                           ng-model="singleQuestion.answer.answer"
+                                           ng-change="answerChanged(singleQuestion)">
                                     {{ option.text }}
                                 </ion-radio>
 
@@ -54,25 +66,24 @@
 
         </div>
 
-        <div class="card">
-  <div class="item item-text-wrap row resposinve-md">
+        <div class="card" ng-show="!loadingQuestions">
+            <div class="item item-text-wrap row resposinve-md">
 
-      <div class="col col-33">
+                <div class="col col-33">
 
-      </div>
-      <div class="col col-33"></div>
-      <div class="col col-33">
+                </div>
+                <div class="col col-33"></div>
+                <div class="col col-33">
 
-          <button ng-click="submitForm()" class="submit button button-outline button-positive button-block">
-                Save
-            </button>
+                    <button ng-click="submitForm()" class="submit button button-outline button-positive button-block">
+                        Save
+                    </button>
 
-      </div>
+                </div>
 
 
-  </div>
-</div>
-
+            </div>
+        </div>
 
 
     </ion-content>
