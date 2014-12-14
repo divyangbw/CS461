@@ -2,10 +2,13 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
+        <!-- list cards for each newscast -->
         <div class="row gallery responsive-sm">
+            <!-- create card for each completed item. click to go to results page for each segment -->
             <div class="col col-20" ng-repeat="item in completed" ng-click="goToAnswers(item)">
                 <div class="list card">
 
+                    <!-- start card information -->
                     <div class="item item-divider">
                         {{ item.cast.company }}
                     </div>
@@ -16,6 +19,7 @@
                     <span class="item-note">
                         Submitted by: {{ item.user.first }} {{ item.user.last }}
                     </span>
+                    <!-- end card information -->
                 </div>
             </div>
         </div>

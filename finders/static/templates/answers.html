@@ -4,6 +4,7 @@
 
         <div class="row">
 
+            <!-- start card information for selected segment -->
             <div class="col col-20">
                 <div class="list card">
                     <div class="item item-divider">
@@ -18,32 +19,29 @@
                     </span>
                 </div>
             </div>
+            <!-- end card info -->
 
+            <!-- start answer table to display question and result -->
             <div class="col">
                 <table class="table-padding">
+                    <!-- table header info -->
                     <thead>
-                    <tr></tr>
-                    <td> ID</td>
-                    <td> Question</td>
-                    <td> Answer</td>
-                    </tr>
-
+                        <td>ID</td>
+                        <td>Question</td>
+                        <td>Answer</td>
                     </thead>
 
                     <tbody>
-                    <tr ng-repeat="item in answers">
-
-                        <td width="5%">{{ item.id }}</td>
-                        <td>{{ item.question.text }}</td>
-                        <td>{{ item.parsed_answer }}</td>
-
-                    </tr>
-
+                    <!-- loop on each answer and create a row for it with id, question, and answer -->
+                        <tr ng-repeat="item in answers">
+                            <td width="5%">{{ item.id }}</td>
+                            <td>{{ item.question.text }}</td>
+                            <td>{{ item.parsed_answer }}</td>
+                        </tr>
                     </tbody>
-
                 </table>
-
             </div>
+            <!-- end table -->
 
         </div>
 
