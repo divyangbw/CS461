@@ -183,6 +183,12 @@ def admin_assign_get_list(segment_id):
         user_id = request.json.get('user_id')
         return AssignService.assign_user_to_seg(segment_id, user_id)
 
+@app.route('/api/admin/assign/sections', methods=['GET'])
+def admin_assign_get_section_count():
+    if validate_user_session(request) is False and validate_user_is_admin(request) is False:
+        return Auth.abort_401()
+    return AssignService.admin_assign_get_section_count()
+
 @app.route('/api/admin/assign/delete/<assignment_id>', methods=['DELETE'])
 def admin_assign_delete_user(assignment_id):
     if validate_user_session(request) is False and validate_user_is_admin(request) is False:

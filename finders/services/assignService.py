@@ -66,6 +66,7 @@ class AssignService:
         db.session.commit()
         return (jsonify(result="ok"), 200)
 
+    # Need to optmize
     def get_admin_assignments():
         toReturn = []
         allSegs = Segment.query.all()
@@ -137,6 +138,15 @@ class AssignService:
         db.session.delete(assignment)
         db.session.commit()
         return (jsonify(result="ok"), 200)
+
+    # Need to optmize
+    def admin_assign_get_section_count():
+        toReturn = []
+        questions = Question.query.all()
+        for question in questions:
+            if question.section not in toReturn:
+                toReturn.append(question.section)
+        return (jsonify(result=toReturn), 200)
 
     #--------- ANSWERS ---------#
 

@@ -6,18 +6,27 @@
 
             <!-- start card information for selected segment -->
             <div class="col col-20">
-                <div class="list card">
+
+                <div class="card">
+
+                    <!-- start card information -->
                     <div class="item item-divider">
                         {{ activeAnswer.cast.company }}
                     </div>
                     <div class="item">
-                        <h3>{{ activeAnswer.segment.subject }}</h3>
+                        <h3>Subject: {{ activeAnswer.segment.subject }}</h3>
                         <h4>Start: {{ activeAnswer.segment.start }} End: {{ activeAnswer.segment.end }}</h4>
+
+                        <p>Date: {{ activeAnswer.cast.date }}</p>
                     </div>
-                    <span class="item-note">
+                    <div class="item item-divider" ng-show="activeAnswer.user">
                         Submitted by: {{ activeAnswer.user.first }} {{ activeAnswer.user.last }}
-                    </span>
+                    </div>
+                    <!-- end card information -->
+
                 </div>
+
+
             </div>
             <!-- end card info -->
 

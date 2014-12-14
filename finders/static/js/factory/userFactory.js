@@ -11,7 +11,7 @@ angular.module('reports.factory')
         $rootScope.background = setBackgroundVal();
 
         $rootScope.GLOBAL_IS_ADMIN = CURRENT_USER.role === "admin";
-        $rootScope.GLOBAL_IS_MOD = CURRENT_USER.role === "mod";
+        $rootScope.GLOBAL_IS_MOD = CURRENT_USER.role === "mod" || CURRENT_USER.role === "admin";
         $rootScope.GLOBAL_IS_USER = CURRENT_USER.role === "user";
 
 
@@ -96,6 +96,9 @@ angular.module('reports.factory')
 
             destroyUser: function () {
                 localStorage.removeItem("User");
+                localStorage.removeItem("activeAnswer");
+                localStorage.removeItem("activeCast");
+                localStorage.removeItem("activeSource");
                 CURRENT_USER = {};
                 $rootScope.GLOBAL_IS_ADMIN = false;
                 $rootScope.GLOBAL_IS_MOD = false;
