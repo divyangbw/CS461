@@ -1,6 +1,6 @@
 from dateutil import parser
 from flask import abort, jsonify
-from finders.models.assignments import Assignment, Answer, AssignSection, Option, Question, Segment, Cast, User
+from finders.models.assignments import Assignment, Answer, AssignSection, Option, Question, Segment, Cast, User, AdminAssign, AdminAssignUser
 from finders.services import utils
 import datetime
 
@@ -68,26 +68,34 @@ class AssignService:
 
     def get_admin_assignments():
         toReturn = []
-
         allSegs = Segment.query.all()
-
-
         for seg in allSegs:
             # Store basic info
             cast = Cast.query.get(seg.cast_id)
             singleAdminAssign = AdminAssign()
-            singleAdminAssign.castName = cast.company
+            singleAdminAssign.castCompany = cast.company
             singleAdminAssign.castDate = cast.date
             singleAdminAssign.segId = seg.id
             singleAdminAssign.segSubject = seg.subject
             singleAdminAssign.segStart = seg.start
             singleAdminAssign.segEnd = seg.end
             # Get all Users
-            allAssign = Assignment.query.filter_by(sg_id=seg.id)
+            singleAdminAssign.users = []
+            allAssign = Assignment.query.filter_by(seg_id=seg.id)
             for assignment in allAssign:
+                #Get basic user info
                 user = User.query.get(assignment.user_id)
+                assignUser = AdminAssignUser()
+                assignUser.user = user
+                assignUser.sections = []
+                #Get all sections
+                sections = AssignSection.query.filter_by(assignment_id=assignment.id)
+                for sec in sections:
+                    assignUser.sections.append(sec)
+                singleAdminAssign.users.append(assignUser)
+            toReturn.append(singleAdminAssign)
 
-        return (jsonify(result="ok"), 200)
+        return (jsonify(result=[i.serialize for i in toReturn]), 200)
 
 
     #--------- ANSWERS ---------#

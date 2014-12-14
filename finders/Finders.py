@@ -169,8 +169,8 @@ def my_assignments():
 
 @app.route('/api/admin/assignments', methods=['GET'])
 def get_admin_assignments():
-    if validate_user_session(request) is False and validate_user_is_admin(request) is False:
-        return Auth.abort_401()
+    #if validate_user_session(request) is False and validate_user_is_admin(request) is False:
+    #    return Auth.abort_401()
     return AssignService.get_admin_assignments()
 
 #--------- ANSWERS ---------#

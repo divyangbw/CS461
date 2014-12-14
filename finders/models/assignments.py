@@ -193,5 +193,29 @@ class AdminAssign():
     @property
     def serialize(self):
        return {
-           'id': self.id
+           "castCompany": self.castCompany,
+           "castDate": self.castDate,
+           "castDate": self.castDate,
+           "segId": self.segId,
+           "segSubject": self.segSubject,
+           "segStart": self.segStart,
+           "segEnd": self.segEnd,
+           "users": self.serialize_users
        }
+
+    @property
+    def serialize_users(self):
+       return [ item.serialize for item in self.users ]
+
+class AdminAssignUser():
+
+    @property
+    def serialize(self):
+       return {
+           'user': self.user.serialize,
+           'sections': self.serialize_sections
+       }
+
+    @property
+    def serialize_sections(self):
+       return [ item.serialize for item in self.sections ]
