@@ -188,4 +188,10 @@ class AssignSection(db.Model):
            'updated': ser.dump_datetime(self.updated)
        }
 
+class AdminAssign():
 
+    @property
+    def serialize(self):
+       return {
+           'id': self.id
+       }

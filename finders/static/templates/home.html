@@ -1,4 +1,11 @@
 <ion-view title="Home" ng-class="background">
+
+    <ion-nav-buttons side="right">
+        <button class="button button-positive button-outline" ng-click="goToManageAssign()" ng-show="GLOBAL_IS_ADMIN">
+            MANAGE ASSIGNMENTS
+        </button>
+    </ion-nav-buttons>
+
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 

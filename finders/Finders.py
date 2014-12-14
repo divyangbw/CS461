@@ -154,7 +154,7 @@ def questionOption_single(id):
 @app.route('/api/assignments', methods=['POST', 'GET'])
 def assignments():
     if request.method == 'GET':
-        return Assignments.all_assignments()
+        return AssignService.all_assignments()
     seg_id = request.json.get('seg_id')
     user_id = request.json.get('user_id')
     return AssignService.new_assignment(seg_id, user_id)
@@ -166,6 +166,12 @@ def my_assignments():
     email = request.headers['email'];
     user = Auth.getUser(email)
     return AssignService.my_assignments(user)
+
+@app.route('/api/admin/assignments', methods=['GET'])
+def get_admin_assignments():
+    if validate_user_session(request) is False and validate_user_is_admin(request) is False:
+        return Auth.abort_401()
+    return AssignService.get_admin_assignments()
 
 #--------- ANSWERS ---------#
 @app.route('/api/question/answers/<assignment_id>', methods=['GET'])

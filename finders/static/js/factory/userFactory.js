@@ -77,6 +77,15 @@ angular.module('reports.factory')
                 }
             },
 
+            permissionCheck: function () {
+                if (CURRENT_USER.role !== "admin") {
+                    $ionicViewService.nextViewOptions({
+                        disableBack: true
+                    });
+                    $state.go('tab.home');
+                }
+            },
+
             getEmail: function () {
                 return CURRENT_USER.email;
             },

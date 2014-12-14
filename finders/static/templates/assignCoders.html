@@ -1,0 +1,50 @@
+<ion-view title="Manage Assignments" ng-class="background">
+
+    <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                 has-bouncing="false">
+
+        <div class="row">
+
+            <div class="list col">
+
+                <div class="item row">
+
+                    <div class="col col-25">
+
+                        <h3>Some Info</h3>
+                        <h4>Some Info again</h4>
+                        <h5>And more</h5>
+
+                        <p>And more</p>
+                        <button class="button button-outline button-positive button-small"> New User</button>
+
+                    </div>
+
+                    <div class="col col-75">
+
+                        <h2>USERS</h2>
+
+                        <div class="list">
+
+                            <div class="item item-icon-left">
+                                <i class="icon clickable {{ hover ? 'ion-ios7-cog' : 'ion-ios7-cog-outline' }}"
+                           ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
+                                First Last
+                                <span class="item-note">
+                                  1,2,3,4
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </ion-content>
+</ion-view>

@@ -1,7 +1,6 @@
 from dateutil import parser
 from flask import abort, jsonify
-from finders.models.assignments import Assignment, Answer, AssignSection, Option, Question
-#from finders.models.questions import Question, Option
+from finders.models.assignments import Assignment, Answer, AssignSection, Option, Question, Segment, Cast, User
 from finders.services import utils
 import datetime
 
@@ -66,6 +65,30 @@ class AssignService:
         db.session.delete(item)
         db.session.commit()
         return (jsonify(result="ok"), 200)
+
+    def get_admin_assignments():
+        toReturn = []
+
+        allSegs = Segment.query.all()
+
+
+        for seg in allSegs:
+            # Store basic info
+            cast = Cast.query.get(seg.cast_id)
+            singleAdminAssign = AdminAssign()
+            singleAdminAssign.castName = cast.company
+            singleAdminAssign.castDate = cast.date
+            singleAdminAssign.segId = seg.id
+            singleAdminAssign.segSubject = seg.subject
+            singleAdminAssign.segStart = seg.start
+            singleAdminAssign.segEnd = seg.end
+            # Get all Users
+            allAssign = Assignment.query.filter_by(sg_id=seg.id)
+            for assignment in allAssign:
+                user = User.query.get(assignment.user_id)
+
+        return (jsonify(result="ok"), 200)
+
 
     #--------- ANSWERS ---------#
 

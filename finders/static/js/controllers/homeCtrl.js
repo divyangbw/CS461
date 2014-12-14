@@ -12,7 +12,10 @@ angular.module('reports.controllers')
 
         function init() {
             User.authCheck();
+        }
 
+        $scope.goToManageAssign = function() {
+            $state.go('tab.assignCoders');
         }
 
         function getData() {
@@ -85,5 +88,19 @@ angular.module('reports.controllers')
             item.isVisible = false;
             return;
         }
+
+    });
+
+angular.module('reports.controllers')
+    .controller('AssignCodersCtrl', function ($scope, $state, $ionicViewService, $ionicPopover, User, TempDataFactory) {
+
+        init();
+
+        function init() {
+            User.authCheck();
+            User.permissionCheck();
+        }
+
+
 
     });

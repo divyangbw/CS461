@@ -46,12 +46,23 @@ angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', '
                     }
                 }
             })
+
             .state('tab.answerQuestions', {
                 url: '/home/answerQuestions/:id',
                 views: {
                     'tab-home': {
                         templateUrl: '/static/templates/answerQuestions.html',
                         controller: 'AnswerQuestionsCtrl'
+                    }
+                }
+            })
+
+            .state('tab.assignCoders', {
+                url: '/home/assignCoders',
+                views: {
+                    'tab-home': {
+                        templateUrl: '/static/templates/assignCoders.html',
+                        controller: 'AssignCodersCtrl'
                     }
                 }
             })
