@@ -86,6 +86,7 @@ class AssignService:
                 #Get basic user info
                 user = User.query.get(assignment.user_id)
                 assignUser = AdminAssignUser()
+                assignUser.id = assignment.id
                 assignUser.user = user
                 assignUser.sections = []
                 #Get all sections
@@ -97,6 +98,45 @@ class AssignService:
 
         return (jsonify(result=[i.serialize for i in toReturn]), 200)
 
+    def get_non_assigned_users(segment_id):
+        if segment_id is None:
+            abort(400)
+        user_ids = []
+        assignments = Assignment.query.filter_by(seg_id=segment_id)
+        for assign in assignments:
+            user_ids.append(assign.user_id)
+        toReturn = []
+        users = User.query.filter(User.role != 'admin').all()
+        for user in users:
+            if user.id not in user_ids and user.isActive is True:
+                toReturn.append(user)
+        return (jsonify(result=[i.serialize for i in toReturn]), 200)
+
+    def assign_user_to_seg(segment_id, user_id):
+        if segment_id is None or user_id is None:
+            abort(400)
+        assign = Assignment(seg_id=segment_id,user_id=user_id,completed=False)
+        assign.updated = datetime.datetime.now()
+        db.session.add(assign)
+        db.session.commit()
+        user = User.query.get(user_id)
+        assignUser = AdminAssignUser()
+        assignUser.id = assign.id
+        assignUser.user = user
+        assignUser.sections = []
+        return (jsonify(result= assignUser.serialize), 201)
+
+    def admin_assign_delete_user(assignment_id):
+        if assignment_id is None:
+            abort(400)
+        assignment = Assignment.query.get(assignment_id)
+        answers = Answer.query.filter_by(assignment_id=assignment_id)
+        for answer in answers:
+            db.session.delete(answer)
+            db.session.commit()
+        db.session.delete(assignment)
+        db.session.commit()
+        return (jsonify(result="ok"), 200)
 
     #--------- ANSWERS ---------#
 

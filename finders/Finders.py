@@ -26,7 +26,7 @@ def login(email):
         return Auth.check_user_password(emailIn, password)
     return Auth.delete_user_session(email)
 
-#--------- AUTH ---------#
+#--------- USER ---------#
 @app.route('/api/user/first', methods=['POST'])
 def edit_user_first():
     email = request.json.get('email')
@@ -169,9 +169,26 @@ def my_assignments():
 
 @app.route('/api/admin/assignments', methods=['GET'])
 def get_admin_assignments():
-    #if validate_user_session(request) is False and validate_user_is_admin(request) is False:
-    #    return Auth.abort_401()
+    if validate_user_session(request) is False and validate_user_is_admin(request) is False:
+        return Auth.abort_401()
     return AssignService.get_admin_assignments()
+
+@app.route('/api/admin/assign/users/<segment_id>', methods=['GET', 'POST'])
+def admin_assign_get_list(segment_id):
+    if validate_user_session(request) is False and validate_user_is_admin(request) is False:
+        return Auth.abort_401()
+    if request.method == 'GET':
+        return AssignService.get_non_assigned_users(segment_id)
+    else:
+        user_id = request.json.get('user_id')
+        return AssignService.assign_user_to_seg(segment_id, user_id)
+
+@app.route('/api/admin/assign/delete/<assignment_id>', methods=['DELETE'])
+def admin_assign_delete_user(assignment_id):
+    if validate_user_session(request) is False and validate_user_is_admin(request) is False:
+        return Auth.abort_401()
+    return AssignService.admin_assign_delete_user(assignment_id)
+
 
 #--------- ANSWERS ---------#
 @app.route('/api/question/answers/<assignment_id>', methods=['GET'])

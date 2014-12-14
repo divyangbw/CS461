@@ -3,20 +3,30 @@
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
-        <div class="row">
+        <!-- LOADING -->
+        <div class="row" ng-show="loadingData">
+            <div class="spinner cssSlideUp">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+        <!-- END LOADING -->
+
+        <div class="row" ng-show="!loadingData">
 
             <div class="list col">
 
-                <div class="item row">
+                <div class="item row" ng-repeat="item in data">
 
                     <div class="col col-25">
 
-                        <h3>Some Info</h3>
-                        <h4>Some Info again</h4>
-                        <h5>And more</h5>
+                        <h3>{{ item.castCompany }}</h3>
+                        <h4>{{ item.segSubject }}</h4>
+                        <h5>{{ item.segStart }}s to {{ item.segEnd }}s</h5>
 
-                        <p>And more</p>
-                        <button class="button button-outline button-positive button-small"> New User</button>
+                        <p>{{ item.castDate | date:'shortDate' }}</p>
+                        <button class="button button-outline button-positive button-small"
+                                ng-click="addNewUser(item)">New User</button>
 
                     </div>
 
@@ -26,12 +36,16 @@
 
                         <div class="list">
 
-                            <div class="item item-icon-left">
-                                <i class="icon clickable {{ hover ? 'ion-ios7-cog' : 'ion-ios7-cog-outline' }}"
-                           ng-mouseenter="hover = true" ng-mouseleave="hover = false"></i>
-                                First Last
+                            <div class="item item-icon-left" ng-repeat="user in item.users">
+                                <i class="icon clickable {{ hover ? 'ion-ios7-trash' : 'ion-ios7-trash-outline' }}"
+                           ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click="deleteCurrentUser(item, user, $index)"></i>
+                                {{ user.user.first }} {{ user.user.last }}
                                 <span class="item-note">
-                                  1,2,3,4
+                                  <div ng-show="user.user.role === 'mod'">Primary Coder</div>
+                                  <div ng-show="user.user.role !== 'mod' && user.sections.length === 0">All Sections</div>
+                                  <div ng-show="user.user.role === 'user' && user.sections.length > 0">
+                                      <div ng-repeat="sec in user.sections">{{ sec.section }}</div> |
+                                  </div>
                                 </span>
                             </div>
 
@@ -48,3 +62,56 @@
 
     </ion-content>
 </ion-view>
+
+<!-- ADD USERS -->
+<script id="add_user.html" type="text/ng-template">
+    <ion-modal-view>
+
+        <ion-header-bar class="bar bar-header bar-positive">
+            <h1 class="title">Add Users</h1>
+            <button class="button button-clear button-primary" ng-click="add_user.hide()">Close</button>
+        </ion-header-bar>
+
+        <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
+                     has-bouncing="false">
+
+            <!-- Everything you want comes under here :) -->
+
+            <!-- LOADING -->
+            <div class="row" ng-show="loadingUsers">
+                <div class="spinner cssSlideUp">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+            <!-- END LOADING -->
+
+            <div ng-show="!loadingUsers">
+
+                <div ng-show="hasError">{{ error }}</div>
+
+                <div class="card" ng-show="loadedUsers.length < 1">
+                    <div class="item item-text-wrap">
+                        Oops. Looks like there are no more users you can assign :(
+                    </div>
+                </div>
+
+                <div class="list" ng-show="loadedUsers.length > 0">
+
+                    <a class="item item-icon-left" ng-repeat="user in loadedUsers" ng-click="assignUser(user)">
+                        <i class="icon ion-person-stalker"></i>
+                        <h3>{{ user.first }} {{ user.last }}</h3>
+                        <h4>{{ user.email }}</h4>
+                        <span class="badge badge-assertive">{{ user.role }}</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!-- Everything you want comes above here :) -->
+
+        </ion-content>
+    </ion-modal-view>
+</script>
+<!-- ADD USERS -->

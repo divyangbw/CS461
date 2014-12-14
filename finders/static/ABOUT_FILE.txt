@@ -1,0 +1,5 @@
+Change this. Make it personal. Change what's inside ABOUT_FILE.txt. HTML is accepted.
+
+<hr>
+<h4>About #FINDERS</h4>
+<p> We are small team from Iowa State in charge of putting this project together. </p>

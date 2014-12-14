@@ -74,6 +74,46 @@ angular.module('reports.factory')
                     deferred.reject(err);
                 });
                 return deferred.promise;
+            },
+
+            getAllAssignments: function() {
+                var deferred = $q.defer();
+                ApiService.getAllAssignments().then(function (result) {
+                    deferred.resolve(result);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            },
+
+            getUsersNotAssigned: function(segment_id) {
+                var deferred = $q.defer();
+                ApiService.getUsersNotAssigned(segment_id).then(function (result) {
+                    deferred.resolve(result);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            },
+
+            assignUserToSegment: function(segment_id, user_id) {
+                var deferred = $q.defer();
+                ApiService.assignUserToSegment(segment_id, user_id).then(function (result) {
+                    deferred.resolve(result);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            },
+
+            deleteUserFromSegment: function(segment_id) {
+                var deferred = $q.defer();
+                ApiService.deleteAssignedUser(segment_id).then(function (result) {
+                    deferred.resolve(result);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
             }
 
         };

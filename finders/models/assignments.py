@@ -212,6 +212,7 @@ class AdminAssignUser():
     @property
     def serialize(self):
        return {
+           'id': self.id,
            'user': self.user.serialize,
            'sections': self.serialize_sections
        }

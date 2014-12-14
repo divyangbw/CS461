@@ -143,10 +143,18 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
 
     this.getMyAssignments = function () { return GET_ALL("api/my/assignments") }
     this.getAllAnswerForAssignment = function (assignment_id) { return GET("api/admin/answers", assignment_id) };
+    this.getAllAssignments = function () { return GET_ALL("api/admin/assignments") };
 
     this.neworUpdateAnswer = function (question_id, params) { return POST("api/answer/" + question_id, params) };
     this.getQuestionsToAnswer = function (assignment_id) { return GET("api/question/answers", assignment_id) };
     this.submitQuestionForm = function (assignment_id) { return PUTBLANK("api/question/submit", assignment_id) };
+    this.getUsersNotAssigned = function (segment_id) { return GET("api/admin/assign/users", segment_id) };
+    this.assignUserToSegment = function (segment_id, user_id) {
+        return POST("api/admin/assign/users/" + segment_id, {"user_id":user_id})
+    };
+    this.deleteAssignedUser = function (segment_id) {
+        return DELETE("api/admin/assign/delete", {"id":segment_id})
+    };
 
     /**************************************************
      *  SHARED CALLS

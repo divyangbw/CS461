@@ -7,8 +7,11 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('reports', ['ionic', 'reports.controllers', 'reports.services', 'reports.factory' , 'angular.filter'])
 
-    .run(function ($ionicPlatform) {
-        // Dont do anthing yet
+    .run(function ($ionicPlatform, $http, $rootScope) {
+        // Load the about file
+        $http.get('/static/ABOUT_FILE.txt').success(function(data) {
+            $rootScope.ABOUT_TEXT_FIXED = data;
+        });
 
     })
 

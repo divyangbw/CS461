@@ -92,7 +92,7 @@ angular.module('reports.controllers')
     });
 
 angular.module('reports.controllers')
-    .controller('AssignCodersCtrl', function ($scope, $state, $ionicViewService, $ionicPopover, User, TempDataFactory) {
+    .controller('AssignCodersCtrl', function ($scope, $state, $ionicModal, $ionicPopup, User, TempDataFactory) {
 
         init();
 
@@ -101,6 +101,78 @@ angular.module('reports.controllers')
             User.permissionCheck();
         }
 
+        $scope.loadingData = true;
+        TempDataFactory.getAllAssignments().then(function (result) {
+            $scope.data = result;
+            $scope.loadingData = false;
+        }, function (err) {
+            console.log(err)
+        });
 
+        $ionicModal.fromTemplateUrl('add_user.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.add_user = modal;
+        });
+
+        $scope.addNewUser = function(item) {
+            $scope.loadingUsers = true;
+            $scope.hasError = false;
+            $scope.currentActiveItem = null;
+            TempDataFactory.getUsersNotAssigned(item.segId).then(function (users) {
+                $scope.loadedUsers = users;
+                $scope.currentActiveItem = item;
+                $scope.loadingUsers = false;
+            }, function (err) {
+                console.log(err)
+                $scope.hasError = true
+                $scope.error = "Error Loading users. Make sure you are logged in (refresh your page) " +
+                    "or that the internet is fine."
+            });
+            $scope.add_user.show();
+        }
+
+        $scope.assignUser = function(user) {
+            $scope.loadingUsers = true;
+            $scope.hasError = false;
+            console.log("ADDING");
+            console.log(user)
+            console.log($scope.currentActiveItem.segId)
+            TempDataFactory.assignUserToSegment($scope.currentActiveItem.segId, user.id).then(function (item) {
+                $scope.currentActiveItem.users.push(item)
+                $scope.loadingUsers = false;
+            }, function (err) {
+                console.log(err)
+                $scope.hasError = true
+                $scope.error = "Error Loading users. Make sure you are logged in (refresh your page) " +
+                    "or that the internet is fine."
+            });
+            $scope.add_user.hide();
+        }
+
+
+
+        $scope.deleteCurrentUser = function(item, user, index) {
+            $scope.hasError = false
+            var popMsg = "Are you sure you want to remove this user? They will lose " +
+                "all their questions answered records as well as not be able to answer the questions anymore.";
+            $ionicPopup.confirm({
+                title: "Delete User Assignment", template: popMsg
+            }).then(function (res) {
+                if (res) {
+                    console.log(item)
+                    console.log(user)
+                    console.log(index)
+                    TempDataFactory.deleteUserFromSegment(user.id).then(function (result) {
+                        item.users.splice(index, 1);
+                    }, function (err) {
+                        $scope.hasError = true
+                        $scope.error = "Error deleting user. Make sure you are logged in (refresh your page) " +
+                             "or that the internet is fine."
+                    });
+
+                }
+            });
+        }
 
     });
