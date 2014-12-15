@@ -120,14 +120,15 @@ class AssignService:
         assign.updated = datetime.datetime.now()
         db.session.add(assign)
         db.session.commit()
-        toReturnSections = []
-        for section in sectionsArr:
-            sec = AssignSection(assignment_id=assign.id, section=section)
-            sec.updated = datetime.datetime.now()
-            db.session.add(sec)
-            db.session.commit()
-            toReturnSections.append(sec)
         user = User.query.get(user_id)
+        toReturnSections = []
+        if user.role == "user":
+            for section in sectionsArr:
+                sec = AssignSection(assignment_id=assign.id, section=section)
+                sec.updated = datetime.datetime.now()
+                db.session.add(sec)
+                db.session.commit()
+                toReturnSections.append(sec)
         assignUser = AdminAssignUser()
         assignUser.id = assign.id
         assignUser.user = user

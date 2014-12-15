@@ -16,7 +16,7 @@
 
             <div class="list col">
 
-                <div class="item row" ng-repeat="item in data" ng-class-odd="'cssItemOdd'" ng-class-even="'cssItemEven'">
+                <div class="item row responsive-md" ng-repeat="item in data" ng-class-odd="'cssItemOdd'" ng-class-even="'cssItemEven'">
 
                     <div class="col col-25">
 
@@ -108,14 +108,16 @@
 
                 <div class="list" ng-show="loadedUsers.length > 0">
 
-                    <div class="item item-button-right" ng-repeat="user in loadedUsers">
+                    <div class="item" ng-repeat="user in loadedUsers" ng-class-odd="'cssItemOdd'" ng-class-even="'cssItemEven'">
 
                         <h2>Name: {{ user.first }} {{ user.last }}</h3>
                         <h3>Email: {{ user.email }}</h4>
                         <hr>
-                            <h4>Please select the sections. You need to select at least one section.</h4>
 
-                        <div class="row responsive-sm gallery">
+                        <h4 ng-show="user.role === 'mod'">Since this person is a primary coder, they will see all questions.</h4>
+                        <h4 ng-show="user.role !== 'mod'">Please select the sections. You need to select at least one section.</h4>
+
+                        <div class="row responsive-sm gallery" ng-show="user.role !== 'mod'">
 
                             <div class="list col col-20" ng-repeat="section in sectionsForm">
                                 <div class="item item-checkbox">
@@ -129,8 +131,14 @@
 
                         </div>
 
-                        <div class="button button-outline button-assertive button-small"
+                            <div class="row">
+                                <div class="col">
+                                    <div class="button button-outline button-assertive button-block"
                              ng-click="assignUser(user)">Add</div>
+                                </div>
+                            </div>
+
+
                     </div>
 
                 </div>

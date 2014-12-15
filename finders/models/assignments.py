@@ -46,53 +46,58 @@ class Assignment(db.Model):
     @property
     def serialize_question_answers(self):
         questions = Question.query.all()
-        sections = AssignSection.query.filter_by(assignment_id=self.id)
+        # Get all the sections
+        secTemp = AssignSection.query.filter_by(assignment_id=self.id)
+        sections = []
+        for sec in secTemp:
+            print(str(sec))
+            sections.append(sec.section)
         user = User.query.get(self.user_id)
-        print(user)
+        print(sections)
         toReturn = []
         for question in questions:
-            #if user.role == "mod" or question.section in sections:
-            item = QuestionAnswers()
-            item.id = question.id
-            item.type = question.type
-            item.text = question.text
-            item.section = question.section
-            opts = []
-            # Get all the options if any exist
-            for optItem in question.options:
-                singleOpts = QuestionAnswersOption()
-                singleOpts.id = optItem.id
-                singleOpts.question_id = optItem.question_id
-                singleOpts.text = optItem.text
-                singleOpts.updated = optItem.updated
-                singleOpts.checked = False
-                opts.append(singleOpts)
-            item.options = opts
-            item.updated = question.updated
-            item.answer = None
-            # Add all the answers to question
-            for ans in self.answers:
-                if ans.question_id == question.id:
-                    answer = QuestionAnswersValue()
-                    answer.id = ans.id
-                    answer.answer = ans.answer
-                    item.answer = answer
-                    break
+            if user.role == "mod" or question.section in sections:
+                item = QuestionAnswers()
+                item.id = question.id
+                item.type = question.type
+                item.text = question.text
+                item.section = question.section
+                opts = []
+                # Get all the options if any exist
+                for optItem in question.options:
+                    singleOpts = QuestionAnswersOption()
+                    singleOpts.id = optItem.id
+                    singleOpts.question_id = optItem.question_id
+                    singleOpts.text = optItem.text
+                    singleOpts.updated = optItem.updated
+                    singleOpts.checked = False
+                    opts.append(singleOpts)
+                item.options = opts
+                item.updated = question.updated
+                item.answer = None
+                # Add all the answers to question
+                for ans in self.answers:
+                    if ans.question_id == question.id:
+                        answer = QuestionAnswersValue()
+                        answer.id = ans.id
+                        answer.answer = ans.answer
+                        item.answer = answer
+                        break
 
-            if item.answer is None:
-                item.answer = QuestionAnswersValue()
-                item.answer.id = -1
-                item.answer.answer = ""
-            else:
-                if item.type == "Multiple Choice":
-                    item.answer.answer = int(item.answer.answer)
-                elif item.type == "Multi-Choice":
-                    idCollectionParsed = item.answer.answer.split('$$>AS<$$')
-                    for splitId in idCollectionParsed:
-                        for option in item.options:
-                            if option.id == int(splitId):
-                                option.checked = True
-            toReturn.append(item)
+                if item.answer is None:
+                    item.answer = QuestionAnswersValue()
+                    item.answer.id = -1
+                    item.answer.answer = ""
+                else:
+                    if item.type == "Multiple Choice":
+                        item.answer.answer = int(item.answer.answer)
+                    elif item.type == "Multi-Choice":
+                        idCollectionParsed = item.answer.answer.split('$$>AS<$$')
+                        for splitId in idCollectionParsed:
+                            for option in item.options:
+                                if option.id == int(splitId):
+                                    option.checked = True
+                toReturn.append(item)
         #Return
         return [ item.serialize for item in toReturn ]
 
