@@ -151,8 +151,8 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
 
     this.getAllSectionNumbers = function () {return GET_ALL("api/admin/assign/sections")};
     this.getUsersNotAssigned = function (segment_id) { return GET("api/admin/assign/users", segment_id) };
-    this.assignUserToSegment = function (segment_id, user_id) {
-        return POST("api/admin/assign/users/" + segment_id, {"user_id":user_id})
+    this.assignUserToSegment = function (segment_id, data) {
+        return POST("api/admin/assign/users/" + segment_id, data)
     };
     this.deleteAssignedUser = function (segment_id) {
         return DELETE("api/admin/assign/delete", {"id":segment_id})

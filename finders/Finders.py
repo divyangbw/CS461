@@ -181,7 +181,13 @@ def admin_assign_get_list(segment_id):
         return AssignService.get_non_assigned_users(segment_id)
     else:
         user_id = request.json.get('user_id')
-        return AssignService.assign_user_to_seg(segment_id, user_id)
+        sections = request.json.get('sections')
+        sectionsArr = []
+        for sec in sections:
+            if sec["checked"] is True:
+                sectionsArr.append(sec["value"])
+        print(str(sectionsArr))
+        return AssignService.assign_user_to_seg(segment_id, user_id, sectionsArr)
 
 @app.route('/api/admin/assign/sections', methods=['GET'])
 def admin_assign_get_section_count():

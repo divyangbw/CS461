@@ -16,7 +16,7 @@
 
             <div class="list col">
 
-                <div class="item row" ng-repeat="item in data">
+                <div class="item row" ng-repeat="item in data" ng-class-odd="'cssItemOdd'" ng-class-even="'cssItemEven'">
 
                     <div class="col col-25">
 
@@ -26,7 +26,8 @@
 
                         <p>{{ item.castDate | date:'shortDate' }}</p>
                         <button class="button button-outline button-positive button-small"
-                                ng-click="addNewUser(item)">New User</button>
+                                ng-click="addNewUser(item)">New User
+                        </button>
 
                     </div>
 
@@ -34,17 +35,26 @@
 
                         <h2>USERS</h2>
 
-                        <div class="list">
+                        <div class="card" ng-show="!item.users || item.users.length < 1">
+                            <div class="item item-text-wrap">
+                                No users are selected.
+                            </div>
+                        </div>
+
+                        <div class="list" ng-show="item.users  && item.users.length > 0">
 
                             <div class="item item-icon-left" ng-repeat="user in item.users">
                                 <i class="icon clickable {{ hover ? 'ion-ios7-trash' : 'ion-ios7-trash-outline' }}"
-                           ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-click="deleteCurrentUser(item, user, $index)"></i>
+                                   ng-mouseenter="hover = true" ng-mouseleave="hover = false"
+                                   ng-click="deleteCurrentUser(item, user, $index)"></i>
                                 {{ user.user.first }} {{ user.user.last }}
                                 <span class="item-note">
                                   <div ng-show="user.user.role === 'mod'">Primary Coder</div>
-                                  <div ng-show="user.user.role !== 'mod' && user.sections.length === 0">All Sections</div>
+                                  <div ng-show="user.user.role !== 'mod' && user.sections.length === 0">All Sections
+                                  </div>
                                   <div ng-show="user.user.role === 'user' && user.sections.length > 0">
-                                      <div ng-repeat="sec in user.sections">{{ sec.section }}</div> |
+                                      <button disabled class="button button-outline button-small"
+                                              ng-repeat="sec in user.sections">{{ sec.section }}</button>
                                   </div>
                                 </span>
                             </div>
@@ -98,12 +108,30 @@
 
                 <div class="list" ng-show="loadedUsers.length > 0">
 
-                    <a class="item item-icon-left" ng-repeat="user in loadedUsers" ng-click="assignUser(user)">
-                        <i class="icon ion-person-stalker"></i>
-                        <h3>{{ user.first }} {{ user.last }}</h3>
-                        <h4>{{ user.email }}</h4>
-                        <span class="badge badge-assertive">{{ user.role }}</span>
-                    </a>
+                    <div class="item item-button-right" ng-repeat="user in loadedUsers">
+
+                        <h2>Name: {{ user.first }} {{ user.last }}</h3>
+                        <h3>Email: {{ user.email }}</h4>
+                        <hr>
+                            <h4>Please select the sections. You need to select at least one section.</h4>
+
+                        <div class="row responsive-sm gallery">
+
+                            <div class="list col col-20" ng-repeat="section in sectionsForm">
+                                <div class="item item-checkbox">
+                                    <label class="checkbox">
+                                        <input type="checkbox" ng-model="section.checked">
+                                    </label>
+                                    {{ section.value }}
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="button button-outline button-assertive button-small"
+                             ng-click="assignUser(user)">Add</div>
+                    </div>
 
                 </div>
 

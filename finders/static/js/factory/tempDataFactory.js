@@ -96,14 +96,13 @@ angular.module('reports.factory')
                 return deferred.promise;
             },
 
-            assignUserToSegment: function(segment_id, user_id) {
-                var deferred = $q.defer();
-                ApiService.assignUserToSegment(segment_id, user_id).then(function (result) {
-                    deferred.resolve(result);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
+            assignUserToSegment: function(segment_id, user_id, sections) {
+                var data = {
+                    user_id:user_id,
+                    sections: sections
+                }
+                console.log(data)
+                return ApiService.assignUserToSegment(segment_id, data);
             },
 
             deleteUserFromSegment: function(segment_id) {
@@ -114,6 +113,10 @@ angular.module('reports.factory')
                     deferred.reject(err);
                 });
                 return deferred.promise;
+            },
+
+            getAllSectionNumbers: function() {
+                return ApiService.getAllSectionNumbers();
             }
 
         };

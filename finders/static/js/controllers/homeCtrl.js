@@ -103,8 +103,13 @@ angular.module('reports.controllers')
 
         $scope.loadingData = true;
         TempDataFactory.getAllAssignments().then(function (result) {
-            $scope.data = result;
-            $scope.loadingData = false;
+            TempDataFactory.getAllSectionNumbers().then(function (secResults) {
+                $scope.data = result;
+                $scope.sections = secResults;
+                $scope.loadingData = false;
+            }, function (err) {
+                console.log(err)
+            });
         }, function (err) {
             console.log(err)
         });
@@ -122,6 +127,13 @@ angular.module('reports.controllers')
             TempDataFactory.getUsersNotAssigned(item.segId).then(function (users) {
                 $scope.loadedUsers = users;
                 $scope.currentActiveItem = item;
+                $scope.sectionsForm = []
+                $scope.sections.forEach(function (item) {
+                    $scope.sectionsForm.push({
+                        checked: false,
+                        value: item
+                    })
+                });
                 $scope.loadingUsers = false;
             }, function (err) {
                 console.log(err)
@@ -135,10 +147,7 @@ angular.module('reports.controllers')
         $scope.assignUser = function(user) {
             $scope.loadingUsers = true;
             $scope.hasError = false;
-            console.log("ADDING");
-            console.log(user)
-            console.log($scope.currentActiveItem.segId)
-            TempDataFactory.assignUserToSegment($scope.currentActiveItem.segId, user.id).then(function (item) {
+            TempDataFactory.assignUserToSegment($scope.currentActiveItem.segId, user.id, $scope.sectionsForm).then(function (item) {
                 $scope.currentActiveItem.users.push(item)
                 $scope.loadingUsers = false;
             }, function (err) {

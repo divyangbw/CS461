@@ -113,18 +113,25 @@ class AssignService:
                 toReturn.append(user)
         return (jsonify(result=[i.serialize for i in toReturn]), 200)
 
-    def assign_user_to_seg(segment_id, user_id):
+    def assign_user_to_seg(segment_id, user_id, sectionsArr):
         if segment_id is None or user_id is None:
             abort(400)
         assign = Assignment(seg_id=segment_id,user_id=user_id,completed=False)
         assign.updated = datetime.datetime.now()
         db.session.add(assign)
         db.session.commit()
+        toReturnSections = []
+        for section in sectionsArr:
+            sec = AssignSection(assignment_id=assign.id, section=section)
+            sec.updated = datetime.datetime.now()
+            db.session.add(sec)
+            db.session.commit()
+            toReturnSections.append(sec)
         user = User.query.get(user_id)
         assignUser = AdminAssignUser()
         assignUser.id = assign.id
         assignUser.user = user
-        assignUser.sections = []
+        assignUser.sections = toReturnSections
         return (jsonify(result= assignUser.serialize), 201)
 
     def admin_assign_delete_user(assignment_id):
@@ -132,8 +139,12 @@ class AssignService:
             abort(400)
         assignment = Assignment.query.get(assignment_id)
         answers = Answer.query.filter_by(assignment_id=assignment_id)
+        sections = AssignSection.query.filter_by(assignment_id=assignment_id)
         for answer in answers:
             db.session.delete(answer)
+            db.session.commit()
+        for sec in sections:
+            db.session.delete(sec)
             db.session.commit()
         db.session.delete(assignment)
         db.session.commit()
