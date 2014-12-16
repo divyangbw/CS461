@@ -1,4 +1,12 @@
 <ion-view title="Results" ng-class="background">
+
+    <ion-nav-buttons side="right">
+        <a href="http://127.0.0.1:5000/api/admin/export/questions" class="button button-positive button-outline"
+           ng-show="GLOBAL_IS_ADMIN">
+            EXPORT ALL ANSWERS
+        </a>
+    </ion-nav-buttons>
+
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 

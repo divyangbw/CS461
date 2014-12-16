@@ -32,13 +32,33 @@ angular.module('reports.controllers')
         //}, true);
 
         $scope.answerChanged = function (singleQuestion) {
+            if (!singleQuestion.gettingId) {
+                singleQuestion.gettingId = true;
+                syncAnswerWithServer(singleQuestion)
+            } else {
+                if (singleQuestion.IdGot)
+                    syncAnswerWithServer(singleQuestion)
+                else {
+                    singleQuestion.isBusySaving = true;
+                    $timeout(function() {
+                        syncAnswerWithServer(singleQuestion)
+                        singleQuestion.isBusySaving = false;
+                    }, 2000);
+                }
+            }
+
+        }
+
+        function syncAnswerWithServer(singleQuestion) {
             if (singleQuestion.type === 'Single Line') {
                 TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function (result) {
                     singleQuestion.answer.id = result.id;
+                    singleQuestion.IdGot = true;
                 });
             } else if (singleQuestion.type === 'Multiple Choice') {
                 TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function (result) {
                     singleQuestion.answer.id = result.id;
+                    singleQuestion.IdGot = true;
                 });
             } else {
 
@@ -54,7 +74,7 @@ angular.module('reports.controllers')
                 }
                 TempDataFactory.neworUpdateAnswer(singleQuestion, $stateParams.id).then(function (result) {
                     singleQuestion.answer.id = result.id;
-                    console.log($scope.questions);
+                    singleQuestion.IdGot = true;
                 });
             }
         }

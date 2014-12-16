@@ -5,6 +5,7 @@ from finders.services.auth import Auth
 from finders.services.castSeg import CastSeg
 from finders.services.questionnaire import Questionnaire
 from finders.services.assignService import AssignService
+from finders.services.exportService import ExportService
 
 
 #--------- AUTH ---------#
@@ -217,7 +218,7 @@ def submit_question_form(assignment_id):
 
 @app.route('/api/admin/answers/<assignment_id>', methods=['GET'])
 def all_answers(assignment_id):
-    if validate_user_session(request) is False and validate_user_is_admin(request) is False:
+    if validate_user_session(request) is False or validate_user_is_admin(request) is False:
         return Auth.abort_401()
     return AssignService.all_answers(assignment_id)
 
@@ -237,6 +238,16 @@ def save_answer(question_id):
     else:
         print("Inside update")
         return AssignService.update_Answer(int(id), answer)
+
+@app.route('/api/admin/export/questions', methods=['GET'])
+def export_csv_all_questions():
+    es = ExportService()
+    return es.export_csv_all_questions()
+
+@app.route('/api/admin/export/questions/<assignment_id>', methods=['GET'])
+def export_csv_questions_for_assign(assignment_id):
+    es = ExportService()
+    return es.export_csv_questions_for_assign(assignment_id)
 
 
 #--------- MAIN ---------#

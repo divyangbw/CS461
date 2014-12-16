@@ -47,53 +47,24 @@ angular.module('reports.factory')
                     assignment_id: assignment_id,
                     answer: question.answer.answer
                 }
-                ApiService.neworUpdateAnswer(question.id, data).then(function (result) {
-                    deferred.resolve(result)
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
+                return ApiService.neworUpdateAnswer(question.id, data);
             },
 
 
             getQuestionsToAnswer: function(assignment_id) {
-                var deferred = $q.defer();
-                ApiService.getQuestionsToAnswer(assignment_id).then(function (results) {
-                    deferred.resolve(results);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
+                return ApiService.getQuestionsToAnswer(assignment_id);
             },
 
             submitQuestionsToAnswerForm: function(assignment_id) {
-                var deferred = $q.defer();
-                ApiService.submitQuestionForm(assignment_id).then(function (result) {
-                    deferred.resolve(result);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
+               return  ApiService.submitQuestionForm(assignment_id);
             },
 
             getAllAssignments: function() {
-                var deferred = $q.defer();
-                ApiService.getAllAssignments().then(function (result) {
-                    deferred.resolve(result);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
+                return ApiService.getAllAssignments();
             },
 
             getUsersNotAssigned: function(segment_id) {
-                var deferred = $q.defer();
-                ApiService.getUsersNotAssigned(segment_id).then(function (result) {
-                    deferred.resolve(result);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
+                return ApiService.getUsersNotAssigned(segment_id);
             },
 
             assignUserToSegment: function(segment_id, user_id, sections) {
@@ -106,17 +77,19 @@ angular.module('reports.factory')
             },
 
             deleteUserFromSegment: function(segment_id) {
-                var deferred = $q.defer();
-                ApiService.deleteAssignedUser(segment_id).then(function (result) {
-                    deferred.resolve(result);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
+                return ApiService.deleteAssignedUser(segment_id);
             },
 
             getAllSectionNumbers: function() {
                 return ApiService.getAllSectionNumbers();
+            },
+
+            exportAllQuestions: function() {
+                return ApiService.exportAllQuestions();
+            },
+
+            exportAllQuestionsFor: function(assignment_id) {
+                return ApiService.exportAllQuestionsFor(assignment_id);
             }
 
         };

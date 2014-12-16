@@ -1,4 +1,12 @@
 <ion-view title="Answers" ng-class="background">
+
+    <ion-nav-buttons side="right">
+        <a href="http://127.0.0.1:5000/api/admin/export/questions/{{ activeAnswer.id }}" class="button button-positive button-outline"
+           ng-show="GLOBAL_IS_ADMIN && activeAnswer && activeAnswer.id > -1">
+            EXPORT ALL ANSWERS
+        </a>
+    </ion-nav-buttons>
+
     <ion-content class="padding" overflow-scroll="true" direction="xy" scrollbar-x="true" scrollbar-y="true"
                  has-bouncing="false">
 
@@ -35,7 +43,7 @@
                 <table class="table-padding">
                     <!-- table header info -->
                     <thead>
-                        <td>ID</td>
+                        <td>Section</td>
                         <td>Question</td>
                         <td>Answer</td>
                     </thead>
@@ -43,7 +51,7 @@
                     <tbody>
                     <!-- loop on each answer and create a row for it with id, question, and answer -->
                         <tr ng-repeat="item in answers">
-                            <td width="5%">{{ item.id }}</td>
+                            <td>{{ item.section }}</td>
                             <td>{{ item.question.text }}</td>
                             <td>{{ item.parsed_answer }}</td>
                         </tr>

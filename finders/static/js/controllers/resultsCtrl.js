@@ -29,13 +29,28 @@ angular.module('reports.controllers').controller('ResultsCtrl', function ($scope
         // navigate to answers page
         $state.go('tab.answers');
     };
+
+    $scope.exportAllAnswers = function () {
+        TempDataFactory.exportAllQuestions();
+    }
+
 });
 
 // second controller for answers page
 angular.module('reports.controllers').controller('ResultsAnswerCtrl', function ($scope, $state, DataFactory, $ionicModal, TempDataFactory) {
 
+
+
     // retrieve stored segment that was clicked on to get here
     $scope.activeAnswer = DataFactory.getActiveAnswer();
+
+    $scope.exportForAssignment = function () {
+        if (!$scope.activeAnswer || !$scope.activeAnswer.id || $scope.activeAnswer.id < 0)
+            alert("Oops. Something went wrong. Go back and reload the page.");
+        else {
+            TempDataFactory.exportAllQuestionsFor($scope.activeAnswer.id).then();
+        }
+    }
 
     // gather results of selected section
     DataFactory.getAnswersForSegment().then(function (result) {

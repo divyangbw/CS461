@@ -154,15 +154,54 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
     this.assignUserToSegment = function (segment_id, data) {
         return POST("api/admin/assign/users/" + segment_id, data)
     };
-    this.deleteAssignedUser = function (segment_id) {
-        return DELETE("api/admin/assign/delete", {"id":segment_id})
-    };
+    this.deleteAssignedUser = function (segment_id) { return DELETE("api/admin/assign/delete", {"id":segment_id}) };
+
+    this.exportAllQuestions = function () { return DOWNLOAD_ALL("api/admin/export/questions") };
+    this.exportAllQuestionsFor = function (assignment_id) { return GET("api/admin/export/questions", assignment_id) };
+
+    function DOWNLOAD_ALL(URL) {
+        $http({method: 'GET', url: BASEURL + URL}).
+          success(function(data, status, headers, config) {
+             var element = angular.element('<a/>');
+             element.attr({
+                 href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
+                 target: '_blank',
+                 download: 'export.csv'
+             })[0].click();
+
+          }).
+          error(function(data, status, headers, config) {
+            // if there's an error you should see it here
+          });
+    }
 
     /**************************************************
      *  SHARED CALLS
      *************************************************/
 
+    function generateError(response) {
+        if (response.status === 400)
+            return "Not all required fields were submitted. Please go back and reload the page."
+        if (response.status === 401)
+            return "You do not have permission to perform this action."
+        if (response.status === 403)
+            return "This requested is invalid. Please go back and reload the page."
+        if (response.status === 404)
+            return "This requested object was not found. Please go back and reload the page."
+        if (response.status === 408)
+            return "Oops. The server seems busy. Please try again later."
+        if (response.status === 500)
+            return "OK, this is our fault. It looks like something didn't work right. Please contact us to report this."
+        if (response.status === 501)
+            return "This feature is not yet released. Think it's a mistake? Contact us."
+        if (response.status === 502)
+            return "Bad Gateway. Contact us."
+        if (response.status === 503)
+            return "Service Unavailable. Contact us."
+        if (response.status === 504)
+            return "Gateway Timeout. Please try again later, or contact us."
 
+    }
 
     function POST (url, obj) {
         var HEADER = { headers: {'email': User.getEmail(), 'token': User.getToken()} }
@@ -173,11 +212,12 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
             $http.post(BASEURL + url, data, HEADER).then(function (response) { // Success
                 deferred.resolve(response.data.result);
             }, function (response) {
-                console.log(response);
+                var re = generateError(response);
+                console.log(re);
                 deferred.reject(response);
             });
         } else {
-            deferred.reject({code:1,reason:"Object is null"});
+            deferred.reject("Object is empty. Please go back and reload the page.");
         }
         return deferred.promise;
     }
@@ -204,11 +244,10 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
             $http.get(BASEURL + url + "/" + id, HEADER).then(function (response) {
                 deferred.resolve(response.data.result);
             }, function (response) {
-                console.log(response);
-                deferred.reject(response);
+                deferred.reject(generateError(response));
             });
         } else {
-            deferred.reject({code:1,reason:"ID is null, or less than 0"});
+            deferred.reject("You did not provide an ID. Please go back home a reload the page.");
         }
         return deferred.promise;
     }
@@ -220,11 +259,10 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
             $http.delete(BASEURL + url + "/" + obj.id, HEADER).then(function (response) { // Success
                 deferred.resolve(response.data.result);
             }, function (response) {
-                console.log(response);
-                deferred.reject(response);
+                deferred.reject(generateError(response));
             });
         } else {
-            deferred.reject({code:1,reason:"Object is null, or does not have an id"});
+            deferred.reject("Object is empty. Please go back and reload the page.");
         }
         return deferred.promise;
     }
@@ -237,11 +275,10 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
             $http.put(BASEURL + url + "/" + obj.id, data, HEADER).then(function (response) { // Success
                 deferred.resolve(response.data.result);
             }, function (response) {
-                console.log(response);
-                deferred.reject(response);
+                deferred.reject(generateError(response));
             });
         } else {
-            deferred.reject({code:1,reason:"Object is null, or does not have an id"});
+            deferred.reject("Object is empty. Please go back and reload the page.");
         }
         return deferred.promise;
     }
@@ -252,8 +289,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
         $http.put(BASEURL + url + "/" + id, {}, HEADER).then(function (response) { // Success
             deferred.resolve(response.data.result);
         }, function (response) {
-            console.log(response);
-            deferred.reject(response);
+            deferred.reject(generateError(response));
         });
         return deferred.promise;
     }

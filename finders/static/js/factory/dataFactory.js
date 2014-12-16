@@ -66,7 +66,6 @@ angular.module('reports.factory')
             getAnswersForSegment: function() {
                 var deferred = $q.defer();
                 ApiService.getAllAnswerForAssignment(activeAnswer.id).then(function (result) {
-                    console.log(result)
                     answers = result;
                     deferred.resolve(answers);
                 }, function (err) {
