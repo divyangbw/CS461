@@ -1,5 +1,5 @@
 angular.module('reports.controllers')
-    .controller('AnswerQuestionsCtrl', function ($scope, $state, $stateParams, $ionicPopup, $ionicViewService, $ionicLoading, User, TempDataFactory, QuestionsFactory) {
+    .controller('AnswerQuestionsCtrl', function ($scope, $state, $stateParams, $ionicPopup, $ionicViewService, $ionicLoading, $timeout, User, TempDataFactory, QuestionsFactory) {
 
         $scope.types = QuestionsFactory.getAllQuestionTypes();
 

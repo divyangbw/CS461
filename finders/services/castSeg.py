@@ -10,7 +10,7 @@ from finders import db
 
 class CastSeg:
 
-    def new_cast(company, date):
+    def new_cast(self, company, date):
         if company is None or date is None:
             print(str(company) + ":" + str(date))
             abort(400)    # missing arguments
@@ -22,11 +22,11 @@ class CastSeg:
             {'id':cast.id, 'company': cast.company, 'date':cast.date}
         ), 201)
 
-    def all_casts():
+    def all_casts(self):
         casts = Cast.query.all()
         return (jsonify(result=[i.serialize for i in casts]), 200)
 
-    def get_cast(id):
+    def get_cast(self, id):
         if id is None:
             abort(400)    # missing arguments
         cast = Cast.query.get(id)
@@ -34,7 +34,7 @@ class CastSeg:
             abort(404)
         return (jsonify(result=cast.serialize), 200)
 
-    def update_cast(id, company, date):
+    def update_cast(self, id, company, date):
         if id is None or company is None or date is None:
             abort(400)    # missing arguments
         cast = Cast.query.get(id)
@@ -45,7 +45,7 @@ class CastSeg:
         db.session.commit()
         return (jsonify(result=Cast.query.get(id).serialize), 200)
 
-    def delete_cast(id):
+    def delete_cast(self, id):
         if id is None:
             abort(400)    # missing arguments
         cast = Cast.query.get(id)
@@ -55,7 +55,7 @@ class CastSeg:
         db.session.commit()
         return (jsonify(result="ok"), 200)
 
-    def new_seg(cast_id, subject, start, end, comment):
+    def new_seg(self, cast_id, subject, start, end, comment):
         if cast_id is None or subject is None or start is None or end is None:
             abort(400)    # missing arguments
         segment = Segment(cast_id=cast_id, subject=subject, start=start, end=end, comment=comment)
@@ -73,11 +73,11 @@ class CastSeg:
             'start':segment.start, 'end':segment.end, 'comment':segment.comment
         }), 201)
 
-    def all_seg(castId):
+    def all_seg(self, castId):
         segments = Segment.query.filter_by(cast_id=castId)
         return (jsonify(result=[i.serialize for i in segments]), 200)
 
-    def get_seg(id):
+    def get_seg(self, id):
         if id is None:
             abort(400)    # missing arguments
         segment = Segment.query.get(id)
@@ -85,7 +85,7 @@ class CastSeg:
             abort(404)
         return (jsonify(result=segment.serialize), 200)
 
-    def update_seg(id, subject, start, end, comment):
+    def update_seg(self, id, subject, start, end, comment):
         if id is None or subject is None or start is None or end is None or comment is None:
             abort(400)    # missing arguments
         segment = Segment.query.get(id)
@@ -101,7 +101,7 @@ class CastSeg:
             'end':segment.end, 'comment':segment.comment
         }), 200)
 
-    def delete_seg(id):
+    def delete_seg(self, id):
         if id is None:
             abort(400)    # missing arguments
         segment = Segment.query.get(id)

@@ -10,7 +10,7 @@ class AssignService:
 
     #--------- ASSIGNMENTS ---------#
 
-    def new_assignment(seg_id, user_id):
+    def new_assignment(self, seg_id, user_id):
         if seg_id is None or user_id is None:
             abort(400)
         updated = datetime.datetime.now()
@@ -22,18 +22,18 @@ class AssignService:
             {'id':item.id, 'seg_id':item.seg_id, 'user_id': item.user_id, 'updated':item.updated}
         ), 201)
 
-    def all_assignments():
+    def all_assignments(self):
         items = Assignment.query.all()
         return (jsonify(result=[i.serialize for i in items]), 200)
 
-    def my_assignments(user):
+    def my_assignments(self, user):
         if user.role == "admin":
             items = Assignment.query.all()
             return (jsonify(result=[i.serialize_admin for i in items]), 200)
         items = Assignment.query.filter_by(user_id=user.id).all()
         return (jsonify(result=[i.serialize for i in items]), 200)
 
-    def get_assignment(id):
+    def get_assignment(self, id):
         if id is None:
             abort(400)
         item = Assignment.query.get(id)
@@ -41,7 +41,7 @@ class AssignService:
             abort(404)
         return (jsonify(result=item.serialize), 200)
 
-    def update_assignment(id, question_id, answer, seg_que_id):
+    def update_assignment(self, id, question_id, answer, seg_que_id):
         if id is None or question_id is None or answer is None or seg_que_id is None:
             abort(400)    # missing arguments
         item = Assignment.query.get(id)
@@ -56,7 +56,7 @@ class AssignService:
             {'id':item.id, 'question_id': item.question_id, 'answer':item.answer, 'seg_que_id':item.seq_que_id,
              'updated':item.updated }), 200)
 
-    def delete_assignment(id):
+    def delete_assignment(self, id):
         if id is None:
             abort(400)    # missing arguments
         item = Assignment.query.get(id)
@@ -67,7 +67,7 @@ class AssignService:
         return (jsonify(result="ok"), 200)
 
     # Need to optmize
-    def get_admin_assignments():
+    def get_admin_assignments(self):
         toReturn = []
         allSegs = Segment.query.all()
         for seg in allSegs:
@@ -99,7 +99,7 @@ class AssignService:
 
         return (jsonify(result=[i.serialize for i in toReturn]), 200)
 
-    def get_non_assigned_users(segment_id):
+    def get_non_assigned_users(self, segment_id):
         if segment_id is None:
             abort(400)
         user_ids = []
@@ -113,7 +113,7 @@ class AssignService:
                 toReturn.append(user)
         return (jsonify(result=[i.serialize for i in toReturn]), 200)
 
-    def assign_user_to_seg(segment_id, user_id, sectionsArr):
+    def assign_user_to_seg(self, segment_id, user_id, sectionsArr):
         if segment_id is None or user_id is None:
             abort(400)
         assign = Assignment(seg_id=segment_id,user_id=user_id,completed=False)
@@ -135,7 +135,7 @@ class AssignService:
         assignUser.sections = toReturnSections
         return (jsonify(result= assignUser.serialize), 201)
 
-    def admin_assign_delete_user(assignment_id):
+    def admin_assign_delete_user(self, assignment_id):
         if assignment_id is None:
             abort(400)
         assignment = Assignment.query.get(assignment_id)
@@ -152,7 +152,7 @@ class AssignService:
         return (jsonify(result="ok"), 200)
 
     # Need to optmize
-    def admin_assign_get_section_count():
+    def admin_assign_get_section_count(self):
         toReturn = []
         questions = Question.query.all()
         for question in questions:
@@ -162,7 +162,7 @@ class AssignService:
 
     #--------- ANSWERS ---------#
 
-    def new_answer(question_id, assignment_id, answer):
+    def new_answer(self, question_id, assignment_id, answer):
         if question_id is None or assignment_id is None or answer is None:
             abort(400)    # missing arguments
         updated = datetime.datetime.now()
@@ -174,11 +174,11 @@ class AssignService:
             'answer':item.answer, 'updated':item.updated
         }), 201)
 
-    def all_answers(assignment_id):
+    def all_answers(self, assignment_id):
         items = Answer.query.filter_by(assignment_id=assignment_id)
         return (jsonify(result=[i.serialize for i in items]), 200)
 
-    def get_answer(id):
+    def get_answer(self, id):
         if id is None:
             abort(400)    # missing arguments
         item = Answer.query.get(id)
@@ -186,7 +186,7 @@ class AssignService:
             abort(404)
         return (jsonify(result=item.serialize), 200)
 
-    def update_Answer(id, answer):
+    def update_Answer(self, id, answer):
         if id is None or answer is None:
             abort(400)    # missing arguments
         item = Answer.query.get(id)
@@ -203,7 +203,7 @@ class AssignService:
             'answer':item.answer, 'updated':item.updated
         }), 200)
 
-    def delete_answer(id):
+    def delete_answer(self, id):
         if id is None:
             abort(400)    # missing arguments
         item = Answer.query.get(id)
@@ -214,13 +214,13 @@ class AssignService:
         return (jsonify(result="ok"), 200)
 
     #--------- ANSWERING QUESTIONS ---------#
-    def get_questions_to_answer(assignment_id):
+    def get_questions_to_answer(self, assignment_id):
         assignment = Assignment.query.get(assignment_id)
         if assignment.completed is True:
             abort(403)
         return (jsonify(result=assignment.serialize_question_answers), 200)
 
-    def submit_question_form(assignment_id):
+    def submit_question_form(self, assignment_id):
         assignment = Assignment.query.get(assignment_id)
         if assignment.completed is True:
             abort(403)

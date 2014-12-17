@@ -7,7 +7,7 @@ from finders import db
 
 class Auth:
 
-    def new_user(email, password, first, last):
+    def new_user(self, email, password, first, last):
         if email is None or password is None or first is None or last is None:
             abort(400)    # missing arguments
         if User.query.filter_by(email=email).first() is not None:
@@ -24,7 +24,7 @@ class Auth:
             'token': token, 'updated': updated_n, 'role': 'user', 'isActive': True
         }), 201)
 
-    def check_user_password(email, password):
+    def check_user_password(self, email, password):
         if email is None or password is None:
             abort(400)    # missing arguments
         user = User.query.filter_by(email=email).first()
@@ -42,7 +42,7 @@ class Auth:
         else:
             abort(401)
 
-    def check_user_token(email, token):
+    def check_user_token(self, email, token):
         if email is None or token is None:
             return False
         user = User.query.filter_by(email=email).first()
@@ -51,7 +51,7 @@ class Auth:
         if user.verify_token(token):
             return True
 
-    def user_is_admin(email):
+    def user_is_admin(self, email):
         if email is None:
             return False
         user = User.query.filter_by(email=email).first()
@@ -62,12 +62,12 @@ class Auth:
         else:
             return False
 
-    def abort_401():
+    def abort_401(self):
         abort(401)
-    def abort_400():
+    def abort_400(self):
         abort(400)
 
-    def getUser(email):
+    def getUser(self, email):
         if email is None:
             abort(400)
         user = User.query.filter_by(email=email).first()
@@ -76,7 +76,7 @@ class Auth:
         return user
 
 
-    def delete_user_session(email):
+    def delete_user_session(self, email):
         if email is None:
             abort(400)
         user = User.query.filter_by(email=email).first()
@@ -88,7 +88,7 @@ class Auth:
         db.session.commit()
         return (jsonify({'message':"logged out"}), 200)
 
-    def update_user_firstLast(email, first, last):
+    def update_user_firstLast(self, email, first, last):
         if email is None:
             abort(400)
         user = User.query.filter_by(email=email).first()
@@ -102,11 +102,11 @@ class Auth:
         db.session.commit()
         return (jsonify({'message':"ok"}), 200)
 
-    def all_users():
+    def all_users(self):
         users = User.query.filter(User.role != 'admin').all()
         return (jsonify(result=[i.serialize for i in users]), 200)
 
-    def change_role(email, role):
+    def change_role(self, email, role):
         if email is None or role is None:
             abort(400)
         user = User.query.filter_by(email=email).first()
@@ -122,7 +122,7 @@ class Auth:
         else:
             abort(400)
 
-    def toggle_isActive(email):
+    def toggle_isActive(self, email):
         if email is None:
             abort(400)
         user = User.query.filter_by(email=email).first()

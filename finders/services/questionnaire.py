@@ -10,7 +10,7 @@ class Questionnaire:
 
     #--------- QUESTIONS ---------#
 
-    def new_question(type, text, section):
+    def new_question(self, type, text, section):
         if type is None or text is None:
             abort(400)
         updated = datetime.datetime.now()
@@ -21,11 +21,11 @@ class Questionnaire:
             {'id':item.id, 'type': item.type,'section':item.section, 'text':item.text, 'updated':item.updated}
         ), 201)
 
-    def all_questions():
+    def all_questions(self):
         items = Question.query.all()
         return (jsonify(result=[i.serialize for i in items]), 200)
 
-    def get_question(id):
+    def get_question(self, id):
         if id is None:
             abort(400)
         item = Question.query.get(id)
@@ -33,7 +33,7 @@ class Questionnaire:
             abort(404)
         return (jsonify(result=item.serialize), 200)
 
-    def update_question(id, type, text, section):
+    def update_question(self, id, type, text, section):
         if id is None or type is None or text is None:
             abort(400)    # missing arguments
         item = Question.query.get(id)
@@ -48,7 +48,7 @@ class Questionnaire:
             {'id':item.id, 'type': item.type,'section':item.section, 'text':item.text, 'updated':item.updated}
         ), 200)
 
-    def delete_question(id):
+    def delete_question(self, id):
         if id is None:
             abort(400)    # missing arguments
         item = Question.query.get(id)
@@ -60,7 +60,7 @@ class Questionnaire:
 
     #--------- OPTIONS ---------#
 
-    def new_option(question_id, text):
+    def new_option(self, question_id, text):
         if question_id is None or text is None:
             abort(400)    # missing arguments
         updated = datetime.datetime.now()
@@ -71,11 +71,11 @@ class Questionnaire:
             'id':item.id, 'question_id': item.question_id, 'text':item.text, 'updated':item.updated
         }), 201)
 
-    def all_options(question_id):
+    def all_options(self, question_id):
         items = Options.query.filter_by(question_id=question_id)
         return (jsonify(result=[i.serialize for i in items]), 200)
 
-    def get_option(id):
+    def get_option(self, id):
         if id is None:
             abort(400)    # missing arguments
         item = Options.query.get(id)
@@ -83,7 +83,7 @@ class Questionnaire:
             abort(404)
         return (jsonify(result=item.serialize), 200)
 
-    def update_option(id, text):
+    def update_option(self, id, text):
         if id is None or text is None:
             abort(400)    # missing arguments
         item = Option.query.get(id)
@@ -96,7 +96,7 @@ class Questionnaire:
             'id':item.id, 'question_id': item.question_id, 'text':item.text, 'updated':item.updated
         }), 200)
 
-    def delete_option(id):
+    def delete_option(self, id):
         if id is None:
             abort(400)    # missing arguments
         item = Option.query.get(id)

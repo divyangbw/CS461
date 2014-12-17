@@ -22,23 +22,23 @@
 
                     <div class="list">
 
-                        <div class="item" ng-repeat="singleQuestion in value">
-                            <div class="question">Question: {{ singleQuestion.text }}</div>
+                        <div class="item" ng-repeat="item in value">
+                            <div class="question">Question: {{ item.text }}</div>
 
-                            <div class="single" ng-show="singleQuestion.type === 'Single Line'">
+                            <div class="single" ng-show="item.type === 'Single Line'">
                                 <label class="singleQuestion item item-input">
-                                    <input type="text" ng-model="singleQuestion.answer.answer"
-                                           ng-change="answerChanged(singleQuestion)"
+                                    <input type="text" ng-model="item.answer.answer"
+                                           ng-change="answerChanged(item)"
                                            ng-model-options="{ debounce: 1000 }">
                                 </label>
                             </div>
                             <!--does not return correctly  -->
 
-                            <div class="list" ng-show="singleQuestion.type === 'Multi-Choice'">
+                            <div class="list" ng-show="item.type === 'Multi-Choice'">
 
-                                <ion-checkbox ng-repeat="option in singleQuestion.options"
+                                <ion-checkbox ng-repeat="option in item.options"
                                               ng-model="option.checked"
-                                              ng-checked="option.checked" ng-change="answerChanged(singleQuestion)">
+                                              ng-checked="option.checked" ng-change="answerChanged(item)">
                                     {{ option.text }}
                                 </ion-checkbox>
 
@@ -46,12 +46,13 @@
                             <!-- this down works returns optionID  -->
 
                             <div class="list row responsive-md gallery"
-                                 ng-show="singleQuestion.type === 'Multiple Choice'">
+                                 ng-show="item.type === 'Multiple Choice'">
 
-                                <ion-radio class="item col col-33" ng-repeat="option in singleQuestion.options"
+                                <ion-radio class="item col col-33" ng-repeat="option in item.options"
                                            ng-value="option.id"
-                                           ng-model="singleQuestion.answer.answer"
-                                           ng-change="answerChanged(singleQuestion)">
+                                           ng-model="item.answer.answer"
+                                           ng-change="answerChanged(item)"
+                                           name="question-{{$parent.$index}}-{{item.id}}">
                                     {{ option.text }}
                                 </ion-radio>
 

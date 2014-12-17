@@ -2,7 +2,7 @@ angular.module('reports.services').service('ApiService', function ($q, $http, Us
 
     var useMockData = true;
 
-    var BASEURL = 'http://127.0.0.1:5000/';
+    var BASEURL = 'http://104.236.105.71/';
     $http.defaults.headers.post["Content-Type"] = "application/json";
 
     this.register = function (user) { return setUserAPI("api/register", user); };
